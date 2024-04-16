@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }: 
 
 {
 
@@ -167,9 +167,8 @@ services.printing = {
 	conda
 	python3
 	cups
-	gnomeExtensions.alternate-menu-for-hplip2
-	p910nd
 	retroshare
+	inputs.lobster.packages."x86_64-linux".lobster
   
  ];
 programs.steam = {
