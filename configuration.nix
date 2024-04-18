@@ -127,6 +127,7 @@ services.printing = {
 	wget
 	wayland-utils
 	ani-cli
+	btop
 	htop
 	neofetch
 	webcord-vencord
@@ -168,7 +169,13 @@ services.printing = {
 	python3
 	cups
 	retroshare
+	anbox
+	waydroid
 	inputs.lobster.packages."x86_64-linux".lobster
+	cage
+	magic-wormhole-rs
+	wipeout-rewrite
+	sfm
   
  ];
 programs.steam = {
@@ -177,6 +184,8 @@ programs.steam = {
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 };
 
+	#Waydroid support
+	virtualisation.waydroid.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
