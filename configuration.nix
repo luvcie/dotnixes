@@ -119,68 +119,20 @@ services.printing = {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-	vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-	emacs
-	micro
-	clisp
-	git
 	wget
-	wayland-utils
-	ani-cli
 	btop
-	htop
-    screenfetch
-	neofetch
-	webcord-vencord
-	discordo
-	nheko
-	vlc
-	bitwarden
-	librewolf
-	prismlauncher
-	minetest
-	superTuxKart
-	superTux
-	extremetuxracer
-	wipeout-rewrite
-	tetrio-desktop
-	dwl
-	appimage-run
-	vitetris
-	kodi-wayland
-	deluge
 	tldr
-	bluez
-	lf
+	ranger
 	p7zip
 	unrar
-	qemu
-	eget
 	q4wine
-	freedroidrpg
 	inetutils
-	cwiid
-	blueman
-	xwiimote
-	jdk
-	leiningen
-	clojure
-	gimp
-	conda
-	python3
-	cups
-	retroshare
-	anbox
-	waydroid
-	inputs.lobster.packages."x86_64-linux".lobster
-	cage
 	magic-wormhole-rs
-	wipeout-rewrite
-	sfm
-	bookworm
-	coolreader
-	
+	neofetch
+	screenfetch
+	git
  ];
+ 
 programs.steam = {
   enable = true;
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
