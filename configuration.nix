@@ -129,6 +129,7 @@ services.printing = {
 	ani-cli
 	btop
 	htop
+    screenfetch
 	neofetch
 	webcord-vencord
 	discordo
@@ -176,7 +177,9 @@ services.printing = {
 	magic-wormhole-rs
 	wipeout-rewrite
 	sfm
-  
+	bookworm
+	coolreader
+	
  ];
 programs.steam = {
   enable = true;
