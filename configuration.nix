@@ -101,9 +101,7 @@ services.printing = {
     isNormalUser = true;
     description = "Lucie";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
- 	kate
-    ];
+    shell = pkgs.zsh;
   };
 
   # Enable automatic login for the user.
@@ -118,8 +116,7 @@ services.printing = {
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-	wget
+  environment.systemPackages = with pkgs; [	wget
 	btop
 	tldr
 	ranger
@@ -130,6 +127,7 @@ services.printing = {
 	magic-wormhole-rs
 	neofetch
 	screenfetch
+	(nerdfonts.override { fonts = [ "FiraCode" ]; })
 	git
  ];
  
@@ -138,6 +136,8 @@ programs.steam = {
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 };
+
+programs.zsh.enable = true;
 
 	#Waydroid support
 	virtualisation.waydroid.enable = true;

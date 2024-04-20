@@ -60,5 +60,46 @@
   };
 	nixpkgs.config.allowUnfreePredicate = _: true;
 	programs.git.enable = true;
-}
+	programs.starship.enable = true;
+	programs.fzf.enable = true;
+	
+    programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+      syntaxHighlighting.enable = true;
+      enableVteIntegration = true;
+      shellAliases = {
+        run-with-xwayland = "env -u WAYLAND_DISPLAY";
+      };
 
+      # Install plugins
+      plugins = [
+
+        # Vi keybindings
+        {
+          name = "zsh-vi-mode";
+          file = "./share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+          src = pkgs.zsh-vi-mode;
+        }
+
+        # Autosuggestions
+        {
+          name = "zsh-autosuggestions";
+          file = "./share/zsh-autosuggestions/zsh-autosuggestions.zsh";
+          src = pkgs.zsh-autosuggestions;
+        }
+      ];
+    };
+    # Configure kitty terminal
+    programs.kitty = {
+
+      # Enable kitty
+      enable = true;
+
+      # Configure font
+      font = {
+        name = "FiraCode Nerd Font";
+        size = 12;
+      };
+    };
+}
