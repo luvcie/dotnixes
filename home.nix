@@ -9,7 +9,7 @@
     homeDirectory = "/home/lucie";
 
     packages = with pkgs; [
-		neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+		neovim
 		emacs
 		micro
 		clisp
@@ -43,13 +43,15 @@
 		retroshare
 		anbox
 		waydroid
-		inputs.lobster.packages."x86_64-linux".lobster
+		inputs.lobster.packages."x86_64-linux".lobster #This is broken but hopefully it will be fixed one day.
 		wipeout-rewrite
 		bookworm
 		coolreader
 		figlet
 		sl
 		cowsay
+		bat #A cat clone with syntax highlighting and Git integration.
+		ncdu #A disk usage analyzer with an interactive interface.
     ];
 
     # This value determines the Home Manager release that your configuration is
