@@ -47,6 +47,8 @@
 		wipeout-rewrite
 		bookworm
 		coolreader
+		figlet
+		sl
     ];
 
     # This value determines the Home Manager release that your configuration is
