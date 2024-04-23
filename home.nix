@@ -52,6 +52,10 @@
 		cowsay
 		bat #A cat clone with syntax highlighting and Git integration.
 		ncdu #A disk usage analyzer with an interactive interface.
+		whatsapp-for-linux
+		nchat #Terminal-based chat client with support for Telegram and WhatsApp
+		gajim
+		dino
     ];
 
     # This value determines the Home Manager release that your configuration is
