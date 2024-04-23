@@ -56,6 +56,7 @@
 		nchat #Terminal-based chat client with support for Telegram and WhatsApp
 		gajim
 		dino
+		libnotify
     ];
 
     # This value determines the Home Manager release that your configuration is
