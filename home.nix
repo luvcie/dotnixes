@@ -57,6 +57,9 @@
 		gajim
 		dino
 		libnotify
+   vimgolf
+   pacvim
+   vimb
     ];
 
     # This value determines the Home Manager release that your configuration is
