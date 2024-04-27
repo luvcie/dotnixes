@@ -13,6 +13,7 @@
 		emacs
 		micro
 		clisp
+		sbcl #lisp compiler
 		ani-cli
 		webcord-vencord
 		discordo
@@ -61,6 +62,7 @@
 		pacvim
 		vimgolf
 		vimb
+		stardust #Space flight simulator
     ];
 
     # This value determines the Home Manager release that your configuration is
