@@ -4,6 +4,9 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  # Magnificent app that corrects your previous console command, integrates with zsh.
+  programs.thefuck.enable = true;
+
   home = {
     username = "lucie";
     homeDirectory = "/home/lucie";
