@@ -23,6 +23,7 @@
 		discordo
 		nheko
 		telegram-desktop
+		chromium
 		vlc
 		bitwarden
 		librewolf
