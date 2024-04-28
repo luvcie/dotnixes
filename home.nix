@@ -15,12 +15,14 @@
 		neovim
 		emacs
 		micro
+		cargo # Manage Rust projects and their module dependencies (crates).
 		clisp
-		sbcl #lisp compiler
+		sbcl # LISP compiler
 		ani-cli
 		webcord-vencord
 		discordo
 		nheko
+		telegram-desktop
 		vlc
 		bitwarden
 		librewolf
