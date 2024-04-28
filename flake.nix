@@ -6,6 +6,7 @@
       inputs.nixpkgs.follows = "nixpkgs";     
     }; 
 	lobster.url = "github:justchokingaround/lobster";
+	stardustxr.url = "github:StardustXR/server";
   };
   outputs = inputs: {
     nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem { 
