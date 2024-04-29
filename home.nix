@@ -53,6 +53,7 @@
 		waydroid
 		inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 		inputs.stardustxr.packages."x86_64-linux".stardust-xr-server
+		inputs.stardustxr.packages."x86_64-linux".default
 		wipeout-rewrite
 		bookworm
 		coolreader
