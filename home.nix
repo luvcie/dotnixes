@@ -70,6 +70,8 @@
 		vimgolf
 		vimb
 		stardust #Space flight simulator
+		tgpt
+		hugo
     ];
 
     # This value determines the Home Manager release that your configuration is
