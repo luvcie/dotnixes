@@ -127,9 +127,11 @@ services.printing = {
 	magic-wormhole-rs
 	neofetch
 	screenfetch
+	cpufetch
 	(nerdfonts.override { fonts = [ "FiraCode" ]; })
 	git
 	nmap
+	tree
  ];
  
 programs.steam = {
