@@ -12,6 +12,7 @@
     homeDirectory = "/home/lucie";
 
     packages = with pkgs; [
+    	android-tools
 		neovim
 		emacs
 		micro
@@ -72,7 +73,6 @@
 		stardust #Space flight simulator
 		tgpt
 		hugo
-		android-tools
     ];
 
     # This value determines the Home Manager release that your configuration is
