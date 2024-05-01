@@ -72,6 +72,7 @@
 		stardust #Space flight simulator
 		tgpt
 		hugo
+		android-tools
     ];
 
     # This value determines the Home Manager release that your configuration is
