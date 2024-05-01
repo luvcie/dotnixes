@@ -45,7 +45,7 @@
 		jdk
 		leiningen
 		clojure
-		gimp
+		gimp-with-plugins
 		conda
 		python3
 		cups
@@ -60,19 +60,24 @@
 		figlet
 		sl
 		cowsay
-		bat #A cat clone with syntax highlighting and Git integration.
-		ncdu #A disk usage analyzer with an interactive interface.
+		bat # A cat clone with syntax highlighting and Git integration.
+		ncdu # A disk usage analyzer with an interactive interface.
 		whatsapp-for-linux
-		nchat #Terminal-based chat client with support for Telegram and WhatsApp
+		nchat # Terminal-based chat client with support for Telegram and WhatsApp
 		dino
 		libnotify
 		davinci-resolve
 		pacvim
 		vimgolf
 		vimb
-		stardust #Space flight simulator
+		stardust # Space flight simulator.
 		tgpt
-		hugo
+		hugo # A fast and modern static website engine.
+		obs-studio
+		yt-dlp
+		wl-clipboard # Command-line copy/paste utilities for Wayland.
+		mpc-cli # Command line interface for MPD, MPD is a daemon for playing music.
+		nicotine-plus # Sovlseek
     ];
 
     # This value determines the Home Manager release that your configuration is
