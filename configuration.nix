@@ -114,6 +114,9 @@ services.printing = {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  #Allow git
+  programs.git.enable = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [	wget
@@ -129,7 +132,6 @@ services.printing = {
 	screenfetch
 	cpufetch
 	(nerdfonts.override { fonts = [ "FiraCode" ]; })
-	git
 	nmap
 	tree
  ];
