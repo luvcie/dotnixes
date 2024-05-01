@@ -117,6 +117,9 @@ services.printing = {
   #Allow git
   programs.git.enable = true;
 
+  #Allow adb
+  programs.adb.enable = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [	wget
