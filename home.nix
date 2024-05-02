@@ -65,6 +65,8 @@
 		superTuxKart
 		telegram-desktop
 		tetrio-desktop
+		termdown # Countdown cli program.
+		typst # 
 		tgpt
 		vimb
 		vimgolf
@@ -78,7 +80,7 @@
 		wl-clipboard # Command-line copy/paste utilities for Wayland.
 		xwiimote
 		yt-dlp
-
+		
     ];
 
     # This value determines the Home Manager release that your configuration is
