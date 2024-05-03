@@ -15,6 +15,7 @@
         android-tools
 		anbox
 		ani-cli
+		audacity
 		bat # A cat clone with syntax highlighting and Git integration.
 		bitwarden
 		bookworm
@@ -46,7 +47,6 @@
 		librewolf
 		micro
 		minetest
-		mpc-cli # Command line interface for MPD, MPD is a daemon for playing music.
 		ncdu # A disk usage analyzer with an interactive interface.
 		nchat # Terminal-based chat client with support for Telegram and WhatsApp
 		neovim
@@ -59,6 +59,7 @@
 		qemu
 		retroshare
 		sbcl # LISP compiler
+		scanmem
 		sl
 		stardust # Space flight simulator.
 		superTux
