@@ -41,6 +41,7 @@
 		hugo # A fast and modern static website engine.
 		inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 		inputs.telescope.packages."x86_64-linux".default
+		inputs.envision.packages."x86_64-linux".default
 		jdk
 		leiningen
 		libnotify
