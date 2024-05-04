@@ -29,7 +29,6 @@
 		cowsay
 		cups
 		cwiid
-		davinci-resolve
 		deluge
 		dino
 		discordo
