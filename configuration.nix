@@ -47,13 +47,13 @@
 	hardware.bluetooth.enable = true;
 	
   # Enable the Whatever Desktop Environment.
-  services.xserver.displayManager.sddm.wayland.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "fr";
-    xkb.variant = "";
+    variant = "";
   };
 
   # Configure console keymap
@@ -105,8 +105,8 @@ services.printing = {
   };
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "lucie";
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "lucie";
 
   #Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

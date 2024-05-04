@@ -5,8 +5,18 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";     
     }; 
-	lobster.url = "github:justchokingaround/lobster";
-	telescope.url = "github:StardustXR/telescope";
+    lobster = {
+      url = "github:justchokingaround/lobster";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    telescope = {
+      url = "github:StardustXR/telescope";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    envision = {
+      url = "gitlab:Scrumplex/envision/nix"; # NOTE: This is pointing to the branch of MR 11: https://gitlab.com/gabmus/envision/-/merge_requests/11. Once merged, the url should be updated to "gitlab:gabmus/envision"
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = inputs: {
     nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem { 
