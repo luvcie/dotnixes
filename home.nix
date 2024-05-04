@@ -55,6 +55,7 @@
 		obs-studio
 		pacvim
 		prismlauncher
+		porsmo # Pomodoro written in Rust.
 		python3
 		qemu
 		retroshare
@@ -67,6 +68,7 @@
 		telegram-desktop
 		tetrio-desktop
 		termdown # Countdown cli program.
+		tomato-c # Pomodoro written in pure C.
 		typst # 
 		tgpt
 		vimb
