@@ -2,10 +2,14 @@
 
 {
   # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+	programs.home-manager.enable = true;
 
   # Magnificent app that corrects your previous console command, integrates with zsh.
-  programs.thefuck.enable = true;
+	programs.thefuck.enable = true;
+
+  # Enable zoxide
+	programs.zoxide.enable = true;
+	programs.zoxide.enableBashIntegration = true;
 
   home = {
     username = "lucie";
