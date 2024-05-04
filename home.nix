@@ -81,6 +81,7 @@
 		vitetris
 		vlc
 		waydroid
+		waylyrics
 		webcord-vencord
 		whatsapp-for-linux
 		wipeout-rewrite
