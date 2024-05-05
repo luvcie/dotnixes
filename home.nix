@@ -49,6 +49,7 @@
 		leiningen
 		libnotify
 		librewolf
+		lukesmithxyz-bible-kjv
 		micro
 		minetest
 		ncdu # A disk usage analyzer with an interactive interface.
