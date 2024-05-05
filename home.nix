@@ -74,8 +74,8 @@
 		tetrio-desktop
 		termdown # Countdown cli program.
 		tomato-c # Pomodoro written in pure C.
-		typst # 
 		tgpt
+		vesktop # Discord
 		vimb
 		vimgolf
 		vitetris
