@@ -35,7 +35,6 @@
 		cups
 		cwiid
 		deluge
-		dino
 		discordo
 		emacs
 		extremetuxracer
