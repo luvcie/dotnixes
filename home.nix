@@ -88,7 +88,20 @@
 		wl-clipboard # Command-line copy/paste utilities for Wayland.
 		xwiimote
 		yt-dlp
-		
+  	  # Newly added:
+	    blanket # play background sounds
+		bleachbit # program to clean computer
+    	dissent # GTK4 Discord client in Go
+    	foliate # book reader
+    	iperf # tool to measure IP bandwidth using UDP or TCP
+    	mtr # network diagnostics tool
+    	remmina # remote desktop client
+    	shellcheck # shell script analysis tool
+    	shortwave # find and listen to internet radio stations
+    	speedtest-go # CLI and Go API to Test Internet Speed using speedtest.net
+    	tcpdump # network sniffer
+    	trashy # simple, fast, and featureful alternative to rm and trash-cli
+    	tuba # browse the Fediverse
     ];
 
     # This value determines the Home Manager release that your configuration is
