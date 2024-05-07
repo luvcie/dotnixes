@@ -19,6 +19,7 @@
         android-tools
 		anbox
 		ani-cli
+		any-nix-shell
 		audacity
 		bat # A cat clone with syntax highlighting and Git integration.
 		bitwarden
@@ -68,6 +69,7 @@
 		scanmem
 		sl
 		stardust # Space flight simulator.
+		signal-desktop
 		superTux
 		superTuxKart
 		telegram-desktop
@@ -95,7 +97,7 @@
     	dissent # GTK4 Discord client in Go
     	foliate # book reader
     	iperf # tool to measure IP bandwidth using UDP or TCP
-    	mtr # network diagnostics tool
+    	mtr-gui # network diagnostics tool
     	remmina # remote desktop client
     	shellcheck # shell script analysis tool
     	shortwave # find and listen to internet radio stations
