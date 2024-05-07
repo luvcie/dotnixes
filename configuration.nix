@@ -137,6 +137,8 @@ services.printing = {
 	(nerdfonts.override { fonts = [ "FiraCode" ]; })
 	nmap
 	tree
+	git-agecrypt
+	age
  ];
  
 programs.steam = {
