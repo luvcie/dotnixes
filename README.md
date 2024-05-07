@@ -19,7 +19,7 @@ My NixOS configuration.
 
 ```
 
-Cheatsheet of useful NixOS commands:
+Cheatsheet of useful NixOS and git commands:
 
 sudo nix-collect-garbage -d
 
@@ -33,3 +33,6 @@ home-manager switch --flake .
 
 home-manager news --flake .
 
+git reset --hard #Returns all files to how they were at HEAD, the latest commit
+
+git stash #Stashes local changes so you can return to this state
