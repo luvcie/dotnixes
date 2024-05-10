@@ -106,6 +106,7 @@
     	trashy # simple, fast, and featureful alternative to rm and trash-cli
     	tuba # browse the Fediverse
     	rPackages.VedicDateTime
+    	iotop
     ];
 
     # This value determines the Home Manager release that your configuration is
