@@ -430,6 +430,21 @@
         "type": "github"
       }
     },
+    "nur": {
+      "locked": {
+        "lastModified": 1715438000,
+        "narHash": "sha256-a/WjUr6vmjDbqZAp8E741k3eiz1bmSCBmNgupfnPH1s=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "9cca173c6e452532d367a8dc06ad0fa48d17921b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
     "protostar": {
       "inputs": {
         "crane": "crane_3",
@@ -458,6 +473,7 @@
         "home-manager": "home-manager",
         "lobster": "lobster",
         "nixpkgs": "nixpkgs",
+        "nur": "nur",
         "telescope": "telescope"
       }
     },

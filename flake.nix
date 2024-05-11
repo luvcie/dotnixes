@@ -5,6 +5,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";     
     }; 
+    nur.url = "github:nix-community/NUR";
     lobster = {
       url = "github:justchokingaround/lobster";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,6 +24,7 @@
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
 	  modules = [ 
+        inputs.nur.nixosModules.nur
         ./configuration.nix
         ./hardware-configuration.nix 
       ];
@@ -33,7 +35,10 @@
 
       # Specify your home configuration modules here, for example,
       # the path to your home.nix.
-      modules = [ ./home.nix ];
+      modules = [ 
+        inputs.nur.nixosModules.nur
+        ./home.nix 
+      ];
 
       # Optionally use extraSpecialArgs
       # to pass through arguments to home.nix
