@@ -50,6 +50,7 @@
 			lukesmithxyz-bible-kjv
 			micro
 			minetest
+			mov-cli
 			ncdu # A disk usage analyzer with an interactive interface.
 			nchat # Terminal-based chat client with support for Telegram and WhatsApp
 			neovim
@@ -102,6 +103,8 @@
 			tuba # browse the Fediverse
 			rPackages.VedicDateTime
 			iotop
+			hollywood
+			crypto-tracker
 		];
 
     # This value determines the Home Manager release that your configuration is
