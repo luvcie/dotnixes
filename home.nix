@@ -104,7 +104,6 @@
 			rPackages.VedicDateTime
 			iotop
 			hollywood
-			crypto-tracker
 		];
 
     # This value determines the Home Manager release that your configuration is
