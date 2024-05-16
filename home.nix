@@ -26,6 +26,7 @@
 			blahaj
 			bookworm
 			cargo # Manage Rust projects and their module dependencies (crates).
+			cbonsai
 			chromium
 			clisp
 			clojure
@@ -104,6 +105,7 @@
 			rPackages.VedicDateTime
 			iotop
 			hollywood
+			kdePackages.kdeconnect-kde
 		];
 
     # This value determines the Home Manager release that your configuration is
