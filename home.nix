@@ -42,9 +42,9 @@
 			extremetuxracer
 			figlet
 			freedroidrpg
-			gimp-with-plugins
 			hugo # A fast and modern static website engine.
 			jdk
+			foliate
 			leiningen
 			libnotify
 			librewolf
@@ -71,6 +71,7 @@
 			signal-desktop
 			superTux
 			superTuxKart
+			speedtest-go
 			telegram-desktop
 			tetrio-desktop
 			termdown # Countdown cli program.
@@ -81,6 +82,8 @@
 			vimgolf
 			vitetris
 			vlc
+			kdePackages.kdeconnect-kde
+			hollywood
 			waydroid
 			waylyrics
 			webcord-vencord
@@ -88,24 +91,34 @@
 			wl-clipboard # Command-line copy/paste utilities for Wayland.
 			xwiimote
 			yt-dlp
-			# Newly added:
+			# # # Newly added:
 			blanket # play background sounds
 			bleachbit # program to clean computer
 			dissent # GTK4 Discord client in Go
-			foliate # book reader
 			iperf # tool to measure IP bandwidth using UDP or TCP
 			mtr-gui # network diagnostics tool
 			remmina # remote desktop client
 			shellcheck # shell script analysis tool
 			shortwave # find and listen to internet radio stations
-			speedtest-go # CLI and Go API to Test Internet Speed using speedtest.net
 			tcpdump # network sniffer
 			trashy # simple, fast, and featureful alternative to rm and trash-cli
 			tuba # browse the Fediverse
 			rPackages.VedicDateTime
 			iotop
-			hollywood
-			kdePackages.kdeconnect-kde
+			theharvester
+			# # # Pentesting
+			# 802-11
+			aircrack-ng # wireless WEP/WPA cracking utilities
+			bully # Implementation of the WPS brute force attack, written in C
+			cowpatty # Brute-force WPA dictionary attack
+			hashcat # World's fastest and most advanced password recovery utility
+			iw # tool for configuring Linux wireless devices
+			macchanger # utility for manipulating the MAC address of network interfaces	
+			pixiewps # Offline WPS bruteforce tool
+			reaverwps-t6x # brute force attack tool against Wifi Protected Setup PIN number
+			wifite2 # Python script to automate wireless auditing using aircrack-ng tools
+			wordlists # collection of wordlists useful for security testing
+			
 		];
 
     # This value determines the Home Manager release that your configuration is
