@@ -37,4 +37,8 @@ git commit --amend
 
 git reset --hard #Returns all files to how they were at HEAD, the latest commit
 
+git reset --hard HEAD~1 #The same but with the previous commit
+
 git stash #Stashes local changes so you can return to this state
+
+gamemoderun %command% #Launch option for Steam games
