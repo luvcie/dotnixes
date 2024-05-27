@@ -20,21 +20,20 @@
 			anbox
 			ani-cli
 			any-nix-shell
+			appimage-run
 			audacity
 			bat # A cat clone with syntax highlighting and Git integration.
 			bitwarden
 			blahaj
-			bookworm
 			cargo # Manage Rust projects and their module dependencies (crates).
 			cbonsai
-			chromium
 			clisp
 			clojure
 			cmatrix
 			conda
-			coolreader
 			cowsay
 			cups
+			chromium
 			cwiid
 			deluge
 			discordo
@@ -42,6 +41,7 @@
 			extremetuxracer
 			figlet
 			freedroidrpg
+			flameshot
 			hugo # A fast and modern static website engine.
 			jdk
 			foliate
@@ -106,6 +106,7 @@
 			rPackages.VedicDateTime
 			iotop
 			theharvester
+			krabby
 			# # # Pentesting
 			# 802-11
 			aircrack-ng # wireless WEP/WPA cracking utilities
