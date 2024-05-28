@@ -76,6 +76,9 @@ services.printing = {
   ];
 };
 
+	# Allow to run appimages seamlessly with appimage-run
+   programs.appimage.binfmt.enable = true;
+
     # Open ports required for KDE Connect
   networking.firewall = { 
     enable = true;
