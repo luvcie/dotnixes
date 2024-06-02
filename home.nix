@@ -89,6 +89,7 @@
 			webcord-vencord
 			wipeout-rewrite
 			wl-clipboard # Command-line copy/paste utilities for Wayland.
+			qbittorrent
 			xwiimote
 			yt-dlp
 			# # # Newly added:
