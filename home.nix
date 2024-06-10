@@ -108,6 +108,7 @@
 			iotop
 			theharvester
 			krabby
+			macchina
 			# # # Pentesting
 			# 802-11
 			aircrack-ng # wireless WEP/WPA cracking utilities
