@@ -131,6 +131,9 @@ services.printing = {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Allow darling
+  programs.darling.enable = true;
+
   #Allow git
   programs.git.enable = true;
 
