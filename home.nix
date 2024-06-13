@@ -41,6 +41,7 @@
 			extremetuxracer
 			figlet
 			freedroidrpg
+			friture
 			flameshot
 			hugo # A fast and modern static website engine.
 			jdk
