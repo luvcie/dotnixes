@@ -93,6 +93,7 @@
 			qbittorrent
 			xwiimote
 			yt-dlp
+			terraform
 			# # # Newly added:
 			blanket # play background sounds
 			bleachbit # program to clean computer
