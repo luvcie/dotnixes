@@ -12,8 +12,6 @@
 
 			# Flake inputs
 			inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
-			inputs.telescope.packages."x86_64-linux".default
-			inputs.envision.packages."x86_64-linux".default
 
 			# Packages
 			android-tools
@@ -30,7 +28,6 @@
 			clisp
 			clojure
 			cmatrix
-			conda
 			cowsay
 			cups
 			chromium
@@ -62,7 +59,6 @@
 			pacvim
 			prismlauncher
 			porsmo # Pomodoro written in Rust.
-			python3
 			qemu
 			retroshare
 			sbcl # LISP compiler
