@@ -107,6 +107,12 @@
 			theharvester
 			krabby
 			macchina
+			asciicam
+			fswebcam
+			libwebcam
+			webcamoid
+			gst_all_1.gstreamer
+			v4l2-relayd
 			# # # Pentesting
 			# 802-11
 			aircrack-ng # wireless WEP/WPA cracking utilities
