@@ -133,10 +133,16 @@ services.printing = {
   # Allow darling
   programs.darling.enable = true;
 
-  #Allow git
+  # Allow git
   programs.git.enable = true;
 
-  #Allow adb
+  # Tor
+  services.tor.enable = true;
+
+  # i2cp
+  services.i2pd.proto.i2cp.enable = true;
+
+  # Allow adb
   programs.adb.enable = true;
 
   # List packages installed in system profile. To search, run:
