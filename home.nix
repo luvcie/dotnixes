@@ -92,6 +92,8 @@
 			terraform
 			libgcc
 			yazi
+			virtualenv
+			python312Packages.pip
 			# # # Newly added:
 			blanket # play background sounds
 			bleachbit # program to clean computer
