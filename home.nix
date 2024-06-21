@@ -90,6 +90,8 @@
 			xwiimote
 			yt-dlp
 			terraform
+			libgcc
+			yazi
 			# # # Newly added:
 			blanket # play background sounds
 			bleachbit # program to clean computer
