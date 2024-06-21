@@ -114,7 +114,6 @@
 			gst_all_1.gstreamer
 			v4l2-relayd
 			gpt4all
-			tor
 			# # # Pentesting
 			# 802-11
 			aircrack-ng # wireless WEP/WPA cracking utilities
