@@ -171,9 +171,10 @@ programs.steam = {
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 };
-
+virtualisation.docker.enable = true;
 programs.gamemode.enable = true;
 programs.zsh.enable = true;
+
 
   #Waydroid support
   virtualisation.waydroid.enable = true;

@@ -94,6 +94,7 @@
 			yazi
 			virtualenv
 			python312Packages.pip
+			python3
 			# # # Newly added:
 			blanket # play background sounds
 			bleachbit # program to clean computer
