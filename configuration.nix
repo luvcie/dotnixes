@@ -147,7 +147,8 @@ services.printing = {
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [	wget
+  environment.systemPackages = with pkgs; [
+  	wget
 	btop
 	tldr
 	ranger
@@ -174,7 +175,8 @@ programs.steam = {
 virtualisation.docker.enable = true;
 programs.gamemode.enable = true;
 programs.zsh.enable = true;
-
+programs.npm.enable = true;
+programs.direnv.enable = true;
 
   #Waydroid support
   virtualisation.waydroid.enable = true;
