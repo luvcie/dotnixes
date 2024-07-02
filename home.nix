@@ -206,18 +206,21 @@
       shardulm94.trailing-spaces
       vscodevim.vim
       xaver.clang-format
+      tomoki1207.pdf
+      continue.continue
 
       # Languages
       bbenoist.nix
       haskell.haskell
       ms-vscode.cpptools
       ms-dotnettools.csharp
+      yoavbls.pretty-ts-errors
       yzhang.markdown-all-in-one
     ];
   };
 
   # Add config file for VS Code
-  xdg.configFile."Code/User/settings.json" = {
+  xdg.configFile."~/Development/Code/settings.json" = {
     text = ''
       {
       	"editor.fontFamily": "'FiraCode Nerd Font', monospace",
