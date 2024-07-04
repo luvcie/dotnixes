@@ -208,6 +208,7 @@
       xaver.clang-format
       tomoki1207.pdf
       continue.continue
+      eg2.vscode-npm-script
 
       # Languages
       bbenoist.nix
