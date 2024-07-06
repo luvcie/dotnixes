@@ -135,6 +135,7 @@
       reaverwps-t6x # brute force attack tool against Wifi Protected Setup PIN number
       wifite2 # Python script to automate wireless auditing using aircrack-ng tools
       wordlists # collection of wordlists useful for security testing
+      ghidra
     ];
 
     # This value determines the Home Manager release that your configuration is
