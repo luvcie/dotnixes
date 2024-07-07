@@ -99,6 +99,7 @@
       python312Packages.pip
       python3
       ledger-live-desktop
+      zathura
       # # # Newly added:
       blanket # play background sounds
       bleachbit # program to clean computer
