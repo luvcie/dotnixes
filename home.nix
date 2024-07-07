@@ -16,6 +16,7 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      lolcat
       alejandra
       android-tools
       anbox
@@ -137,6 +138,8 @@
       wifite2 # Python script to automate wireless auditing using aircrack-ng tools
       wordlists # collection of wordlists useful for security testing
       ghidra
+      libgcc
+      burpsuite
     ];
 
     # This value determines the Home Manager release that your configuration is
