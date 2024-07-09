@@ -39,6 +39,9 @@
     LC_TIME = "fr_FR.UTF-8";
   };
 
+  # Enable polkit
+  security.polkit.enable = true;
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
