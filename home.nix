@@ -101,6 +101,7 @@
       python3
       ledger-live-desktop
       zathura
+      cli-visualizer
       # # # Newly added:
       blanket # play background sounds
       bleachbit # program to clean computer
