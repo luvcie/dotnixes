@@ -16,6 +16,10 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      vcv-rack
+      flamegraph
+      linuxKernel.packages.linux_xanmod_latest.perf
+      proton-caller
       lolcat
       alejandra
       android-tools
@@ -101,6 +105,7 @@
       python3
       ledger-live-desktop
       zathura
+      wineWowPackages.waylandFull
       cli-visualizer
       # # # Newly added:
       blanket # play background sounds
@@ -200,6 +205,20 @@
 
   # Enable zoxide
   programs.zoxide.enable = true;
+
+  # Sway
+    wayland.windowManager.sway = {
+    enable = true;
+    config = rec {
+      modifier = "Mod4";
+      # Use kitty as default terminal
+      terminal = "kitty"; 
+      startup = [
+        # Launch application on start
+        {command = "supertuxkart";}
+      ];
+    };
+  };
 
   # Configure Visual Studio Code
   programs.vscode = {
