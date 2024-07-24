@@ -129,7 +129,7 @@
   users.users.lucie = {
     isNormalUser = true;
     description = "Lucie";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "docker"];
     shell = pkgs.zsh;
   };
 
