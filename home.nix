@@ -16,6 +16,7 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      eolie
       gimp-with-plugins
       gnome.gnome-boxes
       zoom-us
