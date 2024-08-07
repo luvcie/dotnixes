@@ -143,10 +143,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Allow darling
-  programs.darling.enable = true;
-
-  # Allow git
+  # Git
   programs.git.enable = true;
 
   # Tor
