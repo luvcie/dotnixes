@@ -189,6 +189,7 @@ extraConfig = ''
     font_size = 14.0,
     hide_tab_bar_if_only_one_tab = true,
     color_scheme = "Tokyo Night",
+    use_fancy_tab_bar = false,
   }
 '';
  };
