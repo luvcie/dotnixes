@@ -177,6 +177,7 @@
     stateVersion = "23.11"; # Please read the comment before changing.
   };
   nixpkgs.config.allowUnfreePredicate = _: true;
+  programs.wezterm.enable = true;
   programs.git.enable = true;
   programs.starship.enable = true;
   programs.fzf.enable = true;
