@@ -16,6 +16,9 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      protonmail-desktop
+      trustymail
+      pwntools
       wireshark
       kooha
       qdirstat
