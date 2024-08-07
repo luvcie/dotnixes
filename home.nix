@@ -155,7 +155,7 @@
       aircrack-ng # wireless WEP/WPA cracking utilities
       bully # Implementation of the WPS brute force attack, written in C
       cowpatty # Brute-force WPA dictionary attack
-      hashcat # World's fastest and most advanced password recovery utility
+      hashcat # Worlds fastest and most advanced password recovery utility
       iw # tool for configuring Linux wireless devices
       macchanger # utility for manipulating the MAC address of network interfaces
       pixiewps # Offline WPS bruteforce tool
@@ -177,10 +177,21 @@
     stateVersion = "23.11"; # Please read the comment before changing.
   };
   nixpkgs.config.allowUnfreePredicate = _: true;
-  programs.wezterm.enable = true;
   programs.git.enable = true;
   programs.starship.enable = true;
   programs.fzf.enable = true;
+
+  programs.wezterm = {
+    enable = true;
+extraConfig = ''
+  return {
+    font = wezterm.font "FiraCode Nerd Font",
+    font_size = 14.0,
+    hide_tab_bar_if_only_one_tab = true,
+    color_scheme = "Tokyo Night",
+  }
+'';
+ };
 
   programs.zsh = {
     enable = true;
