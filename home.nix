@@ -16,6 +16,7 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      xboxdrv
       protonmail-desktop
       trustymail
       pwntools
@@ -180,6 +181,8 @@
   programs.git.enable = true;
   programs.starship.enable = true;
   programs.fzf.enable = true;
+ 
+ 
 
   programs.wezterm = {
     enable = true;
