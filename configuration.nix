@@ -43,6 +43,11 @@
     LC_TIME = "fr_FR.UTF-8";
   };
 
+
+  services.rkvm.enable = true;
+  # xbox
+  hardware.xone.enable = true;
+  
   # Enable polkit
   security.polkit.enable = true;
 
