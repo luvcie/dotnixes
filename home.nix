@@ -16,7 +16,10 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
-      ladybird
+      usbtop
+      usbrip
+      usbview
+      ledger-live-desktop
       xboxdrv
       protonmail-desktop
       trustymail
@@ -37,7 +40,6 @@
       lilypond
       openvas-scanner
       audiness
-      vcv-rack
       flamegraph
       linuxKernel.packages.linux_xanmod_latest.perf
       proton-caller
@@ -52,7 +54,6 @@
       bat # A cat clone with syntax highlighting and Git integration.
       bitwarden
       blahaj
-      cargo # Manage Rust projects and their module dependencies (crates).
       cbonsai
       clisp
       clojure
@@ -119,7 +120,6 @@
       xwiimote
       yt-dlp
       terraform
-      libgcc
       yazi
       virtualenv
       python312Packages.pip
@@ -149,8 +149,6 @@
       fswebcam
       libwebcam
       webcamoid
-      gst_all_1.gstreamer
-      v4l2-relayd
       gpt4all
       # # # Pentesting
       # 802-11
@@ -165,7 +163,6 @@
       wifite2 # Python script to automate wireless auditing using aircrack-ng tools
       wordlists # collection of wordlists useful for security testing
       ghidra
-      libgcc
       burpsuite
     ];
 
@@ -183,20 +180,6 @@
   programs.starship.enable = true;
   programs.fzf.enable = true;
  
- 
-
-  programs.wezterm = {
-    enable = true;
-extraConfig = ''
-  return {
-    font = wezterm.font "FiraCode Nerd Font",
-    font_size = 14.0,
-    hide_tab_bar_if_only_one_tab = true,
-    color_scheme = "Tokyo Night",
-    use_fancy_tab_bar = false,
-  }
-'';
- };
 
   programs.zsh = {
     enable = true;
