@@ -42,11 +42,6 @@
     LC_TELEPHONE = "fr_FR.UTF-8";
     LC_TIME = "fr_FR.UTF-8";
   };
-
-
-  services.rkvm.enable = true;
-  # xbox
-  hardware.xone.enable = true;
   
   # Enable polkit
   security.polkit.enable = true;
@@ -71,47 +66,6 @@
   # Configure console keymap
   console.keyMap = "fr";
 
-  # Enable printprintprints stuff
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
-
-  services.printing = {
-    enable = true;
-    browsing = true;
-    drivers = with pkgs; [
-      gutenprint
-      hplip
-      splix
-    ];
-  };
-
-  # Allow to run appimages seamlessly with appimage-run
-  programs.appimage.binfmt.enable = true;
-
-  # Open ports required for KDE Connect
-  networking.firewall = {
-    enable = true;
-    allowedTCPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-    allowedUDPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-  };
-
-  programs.kdeconnect.enable = true;
-
-    # SOUND
-
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -132,7 +86,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # User groups
   users.users.lucie = {
     isNormalUser = true;
     description = "Lucie";
@@ -141,14 +95,69 @@
   };
 
   # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.enable = false;
   services.displayManager.autoLogin.user = "lucie";
 
-  #Flakes
+  # Enable printing
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  services.printing = {
+    enable = true;
+    browsing = true;
+    drivers = with pkgs; [
+      gutenprint
+      hplip
+      splix
+    ];
+  };
+
+  # KDE Connect
+
+  programs.kdeconnect.enable = true;
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
+    ];
+    allowedUDPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
+    ];
+  };
+
+  # Allow to run appimages seamlessly with appimage-run
+  programs.appimage.binfmt.enable = true;
+
+  # Flakes
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Docker
+  virtualisation.docker.enable = true;
+
+  # Gamemode
+  programs.gamemode.enable = true;
+
+  # zsh
+  programs.zsh.enable = true;
+
+  #npm
+  programs.npm.enable = true;
+
+  #direnv
+  programs.direnv.enable = true;
 
   # Git
   programs.git.enable = true;
@@ -159,8 +168,28 @@
   # i2cp
   services.i2pd.proto.i2cp.enable = true;
 
+  # Waydroid
+  virtualisation.waydroid.enable = true;
+
   # Allow adb
   programs.adb.enable = true;
+
+  # udev rules for Ledger devices
+  hardware.ledger.enable = true;
+
+  # Gamepad
+  hardware.xone.enable = true;
+
+  # Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
+
+  # rkvm
+  services.rkvm.enable = true;
+
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -185,21 +214,7 @@
     killall
   ];
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  };
-  virtualisation.docker.enable = true;
-  programs.gamemode.enable = true;
-  programs.zsh.enable = true;
-  programs.npm.enable = true;
-  programs.direnv.enable = true;
-
-  #Waydroid support
-  virtualisation.waydroid.enable = true;
-
-  #OpenSSH support
+  #OpenSSH
   services.openssh = {
     enable = true;
     ports = [22];
