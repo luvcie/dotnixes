@@ -6,18 +6,32 @@
   config,
   pkgs,
   ...
-}: {
+}:
+ 
+{
+
+	imports =
+  [ 
+	./hardware-configuration.nix
+	./pksay.nix
+  ];
 
   # Kernel version
   boot.kernelPackages = pkgs.linuxPackages_latest;
   
-  # Bootloader.
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # Desktop Environment and Display Manager
+  services.displayManager.sddm.wayland.enable = true;
+  services.desktopManager.plasma6.enable = true;
+  programs.xwayland.enable = true;
+  # programs.waybar.enable = true;
 
+  # Hostname
+  networking.hostName = "nixos"; 
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -49,21 +63,15 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable bluetooth (added by lucy)
-  services.blueman.enable = true;
+  # Enable bluetooth
+  services.blueman.enable = false;
   hardware.bluetooth.enable = true;
 
-  # Enable the Whatever Desktop Environment.
-  services.displayManager.sddm.wayland.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  # Configure keymap in X11
+  # Configure keymap
   services.xserver.xkb = {
     layout = "fr";
     variant = "";
   };
-
-  # Configure console keymap
   console.keyMap = "fr";
 
   # Enable sound with pipewire.
@@ -190,11 +198,11 @@
   # rkvm
   services.rkvm.enable = true;
 
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
+    cachix
     wget
+    wofi
     btop
     tldr
     ranger
@@ -222,7 +230,7 @@
       PasswordAuthentication = true;
       AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
       UseDns = true;
-      X11Forwarding = false;
+      X11Forwarding = true;
       PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
     };
   };

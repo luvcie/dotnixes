@@ -16,6 +16,11 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      cool-retro-term
+      pokemonsay
+      nix-prefetch-scripts
+      warp-terminal
+      arp-scan
       usbtop
       usbrip
       usbview
@@ -150,6 +155,7 @@
       libwebcam
       webcamoid
       gpt4all
+      metasploit
       # # # Pentesting
       # 802-11
       aircrack-ng # wireless WEP/WPA cracking utilities
@@ -162,8 +168,19 @@
       reaverwps-t6x # brute force attack tool against Wifi Protected Setup PIN number
       wifite2 # Python script to automate wireless auditing using aircrack-ng tools
       wordlists # collection of wordlists useful for security testing
-      ghidra
+      airgeddon
+      hostapd-mana
+      cni-plugins
+      lighttpd
+      dnsmasq
+      linux-router
+      netdiscover
+      dhcpig
+      # other category
+      gophish
+      social-engineer-toolkit
       burpsuite
+      ghidra
     ];
 
     # This value determines the Home Manager release that your configuration is
@@ -175,11 +192,10 @@
     # release notes.
     stateVersion = "23.11"; # Please read the comment before changing.
   };
+
   nixpkgs.config.allowUnfreePredicate = _: true;
-  programs.git.enable = true;
   programs.starship.enable = true;
   programs.fzf.enable = true;
- 
 
   programs.zsh = {
     enable = true;
@@ -204,6 +220,17 @@
         name = "zsh-autosuggestions";
         file = "./share/zsh-autosuggestions/zsh-autosuggestions.zsh";
         src = pkgs.zsh-autosuggestions;
+      }
+      # nix-shell
+      {
+         name = "zsh-nix-shell";
+        file = "nix-shell.plugin.zsh";
+        src = pkgs.fetchFromGitHub {
+          owner = "chisui";
+          repo = "zsh-nix-shell";
+          rev = "v0.8.0";
+          sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
+      };
       }
     ];
   };
@@ -234,7 +261,7 @@
       terminal = "kitty"; 
       startup = [
         # Launch application on start
-        {command = "supertuxkart";}
+        {command = "librewolf";}
       ];
     };
   };
