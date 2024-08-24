@@ -7,6 +7,10 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+    imports =
+  [
+  ];
+
   home = {
     username = "lucie";
     homeDirectory = "/home/lucie";
@@ -16,6 +20,8 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      superfile
+      asciiquarium-transparent
       cool-retro-term
       pokemonsay
       nix-prefetch-scripts
