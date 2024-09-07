@@ -6,19 +6,18 @@
   config,
   pkgs,
   ...
-}:
- 
-{
-
-	imports =
-  [ 
-	./hardware-configuration.nix
-	./pksay.nix
+}: {
+  imports = [
+    ./hardware-configuration.nix
+    ./pksay.nix
   ];
+
+  # Sandboxing
+  nix.settings.sandbox = true;
 
   # Kernel version
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  
+
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -27,10 +26,11 @@
   services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
   programs.xwayland.enable = true;
+  services.xserver.windowManager.xmonad.enable = false;
   # programs.waybar.enable = true;
 
   # Hostname
-  networking.hostName = "nixos"; 
+  networking.hostName = "nixos";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -56,7 +56,7 @@
     LC_TELEPHONE = "fr_FR.UTF-8";
     LC_TIME = "fr_FR.UTF-8";
   };
-  
+
   # Enable polkit
   security.polkit.enable = true;
 
@@ -82,14 +82,14 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-};
+  };
 
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+  # If you want to use JACK applications, uncomment this
+  #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+  # use the example session manager (no others are packaged yet so this is enabled by default,
+  # no need to redefine it in your config for now)
+  #media-session.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
@@ -161,9 +161,6 @@
   # zsh
   programs.zsh.enable = true;
 
-  #npm
-  programs.npm.enable = true;
-
   #direnv
   programs.direnv.enable = true;
 
@@ -178,6 +175,9 @@
 
   # Waydroid
   virtualisation.waydroid.enable = true;
+
+  # Flatpak
+  services.flatpak.enable = true;
 
   # Allow adb
   programs.adb.enable = true;
@@ -198,8 +198,19 @@
   # rkvm
   services.rkvm.enable = true;
 
+  # hydra
+  services.hydra = {
+    enable = true;
+    hydraURL = "http://localhost:3000";
+    notificationSender = "hydra@localhost";
+    buildMachinesFiles = [];
+    useSubstitutes = true;
+  };
+
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
+    fuzzel
+    yt-dlp
     cachix
     wget
     wofi
@@ -220,7 +231,39 @@
     git-agecrypt
     age
     killall
+    unzip
+    moe
+    inputs.umu.packages.${pkgs.system}.umu
   ];
+
+  # RIVER
+  #  programs.river = {
+  #    enable = true;
+  #   extraPackages = with pkgs; [
+  #    rivercarro
+  #   foot
+  #  xfce.thunar
+  # swayidle
+  #  waylock
+  # swww
+  # yambar
+  # bemenu
+  # libnotify mako
+  # grim slurp swappy
+  # wl-clipboard wlr-randr
+  # networkmanagerapplet
+  # fuzzel
+  # ];
+  #  };
+
+  xdg.portal = {
+    enable = true;
+    config.common.default = ["wlr"];
+  };
+
+  security.pam.services.waylock = {
+    text = "auth include login";
+  };
 
   #OpenSSH
   services.openssh = {

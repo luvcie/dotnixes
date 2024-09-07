@@ -7,8 +7,7 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-    imports =
-  [
+  imports = [
   ];
 
   home = {
@@ -20,6 +19,27 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      teamviewer
+      protonup-qt
+      cartridges
+      lutris-unwrapped
+      wineWowPackages.waylandFull
+      bottles
+      ffuf
+      popcorntime
+      q4wine
+      appflowy
+      distrobox
+      rita
+      zapzap
+      pikopixel
+      riko4
+      lazpaint
+      pinta
+      p7zip
+      kvirc
+      lsof
+      artem
       superfile
       asciiquarium-transparent
       cool-retro-term
@@ -101,7 +121,6 @@
       prismlauncher
       porsmo # Pomodoro written in Rust.
       qemu
-      retroshare
       sbcl # LISP compiler
       scanmem
       sl
@@ -141,7 +160,7 @@
       cli-visualizer
       # # # Newly added:
       blanket # play background sounds
-      bleachbit # program to clean computer
+      bleachbit # prhave ti trogram to clean computer
       dissent # GTK4 Discord client in Go
       iperf # tool to measure IP bandwidth using UDP or TCP
       mtr-gui # network diagnostics tool
@@ -174,7 +193,6 @@
       reaverwps-t6x # brute force attack tool against Wifi Protected Setup PIN number
       wifite2 # Python script to automate wireless auditing using aircrack-ng tools
       wordlists # collection of wordlists useful for security testing
-      airgeddon
       hostapd-mana
       cni-plugins
       lighttpd
@@ -187,6 +205,7 @@
       social-engineer-toolkit
       burpsuite
       ghidra
+      exegol
     ];
 
     # This value determines the Home Manager release that your configuration is
@@ -229,14 +248,14 @@
       }
       # nix-shell
       {
-         name = "zsh-nix-shell";
+        name = "zsh-nix-shell";
         file = "nix-shell.plugin.zsh";
         src = pkgs.fetchFromGitHub {
           owner = "chisui";
           repo = "zsh-nix-shell";
           rev = "v0.8.0";
           sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
-      };
+        };
       }
     ];
   };
@@ -259,12 +278,12 @@
   programs.zoxide.enable = true;
 
   # Sway
-    wayland.windowManager.sway = {
+  wayland.windowManager.sway = {
     enable = true;
     config = rec {
       modifier = "Mod4";
       # Use kitty as default terminal
-      terminal = "kitty"; 
+      terminal = "kitty";
       startup = [
         # Launch application on start
         {command = "librewolf";}
