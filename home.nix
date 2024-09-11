@@ -1,11 +1,11 @@
 {
   inputs,
   config,
-  pkgs,
+  pkgs, 
   ...
 }: {
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  programs.home-manager.enable = true; 
+  neovim.enable = true;
 
   imports = [
   ];
@@ -112,8 +112,7 @@
       minetest
       mov-cli
       ncdu # A disk usage analyzer with an interactive interface.
-      nchat # Terminal-based chat client with support for Telegram and WhatsApp
-      neovim
+      nchat # Terminal-based chat client with support for Telegram and WhatsApp 
       nheko
       nicotine-plus # Sovlseek
       obs-studio
@@ -121,7 +120,6 @@
       prismlauncher
       porsmo # Pomodoro written in Rust.
       qemu
-      sbcl # LISP compiler
       scanmem
       sl
       stardust # Space flight simulator.

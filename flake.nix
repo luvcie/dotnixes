@@ -8,7 +8,10 @@
     nur.url = "github:nix-community/NUR";
     lobster = {
       url = "github:justchokingaround/lobster";
-      inputs.nixpkgs.follows = "nixpkgs";
+    }; 
+    ashley-dotfiles = {
+    url = "github:ashe/dotfiles/";
+    inputs.nixpkgs.follows = "nixpkgs";
     };
     umu = {
       url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
@@ -31,7 +34,7 @@
 
       # Specify your home configuration modules here, for example,
       # the path to your home.nix.
-      modules = [
+      modules = inputs.ashley-dotfiles.homeModules ++ [
         inputs.nur.nixosModules.nur
         ./home.nix
       ];
