@@ -198,6 +198,10 @@
   # rkvm
   services.rkvm.enable = true;
 
+  # gvfs and udisks 
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+
   # hydra
   services.hydra = {
     enable = true;
@@ -210,6 +214,9 @@
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
     fuzzel
+    usbutils
+    udiskie
+    udisks
     yt-dlp
     cachix
     wget
