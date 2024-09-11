@@ -19,7 +19,7 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
-      biglybt
+      biglybt #torrent client with i2p  
       teamviewer
       protonup-qt
       cartridges
@@ -28,8 +28,7 @@
       bottles
       ffuf
       popcorntime
-      q4wine
-      appflowy
+      q4wine 
       distrobox
       rita
       zapzap
