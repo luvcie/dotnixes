@@ -1,5 +1,10 @@
 {
   inputs = {
+    music-controls-nvim-src = {
+     url = "github:AntonVanAssche/music-controls.nvim";
+     flake = false;
+    };
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -29,7 +34,20 @@
       ];
     };
     homeConfigurations."lucie" = inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages."x86_64-linux";
+  pkgs = import inputs.nixpkgs {
+    system = "x86_64-linux";
+    overlays = [
+    (prev: final:
+      {
+        music-controls-nvim = prev.vimUtils.buildVimPlugin {
+          pname = "music-controls-nvim";
+          src = inputs.music-controls-nvim-src;
+          version = "master";
+        };
+      }
+    )
+  ];
+};
       extraSpecialArgs = {inherit inputs;};
 
       # Specify your home configuration modules here, for example,

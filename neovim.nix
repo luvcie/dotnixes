@@ -21,11 +21,19 @@
           require('vim-be-good')
         '';
       }
-      {
-        plugin = vim-pathogen;
+         {
+        plugin = nvim-notify;
         type = "lua";
         config = ''
-          require('vim-pathogen').setup({})
+          require('nvim-notify')
+        '';
+      }
+         {
+        plugin = pkgs.music-controls-nvim;
+        type = "lua";
+        config = ''
+          require('pkgs.music-controls-nvim')
+          default_player = 'elisa'
         '';
       }
     ];
