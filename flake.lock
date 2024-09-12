@@ -118,6 +118,22 @@
         "type": "github"
       }
     },
+    "music-controls-nvim-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1721993863,
+        "narHash": "sha256-oQHjqXg555I6wvnloBc2C3YKb5h2yfDmXt9C3sqAuY0=",
+        "owner": "AntonVanAssche",
+        "repo": "music-controls.nvim",
+        "rev": "579e371b7aef158bcbfbdb4f690ab36d9b870cc1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AntonVanAssche",
+        "repo": "music-controls.nvim",
+        "type": "github"
+      }
+    },
     "nixgl": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -235,6 +251,7 @@
         "ashley-dotfiles": "ashley-dotfiles",
         "home-manager": "home-manager_2",
         "lobster": "lobster_2",
+        "music-controls-nvim-src": "music-controls-nvim-src",
         "nixpkgs": "nixpkgs_4",
         "nur": "nur_2",
         "umu": "umu"
