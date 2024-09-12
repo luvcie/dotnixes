@@ -9,7 +9,6 @@
   # Extra configuration for neovim
   programs.neovim = {
 
-    # I commented this out as I think I have this in my own module
     #enable = true;
     # Sets alias vim=nvim
     #vimAlias = true;
