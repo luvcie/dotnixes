@@ -8,7 +8,7 @@
     nur.url = "github:nix-community/NUR";
     lobster = {
       url = "github:justchokingaround/lobster";
-    }; 
+    };
     ashley-dotfiles = {
     url = "github:ashe/dotfiles/";
     inputs.nixpkgs.follows = "nixpkgs";
@@ -37,6 +37,7 @@
       modules = inputs.ashley-dotfiles.homeModules ++ [
         inputs.nur.nixosModules.nur
         ./home.nix
+        ./neovim.nix
       ];
 
       # Optionally use extraSpecialArgs
