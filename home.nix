@@ -20,191 +20,166 @@
 
       # Packages
       playerctl
-      biglybt #torrent client with i2p  
-      teamviewer
-      protonup-qt
-      cartridges
-      lutris-unwrapped
-      wineWowPackages.waylandFull
+      #biglybt #torrent client with i2p
+      #teamviewer
       bottles
-      ffuf
+      #ffuf
       popcorntime
-      q4wine 
-      distrobox
-      rita
+      #distrobox
+      #rita
       zapzap
-      pikopixel
-      riko4
-      lazpaint
-      pinta
+      #pikopixel
+      #riko4
+      #lazpaint
+      #pinta
       p7zip
-      kvirc
-      lsof
+      #lsof
       artem
-      superfile
+      #superfile
       asciiquarium-transparent
       cool-retro-term
       pokemonsay
       nix-prefetch-scripts
-      warp-terminal
-      arp-scan
+      #warp-terminal
+      #arp-scan
       usbtop
-      usbrip
+      #usbrip
       usbview
       ledger-live-desktop
       xboxdrv
-      protonmail-desktop
-      trustymail
-      pwntools
+      #trustymail
+      #pwntools
       wireshark
       kooha
       qdirstat
-      firefox
-      eolie
+      #firefox
+      #eolie
       gimp-with-plugins
-      gnome.gnome-boxes
-      zoom-us
-      localsend
-      rawtherapee
-      gnumake
+      #gnome.gnome-boxes
+      #zoom-us
+      #localsend
+      #rawtherapee
       gnucash
-      tuxguitar
-      lilypond
-      openvas-scanner
-      audiness
-      flamegraph
-      linuxKernel.packages.linux_xanmod_latest.perf
-      proton-caller
+      #tuxguitar
+      #lilypond
+      #openvas-scanner
+      #audiness
       lolcat
       alejandra
-      android-tools
-      anbox
+      #android-tools
+      #anbox
       ani-cli
       any-nix-shell
       appimage-run
-      audacity
+      #audacity
       bat # A cat clone with syntax highlighting and Git integration.
       bitwarden
       blahaj
       cbonsai
-      clisp
-      clojure
       cmatrix
       cowsay
       cups
       chromium
-      cwiid
+      #cwiid
       deluge
       discordo
       emacs
-      extremetuxracer
+      #extremetuxracer
       figlet
-      freedroidrpg
+      #freedroidrpg
       friture
       flameshot
       hugo # A fast and modern static website engine.
-      jdk
-      foliate
-      leiningen
+      #foliate
       libnotify
       librewolf
-      lukesmithxyz-bible-kjv
+      #lukesmithxyz-bible-kjv
       micro
-      minetest
+      #minetest
       mov-cli
       ncdu # A disk usage analyzer with an interactive interface.
-      nchat # Terminal-based chat client with support for Telegram and WhatsApp 
-      nheko
       nicotine-plus # Sovlseek
       obs-studio
       pacvim
       prismlauncher
-      porsmo # Pomodoro written in Rust.
-      qemu
+      #porsmo # Pomodoro written in Rust.
+      #qemu
       scanmem
       sl
       stardust # Space flight simulator.
       signal-desktop
-      superTux
-      superTuxKart
+      #superTux
+      #superTuxKart
       speedtest-go
       telegram-desktop
-      tetrio-desktop
+      #tetrio-desktop
       termdown # Countdown cli program.
       tomato-c # Pomodoro written in pure C.
       tgpt
-      vesktop # Discord
       vimb
       vimgolf
       vitetris
       vlc
       kdePackages.kdeconnect-kde
       hollywood
-      waydroid
+      #waydroid
       waylyrics
       webcord-vencord
-      wipeout-rewrite
+      #wipeout-rewrite
       wl-clipboard # Command-line copy/paste utilities for Wayland.
-      qbittorrent
-      xwiimote
-      yt-dlp
-      terraform
+      #qbittorrent
+      #xwiimote
+      #yt-dlp
+      #terraform
       yazi
       virtualenv
-      python312Packages.pip
-      python3
       ledger-live-desktop
       zathura
-      wineWowPackages.waylandFull
       cli-visualizer
       # # # Newly added:
       blanket # play background sounds
       bleachbit # prhave ti trogram to clean computer
-      dissent # GTK4 Discord client in Go
       iperf # tool to measure IP bandwidth using UDP or TCP
       mtr-gui # network diagnostics tool
-      remmina # remote desktop client
-      shellcheck # shell script analysis tool
-      shortwave # find and listen to internet radio stations
-      tcpdump # network sniffer
-      trashy # simple, fast, and featureful alternative to rm and trash-cli
+      #remmina # remote desktop client
+      #shellcheck # shell script analysis tool
+      #tcpdump # network sniffer
+      #trashy # simple, fast, and featureful alternative to rm and trash-cli
       tuba # browse the Fediverse
-      rPackages.VedicDateTime
-      iotop
-      theharvester
-      krabby
+      #iotop
+      #theharvester
+      #krabby
       macchina
       asciicam
-      fswebcam
-      libwebcam
+      #fswebcam
+      #libwebcam
       webcamoid
-      gpt4all
-      metasploit
+      # metasploit
       # # # Pentesting
       # 802-11
-      aircrack-ng # wireless WEP/WPA cracking utilities
-      bully # Implementation of the WPS brute force attack, written in C
-      cowpatty # Brute-force WPA dictionary attack
-      hashcat # Worlds fastest and most advanced password recovery utility
-      iw # tool for configuring Linux wireless devices
-      macchanger # utility for manipulating the MAC address of network interfaces
-      pixiewps # Offline WPS bruteforce tool
-      reaverwps-t6x # brute force attack tool against Wifi Protected Setup PIN number
-      wifite2 # Python script to automate wireless auditing using aircrack-ng tools
-      wordlists # collection of wordlists useful for security testing
-      hostapd-mana
-      cni-plugins
-      lighttpd
-      dnsmasq
-      linux-router
-      netdiscover
-      dhcpig
+      # aircrack-ng # wireless WEP/WPA cracking utilities
+      # bully # Implementation of the WPS brute force attack, written in C
+      # cowpatty # Brute-force WPA dictionary attack
+      # hashcat # Worlds fastest and most advanced password recovery utility
+      # iw # tool for configuring Linux wireless devices
+      # macchanger # utility for manipulating the MAC address of network interfaces
+      # pixiewps # Offline WPS bruteforce tool
+      # reaverwps-t6x # brute force attack tool against Wifi Protected Setup PIN number
+      # wifite2 # Python script to automate wireless auditing using aircrack-ng tools
+#      wordlists # collection of wordlists useful for security testing
+ #     hostapd-mana
+  #    cni-plugins
+   #   lighttpd
+    #  dnsmasq
+     # linux-router
+      #netdiscover
+      #dhcpig
       # other category
-      gophish
-      social-engineer-toolkit
-      burpsuite
-      ghidra
-      exegol
+     # gophish
+    #  social-engineer-toolkit
+  #    burpsuite
+   #   ghidra
+  #    exegol
     ];
 
     # This value determines the Home Manager release that your configuration is
