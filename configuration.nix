@@ -168,13 +168,13 @@
   programs.git.enable = true;
 
   # Tor
-  services.tor.enable = true;
+  services.tor.enable = false;
 
   # i2cp
-  services.i2pd.proto.i2cp.enable = true;
+  services.i2pd.proto.i2cp.enable = false;
 
   # Waydroid
-  virtualisation.waydroid.enable = true;
+  virtualisation.waydroid.enable = false;
 
   # Flatpak
   services.flatpak.enable = true;
@@ -196,15 +196,15 @@
   };
 
   # rkvm
-  services.rkvm.enable = true;
+  services.rkvm.enable = false;
 
   # gvfs and udisks 
-  services.gvfs.enable = true;
+  services.gvfs.enable = false;
   services.udisks2.enable = true;
 
   # hydra
   services.hydra = {
-    enable = true;
+    enable = false;
     hydraURL = "http://localhost:3000";
     notificationSender = "hydra@localhost";
     buildMachinesFiles = [];
@@ -213,6 +213,7 @@
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
+    vesktop
     fuzzel
     usbutils
     udiskie
