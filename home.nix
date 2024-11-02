@@ -1,11 +1,15 @@
 {
   inputs,
   config,
-  pkgs, 
+  pkgs,
   ...
 }: {
-  programs.home-manager.enable = true; 
+  programs.home-manager.enable = true;
   neovim.enable = true;
+
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
 
   imports = [
   ];
@@ -19,6 +23,9 @@
       inputs.lobster.packages."x86_64-linux".lobster #This is broken because of the API limit but hopefully it will be fixed one day.
 
       # Packages
+      jackett
+      qbittorrent
+      simplex-chat-desktop
       playerctl
       #biglybt #torrent client with i2p
       #teamviewer
