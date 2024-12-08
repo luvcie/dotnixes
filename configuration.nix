@@ -120,7 +120,7 @@
       "net.ipv4.tcp_congestion_control" = "bbr";
       "net.ipv4.tcp_slow_start_after_idle" = 0;
 
-      # Gaming optimizations
+      # PID optimization
       "kernel.pid_max" = 4194304;
     };
   };
@@ -218,7 +218,7 @@
     xwayland.enable = true;
     waybar.enable = false;
 
-    # Gaming optimizations
+    # Game optimizations
     gamemode = {
       enable = true;
       settings = {
@@ -252,7 +252,7 @@
     AMD_VULKAN_ICD = "RADV";
     RADV_PERFTEST = "gpl,nosam";  # Optimized for APU
     VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
-    # Gaming
+    # Compatibility
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
     # Wayland-specific
     MOZ_ENABLE_WAYLAND = "1";
@@ -491,7 +491,7 @@
     kdeconnect.enable = true;
     appimage.binfmt.enable = true;
 
-    # Gaming enhancements
+    # Gamescope enhancement
     gamescope = {
       enable = true;
       capSysNice = true;
@@ -583,13 +583,6 @@
 
     # Media
     yt-dlp
-
-    # Gaming utilities
-    q4wine
-    lutris
-    heroic
-    mangohud
-    goverlay
 
     # AMD utilities
     radeontop

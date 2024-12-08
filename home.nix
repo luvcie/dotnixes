@@ -63,7 +63,7 @@
     kooha  # Screen recorder
     gimp-with-plugins
 
-    # Gaming & Entertainment
+    # Entertainment
     prismlauncher  # Minecraft launcher
     vitetris
     ani-cli
@@ -123,10 +123,8 @@
     ledger-live-desktop
     xboxdrv
 
-    # Wine & Gaming
+    # Games
     bottles
-    q4wine
-    lutris
     heroic
     mangohud
     goverlay
@@ -597,7 +595,7 @@
     };
   };
 
-  # Gaming optimizations
+  # Mango
   programs.mangohud = {
     enable = true;
     settings = {
