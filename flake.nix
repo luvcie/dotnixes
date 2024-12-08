@@ -1,65 +1,91 @@
 {
-  inputs = {
-    music-controls-nvim-src = {
-     url = "github:AntonVanAssche/music-controls.nvim";
-     flake = false;
-    };
+  ##########
+  # INPUTS #
+  ##########
 
+  inputs = {
+    # Core
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # User Environment Management
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Community Packages
     nur.url = "github:nix-community/NUR";
-    lobster = {
-      url = "github:justchokingaround/lobster";
-    };
+
+    # Additional Repositories
     ashley-dotfiles = {
-    url = "github:ashe/dotfiles/";
-    inputs.nixpkgs.follows = "nixpkgs";
-    };
-    umu = {
-      url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging\/nix&submodules=1";
+      url = "github:ashe/dotfiles/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Applications
+    lobster.url = "github:justchokingaround/lobster";
+    umu = {
+      url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging/nix&submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Neovim Plugins
+    music-controls-nvim-src = {
+      url = "github:AntonVanAssche/music-controls.nvim";
+      flake = false;
+    };
   };
+
+  ###########
+  # OUTPUTS #
+  ###########
+
   outputs = inputs: {
-    nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {
+
+    ########################
+    # System Configuration #
+    ########################
+
+    nixosConfigurations.nixosthinkpad = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
+      specialArgs = { inherit inputs; };
       modules = [
         inputs.nur.nixosModules.nur
         ./configuration.nix
         ./hardware-configuration.nix
       ];
     };
+
+    #######################
+    # Home Configuration  #
+    #######################
+
     homeConfigurations."lucie" = inputs.home-manager.lib.homeManagerConfiguration {
-  pkgs = import inputs.nixpkgs {
-    system = "x86_64-linux";
-    overlays = [
-    (prev: final:
-      {
-        music-controls-nvim = prev.vimUtils.buildVimPlugin {
-          pname = "music-controls-nvim";
-          src = inputs.music-controls-nvim-src;
-          version = "master";
-        };
-      }
-    )
-  ];
-};
-      extraSpecialArgs = {inherit inputs;};
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        # Overlay for custom packages
+        overlays = [
+          (prev: final: {
+            # Neovim plugin build
+            music-controls-nvim = prev.vimUtils.buildVimPlugin {
+              pname = "music-controls-nvim";
+              src = inputs.music-controls-nvim-src;
+              version = "master";
+            };
+          })
+        ];
+      };
 
-      # Specify your home configuration modules here, for example,
-      # the path to your home.nix.
-      modules = inputs.ashley-dotfiles.homeModules ++ [
-        inputs.nur.nixosModules.nur
-        ./home.nix
-        ./neovim.nix
-      ];
+      # Pass inputs to modules
+      extraSpecialArgs = { inherit inputs; };
 
-      # Optionally use extraSpecialArgs
-      # to pass through arguments to home.nix
+      # Home-manager modules
+      modules =
+        inputs.ashley-dotfiles.homeModules ++ [
+          inputs.nur.nixosModules.nur
+          ./home.nix
+          ./neovim.nix
+        ];
     };
   };
 }

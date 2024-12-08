@@ -1,315 +1,629 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  inputs,
-  config,
-  pkgs,
-  ...
-}: {
+{ config, pkgs, inputs, ... }: {
   imports = [
     ./hardware-configuration.nix
     ./pksay.nix
   ];
 
-  # Sandboxing
-  nix.settings.sandbox = true;
+  #######################
+  #    CONFIGURATION    #
+  #######################
 
-  # Kernel version
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  system.stateVersion = "23.11";
 
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Desktop Environment and Display Manager
-  services.displayManager.sddm.wayland.enable = true;
-  services.desktopManager.plasma6.enable = true;
-  programs.xwayland.enable = true;
-  services.xserver.windowManager.xmonad.enable = false;
-  # programs.waybar.enable = true;
-
-  # Hostname
-  networking.hostName = "nixos";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Paris";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "fr_FR.UTF-8";
-    LC_IDENTIFICATION = "fr_FR.UTF-8";
-    LC_MEASUREMENT = "fr_FR.UTF-8";
-    LC_MONETARY = "fr_FR.UTF-8";
-    LC_NAME = "fr_FR.UTF-8";
-    LC_NUMERIC = "fr_FR.UTF-8";
-    LC_PAPER = "fr_FR.UTF-8";
-    LC_TELEPHONE = "fr_FR.UTF-8";
-    LC_TIME = "fr_FR.UTF-8";
+  # Core system settings
+  nix = {
+    settings = {
+      sandbox = true;
+      experimental-features = ["nix-command" "flakes"];
+      auto-optimise-store = true;
+      # Optimize build performance
+      cores = 4;
+      max-jobs = 4;
+      # Allow closing other processes when building
+      builders-use-substitutes = true;
+    };
+    # Automatic garbage collection
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    # Optimize storage
+    optimise = {
+      automatic = true;
+      dates = ["weekly"];
+    };
   };
 
-  # Enable polkit
-  security.polkit.enable = true;
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  #######################
+  #   BOOT & HARDWARE   #
+  #######################
 
-  # Enable bluetooth
-  services.blueman.enable = false;
-  hardware.bluetooth.enable = true;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
 
-  # Configure keymap
-  services.xserver.xkb = {
-    layout = "fr";
-    variant = "";
+    # Bootloader configuration
+    loader = {
+      systemd-boot = {
+        enable = true;
+        # Optimize boot performance
+        consoleMode = "max";
+        editor = false;  # Disable boot editor for security
+      };
+      efi.canTouchEfiVariables = true;
+      timeout = 3;
+    };
+
+    # Kernel parameters optimized for AMD APU
+    kernelParams = [
+      # CPU optimizations
+      "threadirqs"
+      "mitigations=off"
+      "idle=nomwait"
+      "processor.max_cstate=1"
+      "amd_pstate=active"
+      "clearcpuid=rdrand"
+
+      # AMD GPU optimizations
+      "amdgpu.ppfeaturemask=0xffffffff"
+      "amdgpu.dcfeaturemask=0x8"
+      "amdgpu.freesync_video=1"
+      "amdgpu.gpu_recovery=1"
+      "radeon.si_support=0"
+      "amdgpu.si_support=1"
+
+      # System performance
+      "preempt=voluntary"
+      "transparent_hugepage=never"
+      "clocksource=tsc"
+      "tsc=reliable"
+
+      # Power management
+      "workqueue.power_efficient=off"
+      "amd_iommu=off"
+      "pcie_aspm=off"
+
+      # Audio and USB
+      "amdgpu.audio=0"
+      "usbcore.autosuspend=-1"
+      "snd_hda_intel.power_save=0"
+      "snd_hda_intel.probe_mask=1"
+    ];
+
+    kernel.sysctl = {
+      # Virtual memory tweaks
+      "vm.swappiness" = 10;
+      "vm.dirty_ratio" = 60;
+      "vm.dirty_background_ratio" = 2;
+      "vm.vfs_cache_pressure" = 50;
+      "vm.max_map_count" = 262144;
+
+      # Kernel scheduler
+      "kernel.sched_autogroup_enabled" = 0;
+      "kernel.sched_child_runs_first" = 1;
+      "kernel.sched_min_granularity_ns" = 10000000;
+      "kernel.sched_wakeup_granularity_ns" = 15000000;
+
+      # File system tweaks
+      "fs.file-max" = 2097152;
+      "fs.inotify.max_user_watches" = 524288;
+
+      # Network optimization
+      "net.core.rmem_max" = 2500000;
+      "net.core.wmem_max" = 2500000;
+      "net.core.rmem_default" = 1048576;
+      "net.core.wmem_default" = 1048576;
+      "net.ipv4.tcp_fastopen" = 3;
+      "net.ipv4.tcp_congestion_control" = "bbr";
+      "net.ipv4.tcp_slow_start_after_idle" = 0;
+
+      # Gaming optimizations
+      "kernel.pid_max" = 4194304;
+    };
   };
-  console.keyMap = "fr";
+  #######################
+  #  DISPLAY & DESKTOP  #
+  #######################
 
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  # AMD GPU specific hardware config
+  hardware = {
+    bluetooth.enable = true;
+    ledger.enable = true;
+    xone.enable = true;
+
+    # New unified graphics setup for 24.11+
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        rocm-opencl-icd
+        rocm-opencl-runtime
+        amdvlk
+      ];
+      extraPackages32 = with pkgs; [
+        driversi686Linux.amdvlk
+      ];
+    };
+  };
+
+  # Power management optimization
+  powerManagement = {
+    cpuFreqGovernor = "performance";
+    enable = true;
+    powertop.enable = true;
+  };
+
+  # Display server configuration
+  services.xserver = {
+    enable = true;
+
+    # Input settings
+    xkb = {
+      variant = "";
+    };
+
+    # AMD GPU optimizations
+    videoDrivers = [ "amdgpu" ];
+    deviceSection = ''
+      Option "TearFree" "true"
+      Option "VariableRefresh" "true"
+      Option "AsyncFlipSecondaries" "true"
+      Option "DRI" "3"
+      Option "AccelMethod" "glamor"
+    '';
+  };
+
+  # Console settings
+  console = {
+    useXkbConfig = true;
+    # Optimize font rendering
+    font = "Lat2-Terminus16";
+  };
+
+  # Plasma 6 configuration
+  services.desktopManager.plasma6 = {
+    enable = true;
+    enableQt5Integration = true;
+  };
+
+# Display manager configuration
+  services.displayManager = {
+    sessionPackages = [ pkgs.sway ];
+    sddm = {
+      enable = true;
+      wayland.enable = true;
+      settings = {
+        General = {
+          DisplayServer = "wayland";
+          InputMethod = "";
+        };
+        Wayland = {
+          CompositorCommand = "kwin_wayland --no-lockscreen --drm";
+        };
+        X11 = {
+          UseSystemd = true;
+          ServerArguments = "-nolisten tcp -dpi 96";
+        };
+      };
+    };
+    autoLogin.enable = false;
+    autoLogin.user = "lucie";
+  };
+
+  # Wayland configuration
+  programs = {
+    xwayland.enable = true;
+    waybar.enable = false;
+
+    # Gaming optimizations
+    gamemode = {
+      enable = true;
+      settings = {
+        general = {
+          renice = 10;
+          softrealtime = "auto";
+          inhibit_screensaver = 1;
+          ioprio = 0;
+        };
+        gpu = {
+          apply_gpu_optimisations = "accept-responsibility";
+          gpu_device = 0;
+          amd_performance_level = "high";
+          # APU specific settings
+          igpu_power_control = "yes";
+          igpu_high_performance = "yes";
+        };
+        custom = {
+          start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+          end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+        };
+      };
+    };
+  };
+
+  # Environment variables for AMD and Wayland
+  environment.variables = {
+    # Wayland
+    NIXOS_OZONE_WL = "1";
+    # AMD variables
+    AMD_VULKAN_ICD = "RADV";
+    RADV_PERFTEST = "gpl,nosam";  # Optimized for APU
+    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
+    # Gaming
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+    # Wayland-specific
+    MOZ_ENABLE_WAYLAND = "1";
+    QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    GDK_BACKEND = "wayland";
+    SDL_VIDEODRIVER = "wayland";
+    CLUTTER_BACKEND = "wayland";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_CURRENT_DESKTOP = "KDE";
+    # Mesa optimization
+    MESA_VK_VERSION_OVERRIDE = "1.3";
+    MESA_LOADER_DRIVER_OVERRIDE = "radeonsi";
+  };
+  #######################
+  # AUDIO CONFIGURATION #
+  #######################
+
+  # Enable RealtimeKit
   security.rtkit.enable = true;
+
+  # PipeWire Configuration
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-  };
+    jack.enable = true;
 
-  # If you want to use JACK applications, uncomment this
-  #jack.enable = true;
+    # Low-latency audio configuration
+    extraConfig.pipewire = {
+      "context.properties" = {
+        # Core settings
+        "default.clock.rate" = 48000;
+        "default.clock.quantum" = 1024;
+        "default.clock.min-quantum" = 1024;
+        "default.clock.max-quantum" = 1024;
+        "core.clock.power-of-two-quantum" = true;
 
-  # use the example session manager (no others are packaged yet so this is enabled by default,
-  # no need to redefine it in your config for now)
-  #media-session.enable = true;
+        # Process settings
+        "core.daemon" = true;
+        "core.name" = "pipewire-0";
+        "mem.allow-mlock" = true;
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
+        # Latency settings
+        "node.latency" = "256/48000";
+        "vm.overcommit" = true;
 
-  # User groups
-  users.users.lucie = {
-    isNormalUser = true;
-    description = "Lucie";
-    extraGroups = ["networkmanager" "wheel" "docker"];
-    shell = pkgs.zsh;
-  };
+        # Sample rates
+        "default.clock.allowed-rates" = [ 44100 48000 88200 96000 ];
 
-  # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = false;
-  services.displayManager.autoLogin.user = "lucie";
+        # Recovery settings
+        "core.recovery.time" = 10000;
 
-  # Enable printing
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
+        # Fragment settings
+        "default.fragments" = 2;
+        "default.fragment.size-max" = 4096;
 
-  services.printing = {
-    enable = true;
-    browsing = true;
-    drivers = with pkgs; [
-      gutenprint
-      hplip
-      splix
-    ];
-  };
+        # Format settings
+        "default.format" = "F32";
+        "default.position" = ["FL" "FR"];
 
-  # KDE Connect
+        # Additional optimizations
+        "support.dbus" = true;
+        "log.level" = 2;
 
-  programs.kdeconnect.enable = true;
+        # PulseAudio compatibility settings
+        "pulse.min.req" = 256;
+        "pulse.default.req" = 256;
+        "pulse.max.req" = 256;
+        "pulse.min.frag" = 256;
+        "pulse.default.frag" = 256;
+        "pulse.max.frag" = 256;
+      };
 
-  networking.firewall = {
-    enable = true;
-    allowedTCPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-    allowedUDPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-  };
-
-  # Allow to run appimages seamlessly with appimage-run
-  programs.appimage.binfmt.enable = true;
-
-  # Flakes
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # Docker
-  virtualisation.docker.enable = true;
-
-  # Gamemode
-  programs.gamemode.enable = true;
-
-  # zsh
-  programs.zsh.enable = true;
-
-  #direnv
-  programs.direnv.enable = true;
-
-  # Git
-  programs.git.enable = true;
-
-  # Tor
-  services.tor.enable = false;
-
-  # i2cp
-  services.i2pd.proto.i2cp.enable = false;
-
-  # Waydroid
-  virtualisation.waydroid.enable = false;
-
-  # Flatpak
-  services.flatpak.enable = true;
-
-  # Allow adb
-  programs.adb.enable = true;
-
-  # udev rules for Ledger devices
-  hardware.ledger.enable = true;
-
-  # Gamepad
-  hardware.xone.enable = true;
-
-  # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  };
-
-  # rkvm
-  services.rkvm.enable = false;
-
-  # gvfs and udisks 
-  services.gvfs.enable = false;
-  services.udisks2.enable = true;
-
-  # hydra
-  services.hydra = {
-    enable = false;
-    hydraURL = "http://localhost:3000";
-    notificationSender = "hydra@localhost";
-    buildMachinesFiles = [];
-    useSubstitutes = true;
-  };
-
-  # List packages installed in system profile.
-  environment.systemPackages = with pkgs; [
-    vesktop
-    fuzzel
-    usbutils
-    udiskie
-    udisks
-    yt-dlp
-    cachix
-    wget
-    wofi
-    btop
-    tldr
-    ranger
-    p7zip
-    unrar
-    q4wine
-    inetutils
-    magic-wormhole-rs
-    neofetch
-    screenfetch
-    cpufetch
-    (nerdfonts.override {fonts = ["FiraCode"];})
-    nmap
-    tree
-    git-agecrypt
-    age
-    killall
-    unzip
-    moe
-    inputs.umu.packages.${pkgs.system}.umu
-  ];
-
-  # RIVER
-  #  programs.river = {
-  #    enable = true;
-  #   extraPackages = with pkgs; [
-  #    rivercarro
-  #   foot
-  #  xfce.thunar
-  # swayidle
-  #  waylock
-  # swww
-  # yambar
-  # bemenu
-  # libnotify mako
-  # grim slurp swappy
-  # wl-clipboard wlr-randr
-  # networkmanagerapplet
-  # fuzzel
-  # ];
-  #  };
-
-  xdg.portal = {
-    enable = true;
-    config.common.default = ["wlr"];
-  };
-
-  security.pam.services.waylock = {
-    text = "auth include login";
-  };
-
-  #OpenSSH
-  services.openssh = {
-    enable = true;
-    ports = [22];
-    settings = {
-      PasswordAuthentication = true;
-      AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
-      UseDns = true;
-      X11Forwarding = true;
-      PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+      # Module configuration
+      "context.modules" = [
+        {
+          name = "libpipewire-module-rtkit";
+          args = {
+            "nice.level" = -20;
+            "rt.prio" = 99;
+            "rt.time.soft" = 2000000;
+            "rt.time.hard" = 2000000;
+          };
+          flags = [ "ifexists" "nofail" ];
+        }
+        {
+          name = "libpipewire-module-protocol-pulse";
+          args = {
+            "pulse.min.req" = "256/48000";
+            "pulse.default.req" = "256/48000";
+            "pulse.max.req" = "256/48000";
+            "pulse.min.quantum" = "256/48000";
+            "pulse.max.quantum" = "256/48000";
+          };
+        }
+      ];
     };
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  # Unified PAM configuration
+  security.pam = {
+    loginLimits = [
+      # Audio and realtime limits
+      { domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }
+      { domain = "@audio"; item = "rtprio"; type = "-"; value = "99"; }
+      { domain = "@audio"; item = "nofile"; type = "soft"; value = "99999"; }
+      { domain = "@audio"; item = "nofile"; type = "hard"; value = "99999"; }
+      { domain = "@audio"; item = "nice"; type = "-"; value = "-20"; }
+      { domain = "@realtime"; item = "nice"; type = "-"; value = "-20"; }
+      { domain = "@realtime"; item = "rtprio"; type = "-"; value = "99"; }
+      # System limits
+      { domain = "*"; item = "memlock"; type = "soft"; value = "unlimited"; }
+      { domain = "*"; item = "memlock"; type = "hard"; value = "unlimited"; }
+    ];
+    services.waylock.text = "auth include login";
+  };
 
-  # List services that you want to enable:
+  # Scheduling services
+  systemd.services = {
+    # CPU scheduler
+    cpu-scheduler = {
+      description = "CPU scheduler optimization";
+      script = ''
+        echo 2 > /sys/class/rtc/rtc0/max_user_freq
+        echo 2048 > /proc/sys/vm/nr_hugepages
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      wantedBy = [ "multi-user.target" ];
+    };
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+    # Audio scheduler
+    audio-scheduler = {
+      description = "Audio thread scheduling optimization";
+      script = ''
+        echo 75 > /proc/sys/kernel/sched_priority_audio
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      wantedBy = [ "multi-user.target" ];
+    };
+  };
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  # User services for real-time audio
+  systemd.user.services = {
+    rtkit-resume = {
+      description = "Realtime Kit Resume";
+      script = "rtkit-daemon --reset";
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      wantedBy = [ "default.target" ];
+    };
+  };
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  # Device rules
+  services.udev.extraRules = ''
+    # CPU and audio optimizations
+    SUBSYSTEM=="cpu", ACTION=="add", ATTR{cpufreq/scaling_governor}="performance"
+    SUBSYSTEM=="sound", ATTR{power/control}="on"
+    # USB audio priority
+    SUBSYSTEM=="usb", ATTR{power/control}="on"
+    SUBSYSTEM=="usb", ATTR{power/autosuspend}="-1"
+    # AMD GPU specific rules
+    KERNEL=="card0", SUBSYSTEM=="drm", DRIVERS=="amdgpu", ATTR{device/power_dpm_force_performance_level}="high"
+    # Audio device rules
+    KERNEL=="snd_*", ENV{PULSE_IGNORE}="1"
+  '';
+  #######################
+  #      NETWORKING     #
+  #######################
+
+  networking = {
+    hostName = "nixosthinkpad";
+    # Network optimization
+    networkmanager = {
+      enable = true;
+      wifi.powersave = false;
+    };
+
+    # Firewall configuration
+    firewall = {
+      enable = true;
+      # KDE Connect
+      allowedTCPPortRanges = [
+        { from = 1714; to = 1764; }
+      ];
+      allowedUDPPortRanges = [
+        { from = 1714; to = 1764; }
+      ];
+      # Steam ports
+      allowedTCPPorts = [ 27036 27037 ];
+      allowedUDPPorts = [ 27031 27036 ];
+    };
+  };
+
+  #########################
+  # GAMING & APPLICATIONS #
+  #########################
+
+  # Steam configuration
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    package = pkgs.steam.override {
+      extraProfile = ''
+        # Steam game optimizations
+        export STEAM_FRAME_FORCE_CLOSE=1
+        export STEAM_RUNTIME_PREFER_HOST_LIBRARIES=0
+        export PROTON_FORCE_LARGE_ADDRESS_AWARE=1
+        export PROTON_USE_SECCOMP=1
+        export SDL_VIDEODRIVER=wayland
+        export STEAM_GAMESCOPE_HDR=1
+        export STEAM_USE_DYNAMIC_VRS=1
+        # AMD specific
+        export AMD_VULKAN_ICD=RADV
+        export RADV_PERFTEST=gpl,nosam
+      '';
+    };
+  };
+
+  # Core programs
+  programs = {
+    zsh.enable = true;
+    direnv.enable = true;
+    git.enable = true;
+    adb.enable = true;
+    kdeconnect.enable = true;
+    appimage.binfmt.enable = true;
+
+    # Gaming enhancements
+    gamescope = {
+      enable = true;
+      capSysNice = true;
+    };
+    corectrl.enable = true;  # AMD GPU control
+  };
+
+  # Virtualization
+  virtualisation = {
+    docker = {
+      enable = true;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+      };
+    };
+  };
+
+  #######################
+  #   SYSTEM SERVICES   #
+  #######################
+
+  services = {
+    # Printing
+    printing = {
+      enable = true;
+      browsing = true;
+      drivers = with pkgs; [ gutenprint hplip splix ];
+    };
+
+    # Network services
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
+    # System optimization
+    fstrim = {
+      enable = true;
+      interval = "weekly";
+    };
+
+    # System services
+    tailscale.enable = true;
+    udisks2.enable = true;
+
+    # Performance monitoring
+    thermald.enable = true;  # CPU temperature management
+  };
+
+  #######################
+  #   SYSTEM PACKAGES   #
+  #######################
+
+  environment.systemPackages = with pkgs; [
+    # System utilities
+    pavucontrol
+    usbutils
+    udiskie
+    udisks
+    btop
+    htop
+    killall
+    tree
+    unzip
+    p7zip
+    unrar
+
+    # Development
+    git
+    cachix
+
+    # Terminal utilities
+    tldr
+    ranger
+    neofetch
+    cpufetch
+
+    # Window management
+    fuzzel
+    wofi
+
+    # Network utilities
+    wget
+    nmap
+    inetutils
+    magic-wormhole-rs
+
+    # Media
+    yt-dlp
+
+    # Gaming utilities
+    q4wine
+    lutris
+    heroic
+    mangohud
+    goverlay
+
+    # AMD utilities
+    radeontop
+    radeon-profile
+
+    # Security
+    age
+
+    # Fonts
+    (nerdfonts.override {fonts = ["FiraCode"];})
+
+    # Custom packages
+    inputs.umu.packages.${pkgs.system}.umu
+  ];
+
+  ######################
+  # USER CONFIGURATION #
+  ######################
+
+  users.users.lucie = {
+    isNormalUser = true;
+    description = "Lucie";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+      "audio"
+      "realtime"
+      "video"
+      "input"
+      "render"
+      "gamemode"  # Added for GameMode
+      "kvm"       # For virtualization
+    ];
+    shell = pkgs.zsh;
+  };
 }
