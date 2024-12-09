@@ -11,6 +11,38 @@
   programs.home-manager.enable = true;
   neovim.enable = true;
 
+    home.sessionVariables = {
+    XDG_CURRENT_DESKTOP = "sway";
+    XDG_SESSION_DESKTOP = "sway";
+    GDK_BACKEND = "wayland";
+    QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    SDL_VIDEODRIVER = "wayland";
+    MOZ_ENABLE_WAYLAND = "1";
+    CLUTTER_BACKEND = "wayland";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+  };
+
+systemd.user.services = {
+  xdg-desktop-portal-wlr = {
+    Unit = {
+      Description = "Portal service (wlroots implementation)";
+      After = ["graphical-session-pre.target"];
+      PartOf = ["graphical-session.target"];
+      WantedBy = ["graphical-session.target"];
+    };
+
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.xdg-desktop-portal-wlr}/libexec/xdg-desktop-portal-wlr";
+    };
+
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+  };
+};
+
   home = {
     username = "lucie";
     homeDirectory = "/home/lucie";
@@ -35,6 +67,17 @@
     swayidle  # Idle management daemon
     waybar    # Status bar
     wofi      # Application launcher
+
+    # Screen sharing
+    xdg-desktop-portal
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal-gtk
+    pipewire
+    wireplumber
+    slurp
+    grim
+    wl-clipboard
+
     # Development Tools
     k9s
     kubectl
@@ -374,11 +417,16 @@
 
       # Startup applications
       startup = [
-        { command = "vesktop"; }
-        { command = "waybar"; }
-        { command = "nm-applet --indicator"; }  # Network manager
-        { command = "${pkgs.blueman}/bin/blueman-applet"; }  # Bluetooth
-        { command = "kdeconnect-indicator"; }  # KDE Connect
+      { command = "systemctl --user restart pipewire"; }
+      { command = "systemctl --user restart xdg-desktop-portal"; }
+      { command = "systemctl --user restart xdg-desktop-portal-wlr"; }
+      { command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"; }
+      { command = "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"; }
+      { command = "vesktop --enable-features=UseOzonePlatform --ozone-platform=wayland"; }
+      { command = "waybar"; }
+      { command = "nm-applet --indicator"; }
+      { command = "${pkgs.blueman}/bin/blueman-applet"; }
+      { command = "kdeconnect-indicator"; }
       ];
 
       # Window rules
@@ -401,9 +449,11 @@
         "${modifier}+Shift+c" = "reload";
         "${modifier}+Shift+e" = "exit";
 
-        # Screenshots
-        "Print" = "exec flameshot gui";
-        "${modifier}+Print" = "exec flameshot screen";
+        # Screenshots with clipboard
+        "Print" = "exec grim -g \"$(slurp)\" - | wl-copy"; # Area screenshot to clipboard
+        "${modifier}+Print" = "exec grim - | wl-copy"; # Full screenshot to clipboard
+        "${modifier}+Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') - | wl-copy";
+        # Area screenshot saved and copied
 
         # Media controls
         "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";

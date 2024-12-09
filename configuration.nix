@@ -128,6 +128,13 @@
   #  DISPLAY & DESKTOP  #
   #######################
 
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    # Enable extra portals
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
   # AMD GPU specific hardware config
   hardware = {
     bluetooth.enable = true;
