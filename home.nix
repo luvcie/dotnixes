@@ -23,26 +23,6 @@
     _JAVA_AWT_WM_NONREPARENTING = "1";
   };
 
-systemd.user.services = {
-  xdg-desktop-portal-wlr = {
-    Unit = {
-      Description = "Portal service (wlroots implementation)";
-      After = ["graphical-session-pre.target"];
-      PartOf = ["graphical-session.target"];
-      WantedBy = ["graphical-session.target"];
-    };
-
-    Service = {
-      Type = "simple";
-      ExecStart = "${pkgs.xdg-desktop-portal-wlr}/libexec/xdg-desktop-portal-wlr";
-    };
-
-    Install = {
-      WantedBy = ["graphical-session.target"];
-    };
-  };
-};
-
   home = {
     username = "lucie";
     homeDirectory = "/home/lucie";
@@ -68,11 +48,7 @@ systemd.user.services = {
     waybar    # Status bar
     wofi      # Application launcher
 
-    # Screen sharing
-    xdg-desktop-portal
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-gtk
-    pipewire
+    # Tools for wm
     wireplumber
     slurp
     grim
@@ -417,16 +393,11 @@ systemd.user.services = {
 
       # Startup applications
       startup = [
-      { command = "systemctl --user restart pipewire"; }
-      { command = "systemctl --user restart xdg-desktop-portal"; }
-      { command = "systemctl --user restart xdg-desktop-portal-wlr"; }
-      { command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"; }
-      { command = "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"; }
-      { command = "vesktop --enable-features=UseOzonePlatform --ozone-platform=wayland"; }
-      { command = "waybar"; }
-      { command = "nm-applet --indicator"; }
-      { command = "${pkgs.blueman}/bin/blueman-applet"; }
-      { command = "kdeconnect-indicator"; }
+        { command = "vesktop --enable-features=UseOzonePlatform --ozone-platform=wayland"; }
+        { command = "waybar"; }
+        { command = "nm-applet --indicator"; }
+        { command = "${pkgs.blueman}/bin/blueman-applet"; }
+        { command = "kdeconnect-indicator"; }
       ];
 
       # Window rules
@@ -448,6 +419,7 @@ systemd.user.services = {
         "${modifier}+d" = "exec wofi --show drun";
         "${modifier}+Shift+c" = "reload";
         "${modifier}+Shift+e" = "exit";
+        "${modifier}+Shift+Control+e" = "exec wlogout"; # Logging out menu
 
         # Screenshots with clipboard
         "Print" = "exec grim -g \"$(slurp)\" - | wl-copy"; # Area screenshot to clipboard

@@ -463,6 +463,17 @@
     };
   };
 
+  security.polkit.enable = true;
+
+  services.gnome.gnome-keyring.enable = true;
+
+  services.dbus = {
+    enable = true;
+    packages = [ pkgs.gcr ];
+  };
+
+  security.pam.services.login.enableGnomeKeyring = true;
+
   #########################
   # GAMING & APPLICATIONS #
   #########################
@@ -567,6 +578,7 @@
     unzip
     p7zip
     unrar
+    wlogout
 
     # Development
     git
@@ -587,6 +599,7 @@
     nmap
     inetutils
     magic-wormhole-rs
+    networkmanagerapplet
 
     # Media
     yt-dlp
