@@ -45,7 +45,6 @@
     sway
     swaylock  # Screen locker
     swayidle  # Idle management daemon
-    waybar    # Status bar
     wofi      # Application launcher
 
     # Tools for wm
@@ -381,9 +380,9 @@
     };
   };
 
-  #########################
-  # WAYLAND CONFIGURATION #
-  #########################
+  ########################
+  #  SWAY CONFIGURATION   #
+  ########################
 
   wayland.windowManager.sway = {
     enable = true;
@@ -394,7 +393,6 @@
       # Startup applications
       startup = [
         { command = "vesktop --enable-features=UseOzonePlatform --ozone-platform=wayland"; }
-        { command = "waybar"; }
         { command = "nm-applet --indicator"; }
         { command = "${pkgs.blueman}/bin/blueman-applet"; }
         { command = "kdeconnect-indicator"; }
@@ -515,8 +513,27 @@
           "Escape" = "mode default";
         };
       };
+
+    bars = [{
+      position = "top";
+      statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-default.toml";
+      fonts = {
+        names = [ "FiraCode Nerd Font" ];
+        size = 10.0;
+      };
+      colors = {
+        statusline = "#ffffff";
+        background = "#323232";
+        inactiveWorkspace = {
+          background = "#323232";
+          border = "#323232";
+          text = "#5c5c5c";
+        };
+      };
+     }];
     };
   };
+
 # Theme configuration
   gtk = {
     enable = true;
@@ -542,6 +559,47 @@
       package = pkgs.adwaita-qt;
     };
   };
+
+# Bar
+  programs.i3status-rust = {
+  enable = true;
+  bars = {
+    default = {
+      blocks = [
+        {
+          block = "net";
+          format = " $icon {$signal_strength $frequency|Wired} via $device ";
+        }
+        {
+          block = "cpu";
+          interval = 1;
+          format = " $icon $utilization ";
+        }
+        {
+          block = "memory";
+          format = " $icon mem_used_percents ";
+          format_alt = " $icon $swap_used_percents ";
+        }
+        {
+          block = "sound";
+          format = " $icon {$volume|muted} ";
+        }
+        {
+          block = "battery";
+          format = " $icon $percentage {$time |}";
+        }
+        {
+          block = "time";
+          format = " $timestamp.datetime(f:'%a %d/%m %R') ";
+          interval = 60;
+        }
+      ];
+      theme = "gruvbox-dark";
+      icons = "awesome6";
+    };
+  };
+};
+
 
   ######################
   # ADDITIONAL CONFIGS #
