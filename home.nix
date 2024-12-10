@@ -392,6 +392,7 @@
 
       # Startup applications
       startup = [
+        { command = "swaymsg 'workspace 1'"; }
         { command = "nm-applet --indicator"; }
       ];
 
