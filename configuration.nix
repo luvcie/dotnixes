@@ -486,7 +486,6 @@
     package = pkgs.steam.override {
       extraProfile = ''
         # Steam game optimizations
-        export STEAM_FRAME_FORCE_CLOSE=1
         export STEAM_RUNTIME_PREFER_HOST_LIBRARIES=0
         export PROTON_FORCE_LARGE_ADDRESS_AWARE=1
         export PROTON_USE_SECCOMP=1
@@ -513,6 +512,12 @@
     gamescope = {
       enable = true;
       capSysNice = true;
+  args = [
+    "--immediate-submit"
+    "--adaptive-sync"
+    "--expose-wayland"
+    "--steam"
+  ];
     };
     corectrl.enable = true;  # AMD GPU control
   };

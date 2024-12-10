@@ -134,7 +134,7 @@
     blanket  # Background sounds
     waylyrics
 
-    # KDE Integration
+    # KDE Connect Integration
     kdePackages.kdeconnect-kde
 
     # Hardware Support
@@ -392,10 +392,7 @@
 
       # Startup applications
       startup = [
-        { command = "vesktop --enable-features=UseOzonePlatform --ozone-platform=wayland"; }
         { command = "nm-applet --indicator"; }
-        { command = "${pkgs.blueman}/bin/blueman-applet"; }
-        { command = "kdeconnect-indicator"; }
       ];
 
       # Window rules
@@ -571,16 +568,6 @@
           format = " $icon {$signal_strength $frequency|Wired} via $device ";
         }
         {
-          block = "cpu";
-          interval = 1;
-          format = " $icon $utilization ";
-        }
-        {
-          block = "memory";
-          format = " $icon mem_used_percents ";
-          format_alt = " $icon $swap_used_percents ";
-        }
-        {
           block = "sound";
           format = " $icon {$volume|muted} ";
         }
@@ -609,7 +596,7 @@
   programs.git = {
     enable = true;
     userName = "lucie";
-    userEmail = "your.email@example.com";  # Update this
+    userEmail = "your.email@example.com";
 
     extraConfig = {
       init.defaultBranch = "main";
