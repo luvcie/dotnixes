@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }: {
+{ config, pkgs, inputs, lib, ... }: {
   imports = [
     ./hardware-configuration.nix
     ./pksay.nix
@@ -175,7 +175,7 @@
     powertop.enable = true;
   };
 
-# Display and window management configuration
+# Display server configuration
   services.xserver = {
     enable = true;
 
@@ -193,16 +193,10 @@
       Option "DRI" "3"
       Option "AccelMethod" "glamor"
     '';
-
-    # Keep GDM as display manager
-    displayManager = {
-      gdm = {
-        enable = true;
-        wayland = true;
-      };
-      defaultSession = "sway";
-    };
   };
+
+  # Ly service configuration
+  services.displayManager.ly.enable = true;
 
   # Console settings
   console = {
@@ -259,7 +253,7 @@
     };
   };
 
-  # Environment variables for AMD and Wayland
+  # Environment variables for Wayland
   environment.variables = {
     # Wayland
     NIXOS_OZONE_WL = "1";
@@ -383,7 +377,10 @@
       { domain = "*"; item = "memlock"; type = "soft"; value = "unlimited"; }
       { domain = "*"; item = "memlock"; type = "hard"; value = "unlimited"; }
     ];
-    services.swaylock.text = "auth include login";
+    services = {
+      swaylock.text = "auth include login";
+      ly.enableGnomeKeyring = true;
+    };
   };
 
   # Scheduling services
@@ -415,8 +412,7 @@
       wantedBy = [ "multi-user.target" ];
     };
   };
-
-  # Device rules
+# Device rules
   services.udev.extraRules = ''
     # CPU and audio optimizations
     SUBSYSTEM=="cpu", ACTION=="add", ATTR{cpufreq/scaling_governor}="performance"
@@ -429,7 +425,8 @@
     # Audio device rules
     KERNEL=="snd_*", ENV{PULSE_IGNORE}="1"
   '';
-#######################
+
+  #######################
   #      NETWORKING     #
   #######################
 
@@ -449,8 +446,7 @@
       allowedUDPPorts = [ 27031 27036 ];
     };
   };
-
-  security.polkit.enable = true;
+security.polkit.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
 
@@ -557,6 +553,9 @@
   #######################
 
   environment.systemPackages = with pkgs; [
+    # Display Manager
+    ly  # Make sure Ly is installed
+
     # System utilities
     pavucontrol
     usbutils
@@ -587,6 +586,7 @@
     ranger
     neofetch
     cpufetch
+    alacritty  # Terminal for Ly
 
     # Window management
     fuzzel
