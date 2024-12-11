@@ -37,8 +37,7 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  #######################
+#######################
   #   BOOT & HARDWARE   #
   #######################
 
@@ -124,7 +123,7 @@
       "kernel.pid_max" = 4194304;
     };
   };
-  #######################
+#######################
   #  DISPLAY & DESKTOP  #
   #######################
 
@@ -133,6 +132,19 @@
     wlr.enable = true;
     # Enable extra portals
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    # Configure default portal behavior
+    config = {
+      common = {
+        default = ["gtk"];
+        "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+      };
+      # Configure sway-specific portals
+      sway = {
+        default = ["wlr"];
+        "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
+        "org.freedesktop.impl.portal.Screencast" = ["wlr"];
+      };
+    };
   };
 
   # AMD GPU specific hardware config
@@ -163,7 +175,7 @@
     powertop.enable = true;
   };
 
-  # Display server configuration
+# Display and window management configuration
   services.xserver = {
     enable = true;
 
@@ -181,43 +193,39 @@
       Option "DRI" "3"
       Option "AccelMethod" "glamor"
     '';
+
+    # Keep GDM as display manager
+    displayManager = {
+      gdm = {
+        enable = true;
+        wayland = true;
+      };
+      defaultSession = "sway";
+    };
   };
 
   # Console settings
   console = {
     useXkbConfig = true;
-    # Optimize font rendering
     font = "Lat2-Terminus16";
   };
 
-  # Plasma 6 configuration
-  services.desktopManager.plasma6 = {
+  # UWSM and dbus configuration
+  services.dbus.implementation = "broker";  # Use dbus-broker as recommended
+
+  programs.uwsm = {
     enable = true;
-    enableQt5Integration = true;
+    waylandCompositors.sway = {
+      prettyName = "Sway";
+      binPath = "${pkgs.sway}/bin/sway";
+      comment = "Tiling Wayland compositor";
+    };
   };
 
-# Display manager configuration
-  services.displayManager = {
-    sessionPackages = [ pkgs.sway ];
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-      settings = {
-        General = {
-          DisplayServer = "wayland";
-          InputMethod = "";
-        };
-        Wayland = {
-          CompositorCommand = "kwin_wayland --no-lockscreen --drm";
-        };
-        X11 = {
-          UseSystemd = true;
-          ServerArguments = "-nolisten tcp -dpi 96";
-        };
-      };
-    };
-    autoLogin.enable = false;
-    autoLogin.user = "lucie";
+  # Sway configuration
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;  # Enables GTK integration
   };
 
   # Wayland configuration
@@ -269,12 +277,11 @@
     SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
     XDG_SESSION_TYPE = "wayland";
-    XDG_CURRENT_DESKTOP = "KDE";
     # Mesa optimization
     MESA_VK_VERSION_OVERRIDE = "1.3";
     MESA_LOADER_DRIVER_OVERRIDE = "radeonsi";
   };
-  #######################
+#######################
   # AUDIO CONFIGURATION #
   #######################
 
@@ -376,7 +383,7 @@
       { domain = "*"; item = "memlock"; type = "soft"; value = "unlimited"; }
       { domain = "*"; item = "memlock"; type = "hard"; value = "unlimited"; }
     ];
-    services.waylock.text = "auth include login";
+    services.swaylock.text = "auth include login";
   };
 
   # Scheduling services
@@ -409,19 +416,6 @@
     };
   };
 
-  # User services for real-time audio
-  systemd.user.services = {
-    rtkit-resume = {
-      description = "Realtime Kit Resume";
-      script = "rtkit-daemon --reset";
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      wantedBy = [ "default.target" ];
-    };
-  };
-
   # Device rules
   services.udev.extraRules = ''
     # CPU and audio optimizations
@@ -435,7 +429,7 @@
     # Audio device rules
     KERNEL=="snd_*", ENV{PULSE_IGNORE}="1"
   '';
-  #######################
+#######################
   #      NETWORKING     #
   #######################
 
@@ -450,13 +444,6 @@
     # Firewall configuration
     firewall = {
       enable = true;
-      # KDE Connect
-      allowedTCPPortRanges = [
-        { from = 1714; to = 1764; }
-      ];
-      allowedUDPPortRanges = [
-        { from = 1714; to = 1764; }
-      ];
       # Steam ports
       allowedTCPPorts = [ 27036 27037 ];
       allowedUDPPorts = [ 27031 27036 ];
@@ -505,19 +492,18 @@
     direnv.enable = true;
     git.enable = true;
     adb.enable = true;
-    kdeconnect.enable = true;
     appimage.binfmt.enable = true;
 
     # Gamescope enhancement
     gamescope = {
       enable = true;
       capSysNice = true;
-  args = [
-    "--immediate-submit"
-    "--adaptive-sync"
-    "--expose-wayland"
-    "--steam"
-  ];
+      args = [
+        "--immediate-submit"
+        "--adaptive-sync"
+        "--expose-wayland"
+        "--steam"
+      ];
     };
     corectrl.enable = true;  # AMD GPU control
   };
@@ -584,6 +570,13 @@
     p7zip
     unrar
     wlogout
+
+    # Sway essentials
+    swaylock
+    swayidle
+    sway
+    dmenu
+    xwayland
 
     # Development
     git
