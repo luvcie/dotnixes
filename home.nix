@@ -3,7 +3,11 @@
   config,
   pkgs,
   ...
-}: {
+
+}: let
+  wallpaper = ./assets/wallpapers/wallpaper.png;
+in {
+
   ######################
   # CORE CONFIGURATION #
   ######################
@@ -36,6 +40,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = _: true;
 
+
   ######################
   # PACKAGE MANAGEMENT #
   ######################
@@ -49,9 +54,17 @@
 
     # Tools for wm
     wireplumber
-    slurp
-    grim
+    slurp # takes the screenshot
+    grim # allows you to select for screenshot
+    satty # screenshot editor
     wl-clipboard
+    brightnessctl
+    sov  # For overview
+    wob  # For volume/brightness overlay
+    pamixer  # For volume control
+    gawk
+    wev
+    evtest
 
     # Development Tools
     k9s
@@ -86,6 +99,7 @@
     vitetris
     ani-cli
     mov-cli
+    urbanterror
 
     # File Management & Utilities
     p7zip
@@ -300,6 +314,7 @@
       "ctrl+shift+q" = "close_tab";
     };
   };
+
   #####################
   # DEVELOPMENT TOOLS #
   #####################
@@ -384,106 +399,164 @@
   #  SWAY CONFIGURATION   #
   ########################
 
+xdg.configFile."uwsm/config.toml".text = ''
+[wayland]
+compositors = ["sway"]
+environment = [
+  "XDG_SESSION_TYPE=wayland",
+  "XDG_CURRENT_DESKTOP=sway",
+  "QT_QPA_PLATFORM=wayland",
+  "QT_WAYLAND_DISABLE_WINDOWDECORATION=1",
+  "MOZ_ENABLE_WAYLAND=1",
+  "SDL_VIDEODRIVER=wayland",
+  "CLUTTER_BACKEND=wayland",
+  "_JAVA_AWT_WM_NONREPARENTING=1"
+]
+
+[wayland.sway]
+command = "sway"
+pretty_name = "Sway"
+description = "Tiling Wayland compositor"
+'';
+
+# To ensure UWSM files are properly set up
+home.file.".local/share/wayland-sessions/sway-uwsm.desktop".text = ''
+[Desktop Entry]
+Name=Sway (UWSM)
+Comment=An i3-compatible Wayland compositor
+Exec=uwsm start sway
+Type=Application
+'';
+
   wayland.windowManager.sway = {
     enable = true;
     config = rec {
       modifier = "Mod4";
-      terminal = "kitty";
+      terminal = "alacritty";
+
+    output = {
+      "*" = {
+        bg = "${wallpaper} fill";
+      };
+    };
 
       # Startup applications
       startup = [
         { command = "swaymsg 'workspace 1'"; }
         { command = "nm-applet --indicator"; }
+        { command = "~/.config/wcp/wcp.sh"; }
+  { command = "rm -f /tmp/wob && mkfifo /tmp/wob && tail -f /tmp/wob | ${pkgs.wob}/bin/wob --border-color '#FFFFFF22' --background-color '#00000022' --bar-color '#FFFFFF88'"; }
       ];
 
       # Window rules
       window.commands = [
         {
-          criteria = { app_id = "firefox"; };
+          criteria = { app_id = "chromium"; };
           command = "move container to workspace 2";
         }
         {
-          criteria = { app_id = "discord"; };
+          criteria = { app_id = "vesktop"; };
           command = "move container to workspace 3";
         }
       ];
 
       # Key bindings
-      keybindings = {
-        "${modifier}+Return" = "exec ${terminal}";
-        "${modifier}+q" = "kill";
-        "${modifier}+d" = "exec wofi --show drun";
-        "${modifier}+Shift+c" = "reload";
-        "${modifier}+Shift+e" = "exit";
-        "${modifier}+Shift+Control+e" = "exec wlogout"; # Logging out menu
+keybindings = {
+  # Basic controls
+  "${modifier}+Up" = "focus up";
+  "${modifier}+Down" = "focus down";
+  "${modifier}+Left" = "focus left";
+  "${modifier}+Right" = "focus right";
 
-        # Screenshots with clipboard
-        "Print" = "exec grim -g \"$(slurp)\" - | wl-copy"; # Area screenshot to clipboard
-        "${modifier}+Print" = "exec grim - | wl-copy"; # Full screenshot to clipboard
-        "${modifier}+Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') - | wl-copy";
-        # Area screenshot saved and copied
+  "${modifier}+Shift+Up" = "move up";
+  "${modifier}+Shift+Down" = "move down";
+  "${modifier}+Shift+Left" = "move left";
+  "${modifier}+Shift+Right" = "move right";
 
-        # Media controls
-        "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
-        "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
-        "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
-        "XF86AudioPlay" = "exec playerctl play-pause";
-        "XF86AudioNext" = "exec playerctl next";
-        "XF86AudioPrev" = "exec playerctl previous";
+  # Workspace bindings with overview (sov) integration
+  "--no-repeat ${modifier}+1" = "workspace number 1; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+2" = "workspace number 2; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+3" = "workspace number 3; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+4" = "workspace number 4; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+5" = "workspace number 5; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+6" = "workspace number 6; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+7" = "workspace number 7; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+8" = "workspace number 8; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+9" = "workspace number 9; exec \"echo 1 > /tmp/sov\"";
+  "--no-repeat ${modifier}+0" = "workspace number 10; exec \"echo 1 > /tmp/sov\"";
 
-        # Workspace switching
-        "${modifier}+1" = "workspace number 1";
-        "${modifier}+2" = "workspace number 2";
-        "${modifier}+3" = "workspace number 3";
-        "${modifier}+4" = "workspace number 4";
-        "${modifier}+5" = "workspace number 5";
-        "${modifier}+6" = "workspace number 6";
-        "${modifier}+7" = "workspace number 7";
-        "${modifier}+8" = "workspace number 8";
-        "${modifier}+9" = "workspace number 9";
-        "${modifier}+0" = "workspace number 10";
+# Workspace overview release bindings
+  "--release ${modifier}+1" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+2" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+3" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+4" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+5" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+6" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+7" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+8" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+9" = "exec \"echo 0 > /tmp/sov\"";
+  "--release ${modifier}+0" = "exec \"echo 0 > /tmp/sov\"";
 
-        # Moving windows to workspaces
-        "${modifier}+Shift+1" = "move container to workspace number 1";
-        "${modifier}+Shift+2" = "move container to workspace number 2";
-        "${modifier}+Shift+3" = "move container to workspace number 3";
-        "${modifier}+Shift+4" = "move container to workspace number 4";
-        "${modifier}+Shift+5" = "move container to workspace number 5";
-        "${modifier}+Shift+6" = "move container to workspace number 6";
-        "${modifier}+Shift+7" = "move container to workspace number 7";
-        "${modifier}+Shift+8" = "move container to workspace number 8";
-        "${modifier}+Shift+9" = "move container to workspace number 9";
-        "${modifier}+Shift+0" = "move container to workspace number 10";
+  # Move containers to workspaces
+  "${modifier}+Shift+1" = "move container to workspace number 1";
+  "${modifier}+Shift+2" = "move container to workspace number 2";
+  "${modifier}+Shift+3" = "move container to workspace number 3";
+  "${modifier}+Shift+4" = "move container to workspace number 4";
+  "${modifier}+Shift+5" = "move container to workspace number 5";
+  "${modifier}+Shift+6" = "move container to workspace number 6";
+  "${modifier}+Shift+7" = "move container to workspace number 7";
+  "${modifier}+Shift+8" = "move container to workspace number 8";
+  "${modifier}+Shift+9" = "move container to workspace number 9";
+  "${modifier}+Shift+0" = "move container to workspace number 10";
 
-        # Virtual desktop navigation
-        "${modifier}+Control+Left" = "workspace prev";
-        "${modifier}+Control+Right" = "workspace next";
+# Window management
+  "${modifier}+b" = "splith";
+  "${modifier}+v" = "splitv";
+  "${modifier}+f" = "fullscreen";
+  "${modifier}+Shift+space" = "floating toggle";
+  "${modifier}+a" = "focus parent";
+  "${modifier}+r" = "mode resize";
 
-        # Resizing windows
-        "${modifier}+r" = "mode resize";
+  # Core application controls
+  "${modifier}+Shift+c" = "reload";
+  "${modifier}+Shift+q" = "kill";
+  "${modifier}+d" = "exec $menu";
+  "${modifier}+l" = "exec ~/.config/sway/lock.sh";
+  "${modifier}+Space" = "exec $menu";
+  "${modifier}+Return" = "exec ${terminal}";
+  "${modifier}+Shift+Return" = "exec $browser";
+  "${modifier}+p" = "exec \"echo 'toggle visibility' > /tmp/wcp\"";
 
-        # Splitting windows
-        "${modifier}+b" = "splith";
-        "${modifier}+v" = "splitv";
+  # Full screenshot to clipboard
+  "${modifier}+Print" = "exec grim - | wl-copy";
 
-        # Fullscreen
-        "${modifier}+f" = "fullscreen toggle";
+  # Screenshot with selection to both clipboard and file
+  "${modifier}+Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') - | wl-copy";
 
-        # Floating windows
-        "${modifier}+Shift+space" = "floating toggle";
+  # Screenshot with satty editor, copy to clipboard
+  "Print" = "exec grim -g \"$(slurp)\" - | satty --filename - --output-filename - --copy-command wl-copy";
 
-        # Focusing windows
-        "${modifier}+Left" = "focus left";
-        "${modifier}+Down" = "focus down";
-        "${modifier}+Up" = "focus up";
-        "${modifier}+Right" = "focus right";
+  # Media and volume controls
+  "XF86MonBrightnessDown" = "exec brightnessctl set 5%- | sed -En 's/.*\\(([0-9]+)%\\).*/\\1/p' > /tmp/wob";
+  "XF86MonBrightnessUp" = "exec brightnessctl set +5% | sed -En 's/.*\\(([0-9]+)%\\).*/\\1/p' > /tmp/wob";
 
-        # Moving windows
-        "${modifier}+Shift+Left" = "move left";
-        "${modifier}+Shift+Down" = "move down";
-        "${modifier}+Shift+Up" = "move up";
-        "${modifier}+Shift+Right" = "move right";
-      };
+# Audio controls
+"--locked --no-repeat XF86AudioMute" = "exec ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+"--locked --no-repeat XF86AudioRaiseVolume" = ''
+  exec ${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+ && ${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/[^0-9]//g' > /tmp/wob
+'';
+"--locked --no-repeat XF86AudioLowerVolume" = ''
+  exec ${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%- && ${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/[^0-9]//g' > /tmp/wob
+'';
+
+  # Media player controls
+  "${modifier}+XF86AudioPlay" = "exec \"echo 1 > /tmp/vmp\"";
+  "${modifier}+XF86AudioNext" = "exec \"echo 2 > /tmp/vmp\"";
+  "${modifier}+XF86AudioPrev" = "exec \"echo 3 > /tmp/vmp\"";
+
+  # Modifier for floating windows
+  "${modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'";
+};
 
       # Input configuration
       input = {
@@ -511,24 +584,39 @@
           "Escape" = "mode default";
         };
       };
-
     bars = [{
       position = "top";
-      statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-default.toml";
-      fonts = {
-        names = [ "FiraCode Nerd Font" ];
-        size = 10.0;
-      };
+      statusCommand = "while ~/.config/sway/status.sh; do sleep 5; done";
+      trayOutput = "none";
       colors = {
-        statusline = "#ffffff";
-        background = "#323232";
+        statusline = "#AAAAAA";
+        background = "#00000033";
+        focusedWorkspace = {
+          background = "#00000033";
+          border = "#00000033";
+          text = "#FFFFFF";
+        };
+        activeWorkspace = {
+          background = "#00000033";
+          border = "#00000033";
+          text = "#AAAAAA";
+        };
         inactiveWorkspace = {
-          background = "#323232";
-          border = "#323232";
-          text = "#5c5c5c";
+          background = "#00000033";
+          border = "#00000033";
+          text = "#999999";
+        };
+        urgentWorkspace = {
+          background = "#00000033";
+          border = "#00000033";
+          text = "#FF0000";
         };
       };
-     }];
+      fonts = {
+        names = [ "Ubuntu Mono" ];
+        size = 11.0;
+      };
+    }];
     };
   };
 
@@ -558,36 +646,23 @@
     };
   };
 
-# Bar
-  programs.i3status-rust = {
-  enable = true;
-  bars = {
-    default = {
-      blocks = [
-        {
-          block = "net";
-          format = " $icon {$signal_strength $frequency|Wired} via $device ";
-        }
-        {
-          block = "sound";
-          format = " $icon {$volume|muted} ";
-        }
-        {
-          block = "battery";
-          format = " $icon $percentage {$time |}";
-        }
-        {
-          block = "time";
-          format = " $timestamp.datetime(f:'%a %d/%m %R') ";
-          interval = 60;
-        }
-      ];
-      theme = "gruvbox-dark";
-      icons = "awesome6";
-    };
-  };
-};
+# Add status.sh script for sway bar
+xdg.configFile."sway/status.sh" = {
+  text = ''
+    #!${pkgs.bash}/bin/bash
+    date_formatted=$(date "+%a %F %H:%M")
+    cpu_formatted=$(uptime | awk '{print $10}' | cut -d "," -f 1)
+    mem_formatted=$(free -m | awk 'NR==2{printf "%.0f\n", $3*100/$2 }')
+    disk_formatted=$(df -h | awk '$NF=="/"{printf "%s\n", $5}' )
+    lcd_formatted=$(($(${pkgs.brightnessctl}/bin/brightnessctl g) * 100 / $(${pkgs.brightnessctl}/bin/brightnessctl m)))
+    bat_formatted=$(cat /sys/class/power_supply/BAT0/capacity)
+    vol_formatted=$(${pkgs.pamixer}/bin/pamixer --get-volume)
+    pwr_formatted=$(awk '{printf "%.2fW" ,$1*1e-6 }' /sys/class/power_supply/BAT0/power_now)
 
+    echo "pwr $pwr_formatted / cpu $cpu_formatted / mem $mem_formatted% / ssd $disk_formatted / bat $bat_formatted% / lcd $lcd_formatted% / vol $vol_formatted%    $date_formatted "
+  '';
+  executable = true;
+};
 
   ######################
   # ADDITIONAL CONFIGS #
