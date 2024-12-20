@@ -100,6 +100,7 @@ in {
     vitetris
     ani-cli
     mov-cli
+    fortune
 
     # File Management & Utilities
     p7zip
@@ -113,7 +114,8 @@ in {
 
     # System Monitoring & Management
     btop
-    macchina  # System information
+    macchina
+    bunnyfetch
     usbtop
     usbview
 
