@@ -94,6 +94,7 @@ in {
     obs-studio
     kooha  # Screen recorder
     gimp-with-plugins
+    waylyrics
 
     # Entertainment
     prismlauncher  # Minecraft launcher
@@ -148,7 +149,7 @@ in {
     gnucash
     termdown
     blanket  # Background sounds
-    waylyrics
+    calcurse
 
     # KDE Connect Integration
     kdePackages.kdeconnect-kde
