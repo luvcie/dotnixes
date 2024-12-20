@@ -211,7 +211,7 @@
     enable = true;
     waylandCompositors.sway = {
       prettyName = "Sway";
-      binPath = "${pkgs.sway}/bin/sway";
+      binPath = "${pkgs.swayfx}/bin/sway";
       comment = "Tiling Wayland compositor";
     };
   };
@@ -219,6 +219,7 @@
   # Sway configuration
   programs.sway = {
     enable = true;
+    package = pkgs.swayfx;
     wrapperFeatures.gtk = true;  # Enables GTK integration
   };
 
@@ -226,42 +227,6 @@
   programs = {
     xwayland.enable = true;
     waybar.enable = false;
-
-# Add to your configuration.nix
-systemd.user.services."wayland-wm@" = {
-  description = "Wayland compositor session %I";
-  documentation = [ "man:systemd.special(7)" ];
-  bindsTo = [ "graphical-session.target" ];
-  wants = [ "graphical-session-pre.target" ];
-  after = [ "graphical-session-pre.target" ];
-
-  serviceConfig = {
-    Type = "simple";
-    ExecStart = "${pkgs.uwsm}/bin/uwsm start %i";
-    Restart = "on-failure";
-    RestartSec = "1";
-    TimeoutStopSec = "10";
-  };
-
-  wantedBy = [ "graphical-session.target" ];
-};
-
-# Also add these targets
-systemd.user.targets = {
-  sway-session = {
-    description = "sway compositor session";
-    bindsTo = [ "graphical-session.target" ];
-    wants = [ "graphical-session-pre.target" ];
-    after = [ "graphical-session-pre.target" ];
-  };
-
-  wayland-session = {
-    description = "Wayland session";
-    bindsTo = [ "graphical-session.target" ];
-    wants = [ "graphical-session-pre.target" ];
-    after = [ "graphical-session-pre.target" ];
-  };
-};
 
     # Game optimizations
     gamemode = {
@@ -585,6 +550,46 @@ security.polkit.enable = true;
   };
 
   #######################
+  #    SYSTEMD USER    #
+  #######################
+
+  systemd.user = {
+    services."wayland-wm@" = {
+      description = "Wayland compositor session %I";
+      documentation = [ "man:systemd.special(7)" ];
+      bindsTo = [ "graphical-session.target" ];
+      wants = [ "graphical-session-pre.target" ];
+      after = [ "graphical-session-pre.target" ];
+
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.uwsm}/bin/uwsm start %i";
+        Restart = "on-failure";
+        RestartSec = "1";
+        TimeoutStopSec = "10";
+      };
+
+      wantedBy = [ "graphical-session.target" ];
+    };
+
+    targets = {
+      sway-session = {
+        description = "sway compositor session";
+        bindsTo = [ "graphical-session.target" ];
+        wants = [ "graphical-session-pre.target" ];
+        after = [ "graphical-session-pre.target" ];
+      };
+
+      wayland-session = {
+        description = "Wayland session";
+        bindsTo = [ "graphical-session.target" ];
+        wants = [ "graphical-session-pre.target" ];
+        after = [ "graphical-session-pre.target" ];
+      };
+    };
+  };
+
+  #######################
   #   SYSTEM PACKAGES   #
   #######################
 
@@ -609,7 +614,7 @@ security.polkit.enable = true;
     # Sway essentials
     swaylock
     swayidle
-    sway
+    swayfx
     dmenu
     xwayland
 
@@ -648,13 +653,6 @@ security.polkit.enable = true;
     # Fonts
     (nerdfonts.override {fonts = ["FiraCode"];})
 
-    # Dependencies
-    sdl2
-    libGL
-    libGLU
-    libX11
-    libXext
-    libXrandr
     # Custom packages
     inputs.umu.packages.${pkgs.system}.umu
   ];

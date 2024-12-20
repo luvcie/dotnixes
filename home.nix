@@ -47,10 +47,11 @@ in {
 
   home.packages = with pkgs; [
     # Sway packages
-    sway
+    swayfx
     swaylock  # Screen locker
     swayidle  # Idle management daemon
     wofi      # Application launcher
+    scenefx
 
     # Tools for wm
     wireplumber
@@ -99,7 +100,6 @@ in {
     vitetris
     ani-cli
     mov-cli
-    urbanterror
 
     # File Management & Utilities
     p7zip
@@ -428,11 +428,43 @@ Exec=uwsm start sway
 Type=Application
 '';
 
-  wayland.windowManager.sway = {
-    enable = true;
-    config = rec {
-      modifier = "Mod4";
-      terminal = "alacritty";
+wayland.windowManager.sway = {
+  enable = true;
+  package = pkgs.swayfx;
+  systemd.enable = true;
+  wrapperFeatures.gtk = true;
+
+  # Configuration
+  extraConfigEarly = ''
+    # This needs to be set before any window/appearance related config
+    exec "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
+  '';
+
+  checkConfig = false;
+
+  extraConfig = ''
+    include /etc/sway/config.d/*
+
+    corner_radius 8
+    blur enable
+    blur_passes 3
+    blur_radius 3
+    default_dim_inactive 0.1
+    shadows enable
+    shadows_on_csd enable
+    shadow_blur_radius 20
+    shadow_color #0000007F
+  '';
+
+  # Disable config check during build
+  extraSessionCommands = ''
+    export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
+  '';
+
+  config = rec {
+
+    modifier = "Mod4";
+    terminal = "alacritty";
 
     output = {
       "*" = {
@@ -440,16 +472,14 @@ Type=Application
       };
     };
 
-      # Startup applications
-      startup = [
-        { command = "swaymsg 'workspace 1'"; }
-        { command = "nm-applet --indicator"; }
-        { command = "~/.config/wcp/wcp.sh"; }
-  { command = "rm -f /tmp/wob && mkfifo /tmp/wob && tail -f /tmp/wob | ${pkgs.wob}/bin/wob --border-color '#FFFFFF22' --background-color '#00000022' --bar-color '#FFFFFF88'"; }
-      ];
+    gaps = {
+      inner = 3;
+      outer = 3;
+    };
 
-      # Window rules
-      window.commands = [
+    window = {
+      border = 3;
+      commands = [
         {
           criteria = { app_id = "chromium"; };
           command = "move container to workspace 2";
@@ -458,6 +488,15 @@ Type=Application
           criteria = { app_id = "vesktop"; };
           command = "move container to workspace 3";
         }
+      ];
+    };
+
+      # Startup applications
+      startup = [
+        { command = "swaymsg 'workspace 1'"; }
+        { command = "nm-applet --indicator"; }
+        { command = "~/.config/wcp/wcp.sh"; }
+        { command = "rm -f /tmp/wob && mkfifo /tmp/wob && tail -f /tmp/wob | ${pkgs.wob}/bin/wob --border-color '#FFFFFF22' --background-color '#00000022' --bar-color '#FFFFFF88'"; }
       ];
 
       # Key bindings
