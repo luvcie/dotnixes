@@ -207,6 +207,7 @@ in {
       # System
       sysinfo = "macchina";  # Show system info
       temp = "sensors";  # Show temperatures
+      bunnyfetch = "bunnyfetch 2>/dev/null";
     };
 
     # ZSH Plugins
@@ -282,13 +283,9 @@ in {
 
     # Additional settings
     settings = {
-      # Performance
-      sync_to_monitor = true;
-      repaint_delay = 10;
-      input_delay = 3;
 
       # Appearance
-      background_opacity = "0.95";
+      background_opacity = "0.7";
       window_padding_width = 4;
 
       # Cursor
@@ -301,9 +298,6 @@ in {
 
       # Shell integration
       shell_integration = "enabled";
-
-      # Scrollback
-      scrollback_lines = 10000;
 
       # URLs
       url_style = "curly";
@@ -446,17 +440,38 @@ wayland.windowManager.sway = {
   checkConfig = false;
 
   extraConfig = ''
-    include /etc/sway/config.d/*
-
-    corner_radius 8
-    blur enable
-    blur_passes 3
-    blur_radius 3
-    default_dim_inactive 0.1
+    # Decoration
+    corner_radius 6
     shadows enable
-    shadows_on_csd enable
-    shadow_blur_radius 20
-    shadow_color #0000007F
+    blur enable
+    titlebar_separator disable
+
+    # Font settings
+    font pango:monospace 10
+
+    # Gaps
+    gaps outer 0
+    gaps inner 6
+
+    # Titlebar and border configuration
+    titlebar_border_thickness 0
+
+    # Border settings
+    set $border_width 1
+    default_border normal $border_width
+    default_floating_border normal $border_width
+
+    # Window title formatting
+    title_align center
+
+    # Colors
+    # class                 border  background  text     indicator  child_border
+   client.focused          #000000 #000000    #FFFFFF  #000000    #000000
+   client.focused_inactive #000000 #000000    #FFFFFF  #000000    #000000
+   client.unfocused        #000000 #000000    #FFFFFF  #000000    #000000
+   client.urgent           #000000 #000000    #FFFFFF  #000000    #000000
+   client.placeholder      #000000 #000000    #FFFFFF  #000000    #000000
+   client.background       #000000
   '';
 
   # Disable config check during build
@@ -467,8 +482,8 @@ wayland.windowManager.sway = {
   config = rec {
 
     modifier = "Mod4";
-    terminal = "alacritty";
-
+    terminal = "kitty";
+    menu = "${pkgs.wofi}/bin/wofi --show drun";
     output = {
       "*" = {
         bg = "${wallpaper} fill";
@@ -562,9 +577,8 @@ keybindings = {
   # Core application controls
   "${modifier}+Shift+c" = "reload";
   "${modifier}+Shift+q" = "kill";
-  "${modifier}+d" = "exec $menu";
+  "${modifier}+d" = "exec ${menu}";
   "${modifier}+l" = "exec ~/.config/sway/lock.sh";
-  "${modifier}+Space" = "exec $menu";
   "${modifier}+Return" = "exec ${terminal}";
   "${modifier}+Shift+Return" = "exec $browser";
   "${modifier}+p" = "exec \"echo 'toggle visibility' > /tmp/wcp\"";
