@@ -595,7 +595,7 @@ security.polkit.enable = true;
 
   environment.systemPackages = with pkgs; [
     # Display Manager
-    ly  # Make sure Ly is installed
+    ly
 
     # System utilities
     pavucontrol
@@ -610,6 +610,7 @@ security.polkit.enable = true;
     p7zip
     unrar
     wlogout
+    nemo-with-extensions
 
     # Sway essentials
     swaylock
