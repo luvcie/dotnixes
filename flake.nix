@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Community Packages
+    # Nix User Repository
     nur.url = "github:nix-community/NUR";
 
     # Additional Repositories
@@ -50,7 +50,7 @@
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
-        inputs.nur.nixosModules.nur
+        inputs.nur.modules.nixos.default
         ./configuration.nix
         ./hardware-configuration.nix
       ];
@@ -82,9 +82,7 @@
       # Home-manager modules
       modules =
         inputs.ashley-dotfiles.homeModules ++ [
-          inputs.nur.nixosModules.nur
           ./home.nix
-          ./neovim.nix
         ];
     };
   };

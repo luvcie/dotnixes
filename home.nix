@@ -8,12 +8,13 @@
   wallpaper = ./assets/wallpapers/wallpaper.png;
 in {
 
+
   ######################
   # CORE CONFIGURATION #
   ######################
 
   programs.home-manager.enable = true;
-  neovim.enable = true;
+
 
     home.sessionVariables = {
     XDG_CURRENT_DESKTOP = "sway";
@@ -46,14 +47,15 @@ in {
   ######################
 
   home.packages = with pkgs; [
+
     # Sway packages
     swayfx
     swaylock  # Screen locker
     swayidle  # Idle management daemon
     wofi      # Application launcher
     scenefx
-
-    # Tools for wm
+    eww
+    jq
     wireplumber
     slurp # takes the screenshot
     grim # allows you to select for screenshot
@@ -61,11 +63,14 @@ in {
     wl-clipboard
     brightnessctl
     sov  # For overview
-    wob  # For volume/brightness overlay
     pamixer  # For volume control
     gawk
+
     wev
     evtest
+    foot
+    xclip
+    vim
 
     # Development Tools
     k9s
@@ -78,6 +83,13 @@ in {
     alejandra  # Nix formatter
     any-nix-shell
     nix-prefetch-scripts
+    google-chrome
+    chromedriver
+    stack
+    haskellPackages.hakyll
+    perl
+    distrobox
+    barrier
 
     # Internet & Communication
     firefox
@@ -88,6 +100,7 @@ in {
     telegram-desktop
     webcord-vencord
     bitwarden
+    filezilla
 
     # Media & Entertainment
     vlc
@@ -95,6 +108,8 @@ in {
     kooha  # Screen recorder
     gimp-with-plugins
     waylyrics
+    textsnatcher
+    wiimms-iso-tools
 
     # Entertainment
     prismlauncher  # Minecraft launcher
@@ -132,7 +147,8 @@ in {
     qbittorrent
     nicotine-plus
 
-    # Terminal Enhancements
+    # CLI
+    atuin
     cool-retro-term
     asciiquarium-transparent
     pokemonsay
@@ -144,7 +160,7 @@ in {
     lolcat
     hollywood
     cli-visualizer
-
+    tmux
     # Productivity & Finance
     gnucash
     termdown
@@ -156,7 +172,6 @@ in {
 
     # Hardware Support
     ledger-live-desktop
-    xboxdrv
 
     # Games
     bottles
@@ -174,6 +189,22 @@ in {
     # Custom Packages
     inputs.lobster.packages."x86_64-linux".lobster
   ];
+
+  ###########
+  # WEZTERM #
+  ###########
+
+programs.wezterm = {
+    enable = true;
+extraConfig = ''
+  return {
+    hide_tab_bar_if_only_one_tab = true,
+    color_scheme = "Unikitty Dark (base16)",
+    front_end = "WebGpu",
+  }
+'';
+ };
+
   #######################
   # SHELL CONFIGURATION #
   #######################
@@ -270,47 +301,6 @@ in {
     '';
   };
 
-  #####################
-  # TERMINAL EMULATOR #
-  #####################
-
-  programs.kitty = {
-    enable = true;
-    font = {
-      name = "FiraCode Nerd Font";
-      size = 12;
-    };
-
-    # Additional settings
-    settings = {
-
-      # Appearance
-      background_opacity = "0.7";
-      window_padding_width = 4;
-
-      # Cursor
-      cursor_shape = "beam";
-      cursor_blink_interval = 0.5;
-
-      # Bell
-      enable_audio_bell = false;
-      visual_bell_duration = "0.1";
-
-      # Shell integration
-      shell_integration = "enabled";
-
-      # URLs
-      url_style = "curly";
-    };
-
-    # Key mappings
-    keybindings = {
-      "ctrl+shift+c" = "copy_to_clipboard";
-      "ctrl+shift+v" = "paste_from_clipboard";
-      "ctrl+shift+t" = "new_tab";
-      "ctrl+shift+q" = "close_tab";
-    };
-  };
 
   #####################
   # DEVELOPMENT TOOLS #
@@ -395,226 +385,195 @@ in {
   ########################
   #  SWAY CONFIGURATION   #
   ########################
+  wayland.windowManager.sway = {
+    enable = true;
+    package = pkgs.swayfx;
+    systemd.enable = true;
+    wrapperFeatures.gtk = true;
 
-xdg.configFile."uwsm/config.toml".text = ''
-[wayland]
-compositors = ["sway"]
-environment = [
-  "XDG_SESSION_TYPE=wayland",
-  "XDG_CURRENT_DESKTOP=sway",
-  "QT_QPA_PLATFORM=wayland",
-  "QT_WAYLAND_DISABLE_WINDOWDECORATION=1",
-  "MOZ_ENABLE_WAYLAND=1",
-  "SDL_VIDEODRIVER=wayland",
-  "CLUTTER_BACKEND=wayland",
-  "_JAVA_AWT_WM_NONREPARENTING=1"
-]
+    # Configuration
+    extraConfigEarly = ''
+      # This needs to be set before any window/appearance related config
+      exec "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
+    '';
 
-[wayland.sway]
-command = "sway"
-pretty_name = "Sway"
-description = "Tiling Wayland compositor"
-'';
+    checkConfig = false;
 
-# To ensure UWSM files are properly set up
-home.file.".local/share/wayland-sessions/sway-uwsm.desktop".text = ''
-[Desktop Entry]
-Name=Sway (UWSM)
-Comment=An i3-compatible Wayland compositor
-Exec=uwsm start sway
-Type=Application
-'';
+    extraConfig = ''
+      # Decoration
+      corner_radius 6
+      shadows enable
+      blur enable
+      titlebar_separator disable
 
-wayland.windowManager.sway = {
-  enable = true;
-  package = pkgs.swayfx;
-  systemd.enable = true;
-  wrapperFeatures.gtk = true;
+      # Font settings
+      font pango:monospace 10
 
-  # Configuration
-  extraConfigEarly = ''
-    # This needs to be set before any window/appearance related config
-    exec "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
-  '';
+      # Gaps
+      gaps outer 0
+      gaps inner 6
 
-  checkConfig = false;
+      # Titlebar and border configuration
+      titlebar_border_thickness 0
 
-  extraConfig = ''
-    # Decoration
-    corner_radius 6
-    shadows enable
-    blur enable
-    titlebar_separator disable
+      # Border settings
+      set $border_width 1
+      default_border normal $border_width
+      default_floating_border normal $border_width
 
-    # Font settings
-    font pango:monospace 10
+      # Window title formatting
+      title_align center
 
-    # Gaps
-    gaps outer 0
-    gaps inner 6
+      # Colors
+      # class                 border  background  text     indicator  child_border
+      client.focused          #000000 #000000    #FFFFFF  #000000    #000000
+      client.focused_inactive #000000 #000000    #FFFFFF  #000000    #000000
+      client.unfocused        #000000 #000000    #FFFFFF  #000000    #000000
+      client.urgent           #000000 #000000    #FFFFFF  #000000    #000000
+      client.placeholder      #000000 #000000    #FFFFFF  #000000    #000000
+      client.background       #000000
+    '';
 
-    # Titlebar and border configuration
-    titlebar_border_thickness 0
+    # Disable config check during build
+    extraSessionCommands = ''
+      export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
+    '';
 
-    # Border settings
-    set $border_width 1
-    default_border normal $border_width
-    default_floating_border normal $border_width
-
-    # Window title formatting
-    title_align center
-
-    # Colors
-    # class                 border  background  text     indicator  child_border
-   client.focused          #000000 #000000    #FFFFFF  #000000    #000000
-   client.focused_inactive #000000 #000000    #FFFFFF  #000000    #000000
-   client.unfocused        #000000 #000000    #FFFFFF  #000000    #000000
-   client.urgent           #000000 #000000    #FFFFFF  #000000    #000000
-   client.placeholder      #000000 #000000    #FFFFFF  #000000    #000000
-   client.background       #000000
-  '';
-
-  # Disable config check during build
-  extraSessionCommands = ''
-    export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
-  '';
-
-  config = rec {
-
-    modifier = "Mod4";
-    terminal = "kitty";
-    menu = "${pkgs.wofi}/bin/wofi --show drun";
-    output = {
-      "*" = {
-        bg = "${wallpaper} fill";
+config = rec {
+      modifier = "Mod4";
+      terminal = "wezterm";
+      menu = "${pkgs.wofi}/bin/wofi --show drun";
+      output = {
+        "*" = {
+          bg = "${wallpaper} fill";
+        };
       };
-    };
 
-    gaps = {
-      inner = 3;
-      outer = 3;
-    };
+      gaps = {
+        inner = 3;
+        outer = 3;
+      };
 
-    window = {
-      border = 3;
-      commands = [
-        {
-          criteria = { app_id = "chromium"; };
-          command = "move container to workspace 2";
-        }
-        {
-          criteria = { app_id = "vesktop"; };
-          command = "move container to workspace 3";
-        }
-      ];
-    };
+      window = {
+        border = 3;
+        commands = [
+          {
+            criteria = { app_id = "chromium"; };
+            command = "move container to workspace 2";
+          }
+          {
+            criteria = { app_id = "vesktop"; };
+            command = "move container to workspace 3";
+          }
+        ];
+      };
 
       # Startup applications
       startup = [
         { command = "swaymsg 'workspace 1'"; }
         { command = "nm-applet --indicator"; }
-        { command = "~/.config/wcp/wcp.sh"; }
-        { command = "rm -f /tmp/wob && mkfifo /tmp/wob && tail -f /tmp/wob | ${pkgs.wob}/bin/wob --border-color '#FFFFFF22' --background-color '#00000022' --bar-color '#FFFFFF88'"; }
+        { command = "~/.config/eww/start-bar.sh"; }
       ];
 
       # Key bindings
-keybindings = {
-  # Basic controls
-  "${modifier}+Up" = "focus up";
-  "${modifier}+Down" = "focus down";
-  "${modifier}+Left" = "focus left";
-  "${modifier}+Right" = "focus right";
+      keybindings = {
+        # Basic controls
+        "${modifier}+Up" = "focus up";
+        "${modifier}+Down" = "focus down";
+        "${modifier}+Left" = "focus left";
+        "${modifier}+Right" = "focus right";
 
-  "${modifier}+Shift+Up" = "move up";
-  "${modifier}+Shift+Down" = "move down";
-  "${modifier}+Shift+Left" = "move left";
-  "${modifier}+Shift+Right" = "move right";
+        "${modifier}+Shift+Up" = "move up";
+        "${modifier}+Shift+Down" = "move down";
+        "${modifier}+Shift+Left" = "move left";
+        "${modifier}+Shift+Right" = "move right";
 
-  # Workspace bindings with overview (sov) integration
-  "--no-repeat ${modifier}+1" = "workspace number 1; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+2" = "workspace number 2; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+3" = "workspace number 3; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+4" = "workspace number 4; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+5" = "workspace number 5; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+6" = "workspace number 6; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+7" = "workspace number 7; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+8" = "workspace number 8; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+9" = "workspace number 9; exec \"echo 1 > /tmp/sov\"";
-  "--no-repeat ${modifier}+0" = "workspace number 10; exec \"echo 1 > /tmp/sov\"";
+"${modifier}+Shift+bracketright" = "move workspace to output right";
+"${modifier}+Shift+bracketleft" = "move workspace to output left";
+"${modifier}+period" = "focus output right";
+"${modifier}+comma" = "focus output left";
+
+        # Workspace bindings with overview (sov) integration
+        "--no-repeat ${modifier}+1" = "workspace number 1; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+2" = "workspace number 2; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+3" = "workspace number 3; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+4" = "workspace number 4; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+5" = "workspace number 5; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+6" = "workspace number 6; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+7" = "workspace number 7; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+8" = "workspace number 8; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+9" = "workspace number 9; exec \"echo 1 > /tmp/sov\"";
+        "--no-repeat ${modifier}+0" = "workspace number 10; exec \"echo 1 > /tmp/sov\"";
 
 # Workspace overview release bindings
-  "--release ${modifier}+1" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+2" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+3" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+4" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+5" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+6" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+7" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+8" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+9" = "exec \"echo 0 > /tmp/sov\"";
-  "--release ${modifier}+0" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+1" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+2" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+3" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+4" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+5" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+6" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+7" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+8" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+9" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+0" = "exec \"echo 0 > /tmp/sov\"";
 
-  # Move containers to workspaces
-  "${modifier}+Shift+1" = "move container to workspace number 1";
-  "${modifier}+Shift+2" = "move container to workspace number 2";
-  "${modifier}+Shift+3" = "move container to workspace number 3";
-  "${modifier}+Shift+4" = "move container to workspace number 4";
-  "${modifier}+Shift+5" = "move container to workspace number 5";
-  "${modifier}+Shift+6" = "move container to workspace number 6";
-  "${modifier}+Shift+7" = "move container to workspace number 7";
-  "${modifier}+Shift+8" = "move container to workspace number 8";
-  "${modifier}+Shift+9" = "move container to workspace number 9";
-  "${modifier}+Shift+0" = "move container to workspace number 10";
+        # Move containers to workspaces
+        "${modifier}+Shift+1" = "move container to workspace number 1";
+        "${modifier}+Shift+2" = "move container to workspace number 2";
+        "${modifier}+Shift+3" = "move container to workspace number 3";
+        "${modifier}+Shift+4" = "move container to workspace number 4";
+        "${modifier}+Shift+5" = "move container to workspace number 5";
+        "${modifier}+Shift+6" = "move container to workspace number 6";
+        "${modifier}+Shift+7" = "move container to workspace number 7";
+        "${modifier}+Shift+8" = "move container to workspace number 8";
+        "${modifier}+Shift+9" = "move container to workspace number 9";
+        "${modifier}+Shift+0" = "move container to workspace number 10";
 
-# Window management
-  "${modifier}+b" = "splith";
-  "${modifier}+v" = "splitv";
-  "${modifier}+f" = "fullscreen";
-  "${modifier}+Shift+space" = "floating toggle";
-  "${modifier}+a" = "focus parent";
-  "${modifier}+r" = "mode resize";
+        # Window management
+        "${modifier}+b" = "splith";
+        "${modifier}+v" = "splitv";
+        "${modifier}+f" = "fullscreen";
+        "${modifier}+Shift+space" = "floating toggle";
+        "${modifier}+a" = "focus parent";
+        "${modifier}+r" = "mode resize";
 
-  # Core application controls
-  "${modifier}+Shift+c" = "reload";
-  "${modifier}+Shift+q" = "kill";
-  "${modifier}+d" = "exec ${menu}";
-  "${modifier}+l" = "exec ~/.config/sway/lock.sh";
-  "${modifier}+Return" = "exec ${terminal}";
-  "${modifier}+Shift+Return" = "exec $browser";
-  "${modifier}+p" = "exec \"echo 'toggle visibility' > /tmp/wcp\"";
+        # Core application controls
+        "${modifier}+Shift+c" = "reload";
+        "${modifier}+Shift+q" = "kill";
+        "${modifier}+d" = "exec ${menu}";
+        "${modifier}+l" = "exec ~/.config/sway/lock.sh";
+        "${modifier}+Return" = "exec ${terminal}";
+        "${modifier}+Shift+Return" = "exec $browser";
+        "${modifier}+p" = "exec \"echo 'toggle visibility' > /tmp/wcp\"";
 
-  # Full screenshot to clipboard
-  "${modifier}+Print" = "exec grim - | wl-copy";
+        # Full screenshot to clipboard
+        "${modifier}+Print" = "exec grim - | wl-copy";
 
-  # Screenshot with selection to both clipboard and file
-  "${modifier}+Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') - | wl-copy";
+        # Screenshot with selection to both clipboard and file
+        "${modifier}+Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') - | wl-copy";
 
-  # Screenshot with satty editor, copy to clipboard
-  "Print" = "exec grim -g \"$(slurp)\" - | satty --filename - --output-filename - --copy-command wl-copy";
+        # Screenshot with satty editor, copy to clipboard
+        "Print" = "exec grim -g \"$(slurp)\" - | satty --filename - --output-filename - --copy-command wl-copy";
 
-  # Media and volume controls
-  "XF86MonBrightnessDown" = "exec brightnessctl set 5%- | sed -En 's/.*\\(([0-9]+)%\\).*/\\1/p' > /tmp/wob";
-  "XF86MonBrightnessUp" = "exec brightnessctl set +5% | sed -En 's/.*\\(([0-9]+)%\\).*/\\1/p' > /tmp/wob";
+        # Brightness controls
+        "XF86MonBrightnessDown" = "exec ~/.config/eww/scripts/brightness.sh set 5%-";
+        "XF86MonBrightnessUp" = "exec ~/.config/eww/scripts/brightness.sh set +5%";
 
-# Audio controls
-"--locked --no-repeat XF86AudioMute" = "exec ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-"--locked --no-repeat XF86AudioRaiseVolume" = ''
-  exec ${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+ && ${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/[^0-9]//g' > /tmp/wob
-'';
-"--locked --no-repeat XF86AudioLowerVolume" = ''
-  exec ${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%- && ${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/[^0-9]//g' > /tmp/wob
-'';
+        # Volume controls
+        "--locked --no-repeat XF86AudioMute" = "exec pamixer -t";
+        "--locked --no-repeat XF86AudioRaiseVolume" = "exec ~/.config/eww/scripts/volume.sh --increase 5";
+        "--locked --no-repeat XF86AudioLowerVolume" = "exec ~/.config/eww/scripts/volume.sh --decrease 5";
 
-  # Media player controls
-  "${modifier}+XF86AudioPlay" = "exec \"echo 1 > /tmp/vmp\"";
-  "${modifier}+XF86AudioNext" = "exec \"echo 2 > /tmp/vmp\"";
-  "${modifier}+XF86AudioPrev" = "exec \"echo 3 > /tmp/vmp\"";
+        # Media player controls
+        "${modifier}+XF86AudioPlay" = "exec \"echo 1 > /tmp/vmp\"";
+        "${modifier}+XF86AudioNext" = "exec \"echo 2 > /tmp/vmp\"";
+        "${modifier}+XF86AudioPrev" = "exec \"echo 3 > /tmp/vmp\"";
 
-  # Modifier for floating windows
-  "${modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'";
-};
+        # Modifier for floating windows
+        "${modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'";
+      };
 
-      # Input configuration
+# Input configuration
       input = {
         "type:touchpad" = {
           tap = "enabled";
@@ -640,43 +599,15 @@ keybindings = {
           "Escape" = "mode default";
         };
       };
-    bars = [{
-      position = "top";
-      statusCommand = "while ~/.config/sway/status.sh; do sleep 5; done";
-      trayOutput = "none";
-      colors = {
-        statusline = "#AAAAAA";
-        background = "#00000033";
-        focusedWorkspace = {
-          background = "#00000033";
-          border = "#00000033";
-          text = "#FFFFFF";
-        };
-        activeWorkspace = {
-          background = "#00000033";
-          border = "#00000033";
-          text = "#AAAAAA";
-        };
-        inactiveWorkspace = {
-          background = "#00000033";
-          border = "#00000033";
-          text = "#999999";
-        };
-        urgentWorkspace = {
-          background = "#00000033";
-          border = "#00000033";
-          text = "#FF0000";
-        };
-      };
-      fonts = {
-        names = [ "Ubuntu Mono" ];
-        size = 11.0;
-      };
-    }];
-    };
-  };
 
-# Theme configuration
+      bars = [ ];
+    }; # Close the config = rec block
+  }; # Close the wayland.windowManager.sway block
+
+  ########################
+  #  THEME CONFIGURATION #
+  ########################
+
   gtk = {
     enable = true;
     font = {
@@ -702,22 +633,274 @@ keybindings = {
     };
   };
 
-# Add status.sh script for sway bar
-xdg.configFile."sway/status.sh" = {
-  text = ''
-    #!${pkgs.bash}/bin/bash
-    date_formatted=$(date "+%a %F %H:%M")
-    cpu_formatted=$(uptime | awk '{print $10}' | cut -d "," -f 1)
-    mem_formatted=$(free -m | awk 'NR==2{printf "%.0f\n", $3*100/$2 }')
-    disk_formatted=$(df -h | awk '$NF=="/"{printf "%s\n", $5}' )
-    lcd_formatted=$(($(${pkgs.brightnessctl}/bin/brightnessctl g) * 100 / $(${pkgs.brightnessctl}/bin/brightnessctl m)))
-    bat_formatted=$(cat /sys/class/power_supply/BAT0/capacity)
-    vol_formatted=$(${pkgs.pamixer}/bin/pamixer --get-volume)
-    pwr_formatted=$(awk '{printf "%.2fW" ,$1*1e-6 }' /sys/class/power_supply/BAT0/power_now)
+xdg.configFile = {
+  "eww/scripts/get-workspaces.sh" = {
+    text = ''
+      #!/bin/sh
+      swaymsg -t subscribe -m '["window", "workspace"]' | while read -r line; do
+        swaymsg -t get_workspaces -r | jq -c 'map({
+          num: .num,
+          focused: .focused,
+          windows: [.windows[] | {
+            app_id: (.app_id // null),
+            class: (.window_properties.class // null)
+          }] | sort_by(.app_id)
+        })'
+      done
+    '';
+    executable = true;
+  };
 
-    echo "pwr $pwr_formatted / cpu $cpu_formatted / mem $mem_formatted% / ssd $disk_formatted / bat $bat_formatted% / lcd $lcd_formatted% / vol $vol_formatted%    $date_formatted "
+  "eww/eww.scss".text = ''
+    * {
+      all: unset;
+    }
+
+    .bar {
+      background-color: rgba(0, 0, 0, 0.2);
+      color: #ffffff;
+      padding: 0.2rem;
+    }
+
+    .workspaces {
+      margin-left: 8px;
+    }
+
+    .workspace-button {
+      min-width: 20px;
+      min-height: 20px;
+      border-radius: 4px;
+      padding: 0 4px;
+      background-color: rgba(255, 255, 255, 0.05);
+      transition: all 200ms ease;
+    }
+
+    .workspace-button.empty {
+      background-color: rgba(255, 255, 255, 0.02);
+      min-width: 16px;
+      min-height: 16px;
+      padding: 0 2px;
+      opacity: 0.4;
+    }
+
+    .workspace-button.focused {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      opacity: 1;
+    }
+
+    .workspace-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .window-icon {
+      font-family: "FiraCode Nerd Font";
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0 2px;
+    }
+
+    .status {
+      padding: 0 1rem;
+    }
+
+    .volume-indicator,
+    .brightness-indicator {
+      background-color: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem;
+      color: #ffffff;
+    }
+
+    .volume-scale scale trough,
+    .brightness-scale scale trough {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      margin: 0 1rem;
+      min-height: 10px;
+      min-width: 120px;
+    }
+
+    .volume-scale scale trough highlight,
+    .brightness-scale scale trough highlight {
+      background-color: #ffffff;
+      border-radius: 24px;
+    }
   '';
-  executable = true;
+
+"eww/eww.yuck".text = ''
+    ;; Variable declarations
+    (deflisten workspaces :initial "[]" "~/.config/eww/scripts/get-workspaces.sh")
+    (defpoll volume :interval "1s" "pamixer --get-volume")
+    (defpoll brightness :interval "1s" "brightnessctl -m | awk -F, '{print substr($4, 0, length($4)-1)}'")
+
+    ;; Widget definitions
+    (defwidget workspaces []
+      (box :class "workspaces"
+           :orientation "h"
+           :space-evenly false
+           :halign "start"
+           :spacing 4
+        (for workspace in workspaces
+          (button
+            :onclick "swaymsg workspace number {workspace.num}"
+            :class {workspace.focused ? "workspace-button focused" :
+                    arraylength(workspace.windows) > 0 ? "workspace-button occupied" :
+                    "workspace-button empty"}
+            (box :class "workspace-content"
+                 :space-evenly false
+                 :spacing 4
+              (for window in {workspace.windows}
+                (label :class "window-icon"
+                       :text {
+                         window.app_id == "kitty" ? "󰆍" :
+                         window.app_id == "firefox" ? "󰈹" :
+                         window.app_id == "chromium" ? "" :
+                         window.app_id == "vesktop" ? "󰙯" :
+                         window.class == "Steam" ? "󰓓" :
+                         window.app_id == "org.keepassxc.KeePassXC" ? "󰷡" :
+                         window.app_id == "code" ? "󰨞" :
+                         window.app_id == "thunar" ? "󰉋" :
+                         ""
+                       })))))))
+
+    (defwidget metric [label value onchange]
+      (box :orientation "h"
+           :class "metric"
+           :space-evenly false
+        (box :class "label" label)
+        (scale :min 0
+               :max 101
+               :active {onchange != ""}
+               :value value
+               :onchange onchange)))
+
+    (defwidget time []
+      (box :class "time"
+           :orientation "h"
+           :space-evenly false
+           :halign "center"
+        {formattime(EWW_TIME, "%H:%M")}))
+
+(defwidget volume []
+      (box :class "volume-indicator"
+           :orientation "h"
+           :space-evenly false
+        (box :class "volume-icon" "󰕾")
+        (scale :class "volume-scale"
+               :value volume
+               :orientation "h"
+               :tooltip {volume + "%"}
+               :max 100
+               :min 0)))
+
+    (defwidget brightness []
+      (box :class "brightness-indicator"
+           :orientation "h"
+           :space-evenly false
+        (box :class "brightness-icon" "󰃞")
+        (scale :class "brightness-scale"
+               :value brightness
+               :orientation "h"
+               :tooltip {brightness + "%"}
+               :max 100
+               :min 0)))
+
+    (defwidget sidestuff []
+      (box :class "status"
+           :orientation "h"
+           :space-evenly false
+           :halign "end"
+           :spacing 15
+        (metric :label "󰻠"
+                :value {EWW_RAM.used_mem_perc}
+                :onchange "")
+        (metric :label "󰍛"
+                :value {round((1 - EWW_CPU.avg) * 100)}
+                :onchange "")
+        (metric :label "󰋊"
+                :value {EWW_BATTERY["BAT0"].capacity}
+                :onchange "")))
+
+    (defwidget bar []
+      (centerbox :orientation "h"
+        (workspaces)
+        (time)
+        (sidestuff)))
+
+    ;; Window definitions
+    (defwindow bar
+      :monitor 0
+      :exclusive true
+      :geometry (geometry :x "0%"
+                         :y "0%"
+                         :width "100%"
+                         :height "24px"
+                         :anchor "top center")
+      (bar))
+
+    (defwindow volume-indicator
+      :monitor 0
+      :geometry (geometry :x "0%"
+                         :y "80%"
+                         :width "140px"
+                         :height "40px"
+                         :anchor "center")
+      :stacking "overlay"
+      (volume))
+
+    (defwindow brightness-indicator
+      :monitor 0
+      :geometry (geometry :x "0%"
+                         :y "80%"
+                         :width "140px"
+                         :height "40px"
+                         :anchor "center")
+      :stacking "overlay"
+      (brightness))
+  '';
+
+"eww/scripts/volume.sh" = {
+    text = ''
+      #!/bin/sh
+      volume() {
+        pamixer "$@"
+        eww open volume-indicator
+        sleep 1
+        eww close volume-indicator
+      }
+      volume "$@"
+    '';
+    executable = true;
+  };
+
+  "eww/scripts/brightness.sh" = {
+    text = ''
+      #!/bin/sh
+      brightness() {
+        brightnessctl "$@"
+        eww open brightness-indicator
+        sleep 1
+        eww close brightness-indicator
+      }
+      brightness "$@"
+    '';
+    executable = true;
+  };
+
+  "eww/start-bar.sh" = {
+    text = ''
+      #!/bin/sh
+      pkill eww || true
+      sleep 1
+      eww daemon
+      sleep 2
+      eww open bar
+    '';
+    executable = true;
+  };
 };
 
   ######################

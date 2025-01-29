@@ -1,64 +1,69 @@
-{ config, pkgs, inputs, lib, ... }: {
+{ confin, pkgs, inputs, lib, ... }: {
+
   imports = [
     ./hardware-configuration.nix
     ./pksay.nix
   ];
 
   #######################
-  #    CONFIGURATION    #
+  #    configuration    #
   #######################
 
   system.stateVersion = "23.11";
 
-  # Core system settings
+  # core system settings
   nix = {
     settings = {
       sandbox = true;
       experimental-features = ["nix-command" "flakes"];
       auto-optimise-store = true;
-      # Optimize build performance
+      # optimize build performance
       cores = 4;
       max-jobs = 4;
-      # Allow closing other processes when building
+      # allow closing other processes when building
       builders-use-substitutes = true;
     };
-    # Automatic garbage collection
+    # automatic garbage collection
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-    # Optimize storage
+    # optimize storage
     optimise = {
       automatic = true;
       dates = ["weekly"];
     };
   };
 
-  # Allow unfree packages
+  # allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # virtual filesystem support
+  services.gvfs.enable = true;
+
 #######################
-  #   BOOT & HARDWARE   #
+  #   boot & hardware   #
   #######################
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
 
-    # Bootloader configuration
+    # bootloader configuration
     loader = {
       systemd-boot = {
         enable = true;
-        # Optimize boot performance
+        # optimize boot performance
         consoleMode = "max";
-        editor = false;  # Disable boot editor for security
+        editor = false;  # disable boot editor for security
       };
       efi.canTouchEfiVariables = true;
       timeout = 3;
     };
 
-    # Kernel parameters optimized for AMD APU
+    # kernel parameters optimized for amd apu
     kernelParams = [
-      # CPU optimizations
+      # cpu optimizations
       "threadirqs"
       "mitigations=off"
       "idle=nomwait"
@@ -121,31 +126,39 @@
 
       # PID optimization
       "kernel.pid_max" = 4194304;
-    };
-  };
-#######################
-  #  DISPLAY & DESKTOP  #
-  #######################
 
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    # Enable extra portals
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    # Configure default portal behavior
-    config = {
-      common = {
-        default = ["gtk"];
-        "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
-      };
-      # Configure sway-specific portals
-      sway = {
-        default = ["wlr"];
-        "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
-        "org.freedesktop.impl.portal.Screencast" = ["wlr"];
-      };
+      # Needed for anbox
+      "kernel.unprivileged_userns_clone" = 1;
+    };
+
+    kernelModules = [ "binder_linux" "ashmem_linux" ];
+
+  };
+
+
+#######################
+#  DISPLAY & DESKTOP  #
+#######################
+
+xdg.portal = {
+  enable = true;
+  wlr.enable = true;
+  # Enable extra portals
+  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  # Configure default portal behavior
+  config = {
+    common = {
+      default = ["gtk"];
+      "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+    };
+    # Configure sway-specific portals with priority enforcement
+    sway = {
+      default = lib.mkForce ["wlr"]; # Ensure "wlr" is enforced
+      "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
+      "org.freedesktop.impl.portal.Screencast" = ["wlr"];
     };
   };
+};
 
   # AMD GPU specific hardware config
   hardware = {
@@ -153,13 +166,11 @@
     ledger.enable = true;
     xone.enable = true;
 
-    # New unified graphics setup for 24.11+
+    # New unified graphics setup
     graphics = {
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
-        rocm-opencl-icd
-        rocm-opencl-runtime
         amdvlk
       ];
       extraPackages32 = with pkgs; [
@@ -172,7 +183,6 @@
   powerManagement = {
     cpuFreqGovernor = "performance";
     enable = true;
-    powertop.enable = true;
   };
 
 # Display server configuration
@@ -182,7 +192,7 @@
     # Input settings
     xkb = {
       variant = "";
-    };
+};
 
     # AMD GPU optimizations
     videoDrivers = [ "amdgpu" ];
@@ -196,7 +206,9 @@
   };
 
   # Ly service configuration
-  services.displayManager.ly.enable = true;
+ services.displayManager.ly = {
+    enable = true;
+    };
 
   # Console settings
   console = {
@@ -400,18 +412,6 @@
       wantedBy = [ "multi-user.target" ];
     };
 
-    # Audio scheduler
-    audio-scheduler = {
-      description = "Audio thread scheduling optimization";
-      script = ''
-        echo 75 > /proc/sys/kernel/sched_priority_audio
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      wantedBy = [ "multi-user.target" ];
-    };
   };
 # Device rules
   services.udev.extraRules = ''
@@ -514,6 +514,8 @@ security.polkit.enable = true;
         dates = "weekly";
       };
     };
+    waydroid.enable = true;
+    #anbox.enable = true;
   };
 
   #######################
@@ -650,9 +652,6 @@ security.polkit.enable = true;
 
     # Security
     age
-
-    # Fonts
-    (nerdfonts.override {fonts = ["FiraCode"];})
 
     # Custom packages
     inputs.umu.packages.${pkgs.system}.umu
