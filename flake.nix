@@ -34,6 +34,12 @@
       url = "github:AntonVanAssche/music-controls.nvim";
       flake = false;
     };
+
+    # Nixvim
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   ###########

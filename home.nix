@@ -41,6 +41,42 @@ in {
   # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = _: true;
 
+  ######################
+  # NIXVIM CONFIGURATION #
+  ######################
+
+  imports = [
+    inputs.nixvim.homeManagerModules.nixvim
+  ];
+
+  programs.nixvim = {
+    enable = true;
+    colorschemes.catppuccin.enable = true;
+    plugins.lualine.enable = true;
+    plugins.wezterm.enable = true;
+    plugins.snacks.enable = true;
+    plugins.telescope.enable = true;
+    plugins.web-devicons.enable = true;
+    plugins.dashboard.enable = true;
+      plugins.treesitter = {
+    enable = true;
+
+    grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+      bash
+      json
+      lua
+      markdown
+      nix
+      regex
+      xml
+      yaml
+      c
+    ];
+  };
+
+  };
+
+
 
   ######################
   # PACKAGE MANAGEMENT #
@@ -70,8 +106,6 @@ in {
     evtest
     foot
     xclip
-    vim
-
     # Development Tools
     k9s
     kubectl
@@ -101,6 +135,7 @@ in {
     webcord-vencord
     bitwarden
     filezilla
+    zapzap
 
     # Media & Entertainment
     vlc
@@ -188,6 +223,7 @@ in {
 
     # Custom Packages
     inputs.lobster.packages."x86_64-linux".lobster
+
   ];
 
   ###########
