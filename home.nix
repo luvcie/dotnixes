@@ -136,6 +136,7 @@ in {
     bitwarden
     filezilla
     zapzap
+    element
 
     # Media & Entertainment
     vlc
