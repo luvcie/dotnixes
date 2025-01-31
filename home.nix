@@ -136,7 +136,7 @@ in {
     bitwarden
     filezilla
     zapzap
-    element
+    element-desktop
 
     # Media & Entertainment
     vlc
@@ -199,6 +199,7 @@ in {
     hollywood
     cli-visualizer
     tmux
+    element
     # Productivity & Finance
     gnucash
     termdown
