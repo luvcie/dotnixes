@@ -23,22 +23,19 @@
     };
 
     # Applications
-    lobster.url = "github:justchokingaround/lobster";
-    umu = {
-      url = "git+https://github.com/Open-Wine-Components/umu-launcher/?dir=packaging/nix&submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Neovim Plugins
-    music-controls-nvim-src = {
-      url = "github:AntonVanAssche/music-controls.nvim";
-      flake = false;
+    lobster = { 
+      url = "github:justchokingaround/lobster";
     };
 
     # Nixvim
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # FHS
+    fhs = {
+      url = "github:GermanBread/nixos-fhs/stable";
     };
   };
 
@@ -57,6 +54,7 @@
       specialArgs = { inherit inputs; };
       modules = [
         inputs.nur.modules.nixos.default
+        inputs.fhs.nixosModules.default  # Add the FHS module here
         ./configuration.nix
         ./hardware-configuration.nix
       ];

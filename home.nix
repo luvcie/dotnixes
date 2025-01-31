@@ -145,6 +145,7 @@ in {
     waylyrics
     textsnatcher
     wiimms-iso-tools
+    ankama-launcher
 
     # Entertainment
     prismlauncher  # Minecraft launcher
@@ -162,6 +163,7 @@ in {
     bat  # Better cat
     wl-clipboard
     appimage-run
+    kate
 
     # System Monitoring & Management
     btop

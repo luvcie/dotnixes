@@ -42,6 +42,10 @@
   # virtual filesystem support
   services.gvfs.enable = true;
 
+  services.fhs-compat = {
+    enable = true;
+  };
+
 #######################
   #   boot & hardware   #
   #######################
@@ -514,6 +518,7 @@ security.polkit.enable = true;
         dates = "weekly";
       };
     };
+    podman.enable = true;
     waydroid.enable = true;
     #anbox.enable = true;
   };
@@ -653,8 +658,6 @@ security.polkit.enable = true;
     # Security
     age
 
-    # Custom packages
-    inputs.umu.packages.${pkgs.system}.umu
   ];
 
   ######################
