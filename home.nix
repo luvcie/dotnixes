@@ -124,6 +124,8 @@ in {
     perl
     distrobox
     barrier
+    lazydocker
+
 
     # Internet & Communication
     firefox
@@ -137,6 +139,7 @@ in {
     filezilla
     zapzap
     element-desktop
+    jwhois
 
     # Media & Entertainment
     vlc
@@ -145,8 +148,7 @@ in {
     gimp-with-plugins
     waylyrics
     textsnatcher
-    wiimms-iso-tools
-    ankama-launcher
+    #wiimms-iso-tools
 
     # Entertainment
     prismlauncher  # Minecraft launcher

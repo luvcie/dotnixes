@@ -40,10 +40,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # FHS
-    fhs = {
-      url = "github:GermanBread/nixos-fhs/stable";
-    };
   };
 
   ###########
@@ -61,7 +57,6 @@
       specialArgs = { inherit inputs; };
       modules = [
         inputs.nur.modules.nixos.default
-        inputs.fhs.nixosModules.default 
 	inputs.lix-module.nixosModules.default
         ./configuration.nix
         ./hardware-configuration.nix

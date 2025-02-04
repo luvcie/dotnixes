@@ -42,10 +42,6 @@
   # virtual filesystem support
   services.gvfs.enable = true;
 
-  services.fhs-compat = {
-    enable = true;
-  };
-
 #######################
   #   boot & hardware   #
   #######################
