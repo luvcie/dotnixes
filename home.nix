@@ -125,6 +125,8 @@ in {
     distrobox
     barrier
     lazydocker
+    helix
+    distcc
 
 
     # Internet & Communication
