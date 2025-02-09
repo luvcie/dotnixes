@@ -10,6 +10,11 @@ in {
   # CORE CONFIGURATION #
   ######################
 
+  imports = [
+    ./modules/wezterm.nix
+    inputs.nixvim.homeManagerModules.nixvim
+  ];
+
   programs.home-manager.enable = true;
 
   home.sessionVariables = {
@@ -40,10 +45,6 @@ in {
   ######################
   # NIXVIM CONFIGURATION #
   ######################
-
-  imports = [
-    inputs.nixvim.homeManagerModules.nixvim
-  ];
 
   programs.nixvim = {
     enable = true;
@@ -222,21 +223,6 @@ in {
     # Custom Packages
     inputs.lobster.packages."x86_64-linux".lobster
   ];
-
-  ###########
-  # WEZTERM #
-  ###########
-
-  programs.wezterm = {
-    enable = true;
-    extraConfig = ''
-      return {
-        hide_tab_bar_if_only_one_tab = true,
-        color_scheme = "Unikitty Dark (base16)",
-        front_end = "WebGpu",
-      }
-    '';
-  };
 
   #######################
   # SHELL CONFIGURATION #
