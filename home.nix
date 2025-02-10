@@ -185,7 +185,6 @@
     # Games
     bottles
     heroic
-    mangohud
     goverlay
 
     # Camera & Video
@@ -267,26 +266,6 @@
       tree_view = 1;
       color_scheme = 6;
       cpu_count_from_one = 0;
-    };
-  };
-
-  programs.mangohud = {
-    enable = true;
-    settings = {
-      fps_limit = 144;
-      cpu_stats = true;
-      cpu_temp = true;
-      cpu_power = true;
-      gpu_stats = true;
-      gpu_temp = true;
-      gpu_power = true;
-      ram = true;
-      fps = true;
-      frametime = true;
-      battery = true;
-      horizontal = true;
-      background_alpha = "0.5";
-      font_size = 24;
     };
   };
 
