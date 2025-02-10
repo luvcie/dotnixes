@@ -251,8 +251,6 @@ in {
   extraSessionCommands = ''
     export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
   export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
-  export XCURSOR_THEME=Bibata-Modern-Classic
-  export XCURSOR_SIZE=24
   export WLR_NO_HARDWARE_CURSORS=1
   '';
 
@@ -420,10 +418,6 @@ in {
       name = "Adwaita";
       package = pkgs.adwaita-icon-theme;
     };
-      cursorTheme = {
-    name = "Bibata-Modern-Classic";
-    size = 24;
-   };
   };
 
   qt = {
