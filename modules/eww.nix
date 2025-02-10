@@ -133,14 +133,17 @@
                 (for window in {workspace.windows}
                   (label :class "window-icon"
                          :text {
-                           window.app_id == "kitty" ? "󰆍" :
+                           window.app_id == "org.wezfurlong.wezterm" ? "󰆍" :
                            window.app_id == "firefox" ? "󰈹" :
-                           window.app_id == "chromium" ? "" :
+                           window.app_id == "chromium-browser" ? "󰖟" :
                            window.app_id == "vesktop" ? "󰙯" :
-                           window.class == "Steam" ? "󰓓" :
-                           window.app_id == "org.keepassxc.KeePassXC" ? "󰷡" :
-                           window.app_id == "code" ? "󰨞" :
-                           window.app_id == "thunar" ? "󰉋" :
+                           window.class == "steam" ? "󰓓" :
+                           window.app_id == "Bitwarden" ? "󰞀" :
+                           window.app_id == "org.kde.kate" ? "󰯂" :
+                           window.app_id == "nemo" ? "󰉋" :
+                           window.app_id == "org.qbittorrent.qBittorrent" ? "󰻈" :
+                           window.class == "Ankama Launcher" ? "󰯫" :
+                           window.app_id == "Dofus.x64" ? "󰪯" :
                            ""
                          })))))))
 
