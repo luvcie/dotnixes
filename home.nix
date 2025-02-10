@@ -15,6 +15,7 @@
     ./modules/nixvim.nix
     ./modules/sway.nix
     ./modules/eww.nix
+    ./modules/theme.nix
     inputs.nixvim.homeManagerModules.nixvim
   ];
 
@@ -201,50 +202,6 @@
     bibata-cursors
   ];
 
-  ########################
-  #  SWAY CONFIGURATION   #
-  ########################
-
-home.pointerCursor = {
-  package = pkgs.bibata-cursors;
-  name = "Bibata-Modern-Classic";
-  size = 24;
-  gtk.enable = true;
-  x11.enable = false;
-};
-
-
-  ########################
-  #  THEME CONFIGURATION #
-  ########################
-
-  gtk = {
-    enable = true;
-    font = {
-      name = "Sans";
-      size = 11;
-    };
-    theme = {
-      name = "Adwaita-dark";
-      package = pkgs.gnome-themes-extra;
-    };
-    iconTheme = {
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
-    };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk";
-    style = {
-      name = "adwaita-dark";
-      package = pkgs.adwaita-qt;
-    };
-  };
-
-
-
   ######################
   # ADDITIONAL CONFIGS #
   ######################
@@ -348,9 +305,9 @@ home.pointerCursor = {
     mimeApps = {
       enable = true;
       defaultApplications = {
-        "text/html" = ["librewolf.desktop"];
-        "x-scheme-handler/http" = ["librewolf.desktop"];
-        "x-scheme-handler/https" = ["librewolf.desktop"];
+        "text/html" = ["chromium"];
+        "x-scheme-handler/http" = ["chromium"];
+        "x-scheme-handler/https" = ["chromium"];
         "application/pdf" = ["org.pwmt.zathura.desktop"];
         "image/*" = ["imv.desktop"];
         "video/*" = ["vlc.desktop"];
