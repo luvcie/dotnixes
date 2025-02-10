@@ -198,11 +198,21 @@ in {
     inputs.lobster.packages."x86_64-linux".lobster
     rose-pine-cursor
     rose-pine-gtk-theme
+    bibata-cursors
   ];
 
   ########################
   #  SWAY CONFIGURATION   #
   ########################
+
+  home.pointerCursor = {
+  name = "Bibata-Modern-Classic";
+  package = pkgs.bibata-cursors;
+  size = 24;
+  x11 = {
+    enable = false;
+  };
+};
 
   wayland.windowManager.sway = {
     enable = true;
@@ -240,8 +250,10 @@ in {
 
   extraSessionCommands = ''
     export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
-    export XCURSOR_THEME=rose-pine-cursor
-    export XCURSOR_SIZE=24
+  export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
+  export XCURSOR_THEME=Bibata-Modern-Classic
+  export XCURSOR_SIZE=24
+  export WLR_NO_HARDWARE_CURSORS=1
   '';
 
     config = rec {
@@ -408,6 +420,10 @@ in {
       name = "Adwaita";
       package = pkgs.adwaita-icon-theme;
     };
+      cursorTheme = {
+    name = "Bibata-Modern-Classic";
+    size = 24;
+   };
   };
 
   qt = {
@@ -811,15 +827,5 @@ in {
       };
     };
   };
-
-home.pointerCursor = {
-  name = "rose-pine-cursor"; # The name of the cursor theme
-  package = pkgs.rose-pine-cursor; # Reference to the package in Nixpkgs
-  size = 24; # Cursor size (adjust as needed)
-  x11 = {
-    enable = true;
-    defaultCursor = "left_ptr"; # Default cursor shape
-  };
-};
 
 }
