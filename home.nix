@@ -14,6 +14,7 @@ in {
     ./modules/wezterm.nix
     ./modules/vscode.nix
     ./modules/zsh.nix
+    ./modules/nixvim.nix
     inputs.nixvim.homeManagerModules.nixvim
   ];
 
@@ -43,35 +44,6 @@ in {
 
   # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = _: true;
-
-  ######################
-  # NIXVIM CONFIGURATION #
-  ######################
-
-  programs.nixvim = {
-    enable = true;
-    colorschemes.catppuccin.enable = true;
-    plugins.lualine.enable = true;
-    plugins.wezterm.enable = true;
-    plugins.snacks.enable = true;
-    plugins.telescope.enable = true;
-    plugins.web-devicons.enable = true;
-    plugins.dashboard.enable = true;
-    plugins.treesitter = {
-      enable = true;
-      grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-        bash
-        json
-        lua
-        markdown
-        nix
-        regex
-        xml
-        yaml
-        c
-      ];
-    };
-  };
 
   ######################
   # PACKAGE MANAGEMENT #
@@ -224,16 +196,9 @@ in {
 
     # Custom Packages
     inputs.lobster.packages."x86_64-linux".lobster
+    rose-pine-cursor
+    rose-pine-gtk-theme
   ];
-
-  #######################
-  # SHELL CONFIGURATION #
-  #######################
-
-  programs.starship.enable = true;
-  programs.fzf.enable = true;
-  programs.thefuck.enable = true;
-  programs.zoxide.enable = true;
 
   ########################
   #  SWAY CONFIGURATION   #
@@ -272,9 +237,12 @@ in {
       client.background       #000000
     '';
 
-    extraSessionCommands = ''
-      export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
-    '';
+
+  extraSessionCommands = ''
+    export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
+    export XCURSOR_THEME=rose-pine-cursor
+    export XCURSOR_SIZE=24
+  '';
 
     config = rec {
       modifier = "Mod4";
@@ -844,13 +812,14 @@ in {
     };
   };
 
-  home.pointerCursor = {
-    name = "Adwaita";
-    package = pkgs.adwaita-icon-theme;
-    size = 24;
-    x11 = {
-      enable = true;
-      defaultCursor = "left_ptr";
-    };
+home.pointerCursor = {
+  name = "rose-pine-cursor"; # The name of the cursor theme
+  package = pkgs.rose-pine-cursor; # Reference to the package in Nixpkgs
+  size = 24; # Cursor size (adjust as needed)
+  x11 = {
+    enable = true;
+    defaultCursor = "left_ptr"; # Default cursor shape
   };
+};
+
 }

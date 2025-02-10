@@ -1,6 +1,14 @@
 { pkgs, ... }:
 
 {
+            #######
+            #SHELL#
+            #######
+  programs.starship.enable = true;
+  programs.fzf.enable = true;
+  programs.thefuck.enable = true;
+  programs.zoxide.enable = true;
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
