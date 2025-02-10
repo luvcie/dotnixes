@@ -144,6 +144,7 @@
                            window.app_id == "org.qbittorrent.qBittorrent" ? "󰻈" :
                            window.class == "Ankama Launcher" ? "󰯫" :
                            window.app_id == "Dofus.x64" ? "󰪯" :
+                           window.app_id == "io.github.seadve.Kooha" ? "󱣵" :
                            ""
                          })))))))
 
@@ -210,7 +211,6 @@
           (workspaces)
           (time)
           (sidestuff)))
-
       ;; Window definitions
       (defwindow bar
         :monitor 0
