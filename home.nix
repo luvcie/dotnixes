@@ -205,13 +205,12 @@ in {
   #  SWAY CONFIGURATION   #
   ########################
 
-  home.pointerCursor = {
-  name = "Bibata-Modern-Classic";
+home.pointerCursor = {
   package = pkgs.bibata-cursors;
+  name = "Bibata-Modern-Classic";
   size = 24;
-  x11 = {
-    enable = false;
-  };
+  gtk.enable = true;
+  x11.enable = false;
 };
 
   wayland.windowManager.sway = {
