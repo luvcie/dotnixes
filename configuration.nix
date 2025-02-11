@@ -621,7 +621,6 @@ security.polkit.enable = true;
     swayfx
     dmenu
     xwayland
-    nerdfonts
 
     # Development
     git
