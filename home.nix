@@ -199,7 +199,7 @@
     rose-pine-cursor
     rose-pine-gtk-theme
     bibata-cursors
-  ];
+  ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   ######################
   # ADDITIONAL CONFIGS #

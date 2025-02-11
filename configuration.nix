@@ -597,7 +597,7 @@ security.polkit.enable = true;
   #######################
 
   environment.systemPackages = with pkgs; [
-    # Display Manager
+    # Login Manager
     ly
 
     # System utilities
@@ -621,6 +621,7 @@ security.polkit.enable = true;
     swayfx
     dmenu
     xwayland
+    nerdfonts
 
     # Development
     git
@@ -631,7 +632,7 @@ security.polkit.enable = true;
     ranger
     neofetch
     cpufetch
-    alacritty  # Terminal for Ly
+    alacritty
 
     # Window management
     fuzzel
@@ -672,8 +673,8 @@ security.polkit.enable = true;
       "video"
       "input"
       "render"
-      "gamemode"  # Added for GameMode
-      "kvm"       # For virtualization
+      "gamemode"
+      "kvm"
     ];
     shell = pkgs.zsh;
   };
