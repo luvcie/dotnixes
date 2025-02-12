@@ -10,6 +10,7 @@ in {
 
     extraConfigEarly = ''
       exec "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
+      exec autotiling-rs
     '';
 
     checkConfig = false;

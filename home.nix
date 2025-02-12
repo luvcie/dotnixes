@@ -68,6 +68,7 @@
     pamixer
     gawk
     sov
+    autotiling-rs
     #otherstuff
     wev
     evtest
@@ -169,6 +170,7 @@
     cli-visualizer
     tmux
     element
+    astroterm
 
     # Productivity & Finance
     gnucash
