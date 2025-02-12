@@ -16,6 +16,9 @@ in {
     checkConfig = false;
 
     extraConfig = ''
+      for_window [app_id="chromium-browser"] {
+      opacity 1;
+      }
       corner_radius 6
       shadows enable
       blur enable

@@ -1,8 +1,5 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{ pkgs, config, ... }: {
+
   gtk = {
     enable = true;
     font = {
@@ -10,12 +7,12 @@
       size = 11;
     };
     theme = {
-      name = "Adwaita-dark";
-      package = pkgs.gnome-themes-extra;
+      name = "rose-pine";
+      package = pkgs.rose-pine-gtk-theme;
     };
     iconTheme = {
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
+      name = "rose-pine";
+      package = pkgs.rose-pine-icon-theme;
     };
   };
 
@@ -23,15 +20,15 @@
     enable = true;
     platformTheme.name = "gtk";
     style = {
-      name = "adwaita-dark";
-      package = pkgs.adwaita-qt;
+      name = "Dracula";
+      package = pkgs.dracula-qt5-theme;
     };
   };
 
   home.pointerCursor = {
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Classic";
-    size = 24;
+    size = 16;
     gtk.enable = true;
     x11.enable = false;
   };
