@@ -25,8 +25,8 @@ in {
       gaps inner 6
       titlebar_border_thickness 0
       set $border_width 1
-      default_border normal $border_width
-      default_floating_border normal $border_width
+      default_border pixel $border_width
+      default_floating_border pixel $border_width
       title_align center
       client.focused          #000000 #000000    #FFFFFF  #000000    #000000
       client.focused_inactive #000000 #000000    #FFFFFF  #000000    #000000
