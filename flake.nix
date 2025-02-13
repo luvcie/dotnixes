@@ -6,7 +6,7 @@
 
   inputs = {
     # Core
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
 
     # Lix
     lix-module = {

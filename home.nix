@@ -135,6 +135,7 @@
     wl-clipboard
     appimage-run
     kate
+    fh
 
     # System Monitoring & Management
     btop
@@ -198,9 +199,6 @@
 
     # Custom Packages
     inputs.lobster.packages."x86_64-linux".lobster
-    rose-pine-cursor
-    rose-pine-gtk-theme
-    bibata-cursors
   ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   ######################
