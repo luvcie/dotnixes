@@ -133,11 +133,11 @@
                 (for window in {workspace.windows}
                   (label :class "window-icon"
                          :text {
-                           window.app_id == "org.wezfurlong.wezterm" ? "󰆍" :
+                           window.app_id == "org.wezfurlong.wezterm" ? "" :
                            window.app_id == "firefox" ? "󰈹" :
-                           window.app_id == "chromium-browser" ? "󰖟" :
-                           window.app_id == "vesktop" ? "󰙯" :
-                           window.class == "steam" ? "󰓓" :
+                           window.app_id == "chromium-browser" ? "" :
+                           window.app_id == "vesktop" ? "" :
+                           window.class == "steam" ? "" :
                            window.app_id == "Bitwarden" ? "󰞀" :
                            window.app_id == "org.kde.kate" ? "󰯂" :
                            window.app_id == "nemo" ? "󰉋" :
@@ -145,6 +145,10 @@
                            window.class == "Ankama Launcher" ? "󰯫" :
                            window.app_id == "Dofus.x64" ? "󰪯" :
                            window.app_id == "io.github.seadve.Kooha" ? "󱣵" :
+                           window.app_id == "Element" ? "󰘨" :
+                           window.app_id == "org.telegram.desktop" ? "" :
+                           window.app_id == "com.rtosta.zapzap" ? "" :
+                           window.app_id == "org.nicotine_plus.Nicotine" ? "󱐍" :
                            ""
                          })))))))
 
