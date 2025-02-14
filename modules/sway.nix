@@ -39,12 +39,10 @@ in {
       client.background       #000000
     '';
 
-
-  extraSessionCommands = ''
-    export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
-  export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
-  export WLR_NO_HARDWARE_CURSORS=1
-  '';
+    extraSessionCommands = ''
+      export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
+      export WLR_NO_HARDWARE_CURSORS=1
+    '';
 
     config = rec {
       modifier = "Mod4";
@@ -149,12 +147,12 @@ in {
         "${modifier}+Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') - | wl-copy";
         "Print" = "exec grim -g \"$(slurp)\" - | satty --filename - --output-filename - --copy-command wl-copy";
 
-        "XF86MonBrightnessDown" = "exec ~/.config/eww/scripts/brightness.sh set 5%-";
-        "XF86MonBrightnessUp" = "exec ~/.config/eww/scripts/brightness.sh set +5%";
+        "XF86MonBrightnessDown" = "exec brightnessctl set 2%-";
+        "XF86MonBrightnessUp" = "exec brightnessctl set +2%";
 
         "--locked --no-repeat XF86AudioMute" = "exec pamixer -t";
-        "--locked --no-repeat XF86AudioRaiseVolume" = "exec ~/.config/eww/scripts/volume.sh --increase 5";
-        "--locked --no-repeat XF86AudioLowerVolume" = "exec ~/.config/eww/scripts/volume.sh --decrease 5";
+        "--locked --no-repeat XF86AudioRaiseVolume" = "exec pamixer --increase 2";
+        "--locked --no-repeat XF86AudioLowerVolume" = "exec pamixer --decrease 2";
 
         "${modifier}+XF86AudioPlay" = "exec \"echo 1 > /tmp/vmp\"";
         "${modifier}+XF86AudioNext" = "exec \"echo 2 > /tmp/vmp\"";
@@ -189,6 +187,6 @@ in {
       };
 
       bars = [ ];
-      };
     };
-  }
+  };
+}
