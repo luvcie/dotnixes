@@ -11,6 +11,7 @@ in {
     extraConfigEarly = ''
       exec "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"
       exec autotiling-rs
+      exec rm -f /tmp/sovpipe && mkfifo /tmp/sovpipe && tail -f /tmp/sovpipe | sov -t 500
     '';
 
     checkConfig = false;
@@ -95,27 +96,27 @@ in {
         "${modifier}+period" = "focus output right";
         "${modifier}+comma" = "focus output left";
 
-        "--no-repeat ${modifier}+1" = "workspace number 1; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+2" = "workspace number 2; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+3" = "workspace number 3; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+4" = "workspace number 4; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+5" = "workspace number 5; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+6" = "workspace number 6; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+7" = "workspace number 7; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+8" = "workspace number 8; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+9" = "workspace number 9; exec \"echo 1 > /tmp/sov\"";
-        "--no-repeat ${modifier}+0" = "workspace number 10; exec \"echo 1 > /tmp/sov\"";
+	"--no-repeat ${modifier}+1" = "workspace number 1; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+2" = "workspace number 2; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+3" = "workspace number 3; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+4" = "workspace number 4; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+5" = "workspace number 5; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+6" = "workspace number 6; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+7" = "workspace number 7; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+8" = "workspace number 8; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+9" = "workspace number 9; exec \"echo 1 > /tmp/sovpipe\"";
+        "--no-repeat ${modifier}+0" = "workspace number 10; exec \"echo 1 > /tmp/sovpipe\"";
 
-        "--release ${modifier}+1" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+2" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+3" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+4" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+5" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+6" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+7" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+8" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+9" = "exec \"echo 0 > /tmp/sov\"";
-        "--release ${modifier}+0" = "exec \"echo 0 > /tmp/sov\"";
+        "--release ${modifier}+1" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+2" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+3" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+4" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+5" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+6" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+7" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+8" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+9" = "exec \"echo 0 > /tmp/sovpipe\"";
+        "--release ${modifier}+0" = "exec \"echo 0 > /tmp/sovpipe\"";
 
         "${modifier}+Shift+1" = "move container to workspace number 1";
         "${modifier}+Shift+2" = "move container to workspace number 2";

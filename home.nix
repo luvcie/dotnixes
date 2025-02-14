@@ -51,6 +51,7 @@
 
   home.packages = with pkgs; [
     # Sway packages
+    sov
     swayfx
     swaylock
     swayidle
@@ -66,7 +67,6 @@
     brightnessctl
     pamixer
     gawk
-    sov
     autotiling-rs
     #otherstuff
     wev
