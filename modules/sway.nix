@@ -76,7 +76,7 @@ in {
       startup = [
         { command = "swaymsg 'workspace 1'"; }
         { command = "nm-applet --indicator"; }
-        { command = "~/.config/eww/start-bar.sh"; }
+        { command = "nwg-panel"; }
       ];
 
       keybindings = {

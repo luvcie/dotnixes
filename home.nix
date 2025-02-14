@@ -14,7 +14,6 @@
     ./modules/zsh.nix
     ./modules/nixvim.nix
     ./modules/sway.nix
-    ./modules/eww.nix
     ./modules/theme.nix
     inputs.nixvim.homeManagerModules.nixvim
   ];
@@ -87,14 +86,26 @@
     nix-prefetch-scripts
     google-chrome
     chromedriver
-    stack
-    haskellPackages.hakyll
     perl
     distrobox
     barrier
     lazydocker
     helix
     distcc
+
+    #nwg
+    nwg-bar
+    nwg-menu
+    nwg-look
+    nwg-dock
+    nwg-panel
+    nwg-hello
+    nwg-drawer
+    nwg-wrapper
+    nwg-clipman
+    nwg-displays
+    nwg-launchers
+    cliphist
 
     # Internet & Communication
     firefox
@@ -136,6 +147,7 @@
     appimage-run
     kate
     fh
+    gnome-keyring
 
     # System Monitoring & Management
     btop
@@ -180,7 +192,7 @@
     calcurse
 
     # KDE Connect Integration
-    kdePackages.kdeconnect-kde
+    #kdePackages.kdeconnect-kde
 
     # Hardware Support
     ledger-live-desktop
@@ -196,6 +208,9 @@
 
     # System Cleaning
     bleachbit
+
+    # cursors, themes
+    rose-pine-cursor
 
     # Custom Packages
     inputs.lobster.packages."x86_64-linux".lobster
