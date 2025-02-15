@@ -47,7 +47,7 @@
   #######################
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_zen; #pkgs.linuxKernel.packages.linux_xanmod_latest; #pkgs.linuxPackages_latest;
 
     # bootloader configuration
     loader = {
