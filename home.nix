@@ -111,7 +111,8 @@
     firefox
     librewolf
     chromium
-    vesktop
+    (vesktop.override {
+    electron = electron_33;})
     signal-desktop
     telegram-desktop
     webcord-vencord
