@@ -70,27 +70,15 @@
     homeConfigurations."lucie" = inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
         system = "x86_64-linux";
-        # Overlay for custom packages
         overlays = [
-          (prev: final: {
-            # Neovim plugin build
-            music-controls-nvim = prev.vimUtils.buildVimPlugin {
-              pname = "music-controls-nvim";
-              src = inputs.music-controls-nvim-src;
-              version = "master";
-            };
-          })
+
         ];
       };
-
-      # Pass inputs to modules
       extraSpecialArgs = { inherit inputs; };
-
-      # Home-manager modules
-      modules =
-        inputs.ashley-dotfiles.homeModules ++ [
-          ./home.nix
-        ];
+      modules = inputs.ashley-dotfiles.homeModules ++ [
+      ./home.nix
+      inputs.nixvim.homeManagerModules.nixvim
+      ];
     };
-  };
-}
+  };  
+}     

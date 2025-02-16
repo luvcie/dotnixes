@@ -15,7 +15,6 @@
     ./modules/nixvim.nix
     ./modules/sway.nix
     ./modules/theme.nix
-    inputs.nixvim.homeManagerModules.nixvim
   ];
 
   programs.home-manager.enable = true;
@@ -50,6 +49,9 @@
   ######################
 
   home.packages = with pkgs; [
+
+    # Recent additions
+    
     # Sway packages
     sov
     swayfx
@@ -147,8 +149,8 @@
     wl-clipboard
     appimage-run
     kate
+    cosmic-edit
     fh
-    gnome-keyring
 
     # System Monitoring & Management
     btop
@@ -178,6 +180,7 @@
     cowsay
     cmatrix
     cbonsai
+    pipes-rs
     sl
     lolcat
     hollywood

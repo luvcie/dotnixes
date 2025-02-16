@@ -614,6 +614,7 @@ security.polkit.enable = true;
     unrar
     wlogout
     nemo-with-extensions
+    lsof
 
     # Sway essentials
     swaylock
@@ -629,7 +630,7 @@ security.polkit.enable = true;
     # Terminal utilities
     tldr
     ranger
-    neofetch
+    fastfetch
     cpufetch
     alacritty
 
