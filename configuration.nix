@@ -203,7 +203,18 @@ xdg.portal = {
       Option "DRI" "3"
       Option "AccelMethod" "glamor"
     '';
-  };
+};
+
+    services.libinput = {
+     enable = true;
+     touchpad = {
+      tapping = true;
+      naturalScrolling = false;
+      scrollMethod = "twofinger";
+      accelSpeed = "0.7";
+      disableWhileTyping = true;
+    };
+   };
 
   # Ly service configuration
  services.displayManager.ly = {
@@ -654,7 +665,10 @@ security.polkit.enable = true;
 
     # Security
     age
-
+    
+    # Hardware
+    libinput
+    libinput-gestures
   ];
 
   ######################
