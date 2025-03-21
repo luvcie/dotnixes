@@ -30,6 +30,7 @@
       sysinfo = "macchina";
       temp = "sensors";
       bunnyfetch = "bunnyfetch 2>/dev/null";
+      mini="~/mini-moulinette/mini-moul.sh";
     };
 
     plugins = [

@@ -289,6 +289,7 @@
             dockerls.enable = true;
             nixd.enable = true;
             lua-ls.enable = true;
+            ccls.enable=true;
           };
       };
 

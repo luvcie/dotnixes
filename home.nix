@@ -51,6 +51,10 @@
   home.packages = with pkgs; [
 
     # Recent additions
+    gnupg
+    libcaca
+    wireshark
+    openssl
     
     # Sway packages
     sov
@@ -76,6 +80,9 @@
     foot
     xclip
     # Development Tools
+    jdk
+    lua
+    norminette
     k9s
     kubectl
     argocd
@@ -94,6 +101,32 @@
     lazydocker
     helix
     distcc
+    nasm
+    binutils
+    gdb
+
+    #cyber
+    hashcat
+    foremost
+    radare2
+    scalpel
+    fcrackzip
+    pdfminer
+    ghidra
+    exiftool
+    sn0int
+    sherlock
+    maigret
+    pdf-parser
+    binwalk
+    steghide
+    stegseek
+    stegsolve
+    zsteg
+    outguess
+    caido
+    nikto
+    exegol
 
     #nwg
     nwg-bar
@@ -161,7 +194,6 @@
 
     # Network Tools
     tailscale
-    wireshark
     speedtest-go
     iperf
     mtr-gui
