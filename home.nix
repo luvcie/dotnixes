@@ -55,6 +55,10 @@
     libcaca
     wireshark
     openssl
+    terminator
+    drill
+    hdf5
+    asciinema
     
     # Sway packages
     sov
@@ -127,6 +131,7 @@
     caido
     nikto
     exegol
+    h5utils
 
     #nwg
     nwg-bar
