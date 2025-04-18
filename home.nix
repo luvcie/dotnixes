@@ -48,235 +48,241 @@
   # PACKAGE MANAGEMENT #
   ######################
 
-  home.packages = with pkgs; [
+  home.packages = with pkgs;
+    [
+      # Recent additions
+      browsers
+      via
+      mouseless
+      cherrytree
+      sqlmap
+      zapzap
+      ghostty
+      #metasploit
+      yeetgif
+      nushell
+      wf-recorder
+      gpu-screen-recorder-gtk
+      gpu-screen-recorder
+      gnupg
+      libcaca
+      wireshark
+      openssl
+      terminator
+      drill
+      hdf5
+      asciinema
+      helix
+      clipboard-jh
+      space-cadet-pinball
+      ocaml
+      exploitdb
+      kooha
+      wayfarer
+      pentestgpt
 
-    # Recent additions
-    #mouseless
-    #cherrytree
-    #sqlmap
-    #metasploit
-    yeetgif
-    nushell
-    wf-recorder
-    gpu-screen-recorder-gtk
-    gpu-screen-recorder
-    gnupg
-    libcaca
-    wireshark
-    openssl
-    terminator
-    drill
-    hdf5
-    asciinema
-    helix
-    clipboard-jh
-    space-cadet-pinball
-    ocaml
-    exploitdb
-    kooha
-    wayfarer
-    
-    # Sway packages
-    sov
-    swayfx
-    swaylock
-    swayidle
-    wofi
-    scenefx
-    eww
-    jq
-    wireplumber
-    slurp
-    grim
-    satty
-    wl-clipboard
-    brightnessctl
-    pamixer
-    gawk
-    autotiling-rs
-    #otherstuff
-    wev
-    evtest
-    foot
-    xclip
-    # Development Tools
-    jdk
-    lua
-    norminette
-    k9s
-    kubectl
-    argocd
-    git
-    hugo
-    micro
-    vscode
-    alejandra
-    any-nix-shell
-    nix-prefetch-scripts
-    google-chrome
-    chromedriver
-    perl
-    distrobox
-    barrier
-    lazydocker
-    helix
-    distcc
-    nasm
-    binutils
-    gdb
-    cling
+      # Sway packages
+      sov
+      swayfx
+      swaylock
+      swayidle
+      wofi
+      scenefx
+      eww
+      jq
+      wireplumber
+      slurp
+      grim
+      satty
+      wl-clipboard
+      brightnessctl
+      pamixer
+      gawk
+      autotiling-rs
+      #otherstuff
+      wev
+      evtest
+      foot
+      xclip
+      # Development Tools
+      jdk
+      lua
+      norminette
+      k9s
+      kubectl
+      argocd
+      git
+      hugo
+      micro
+      vscode
+      alejandra
+      any-nix-shell
+      nix-prefetch-scripts
+      google-chrome
+      chromedriver
+      perl
+      distrobox
+      barrier
+      lazydocker
+      helix
+      distcc
+      nasm
+      binutils
+      gdb
+      cling
 
-    #cyber
-    whatweb
-    villain
-    openvpn
-    hashcat
-    foremost
-    radare2
-    scalpel
-    fcrackzip
-    pdfminer
-    ghidra
-    exiftool
-    sn0int
-    sherlock
-    maigret
-    pdf-parser
-    binwalk
-    steghide
-    stegseek
-    stegsolve
-    zsteg
-    outguess
-    caido
-    nikto
-    exegol
-    h5utils
-    commix
-    wpscan
+      #cyber
+      whatweb
+      villain
+      openvpn
+      hashcat
+      foremost
+      radare2
+      scalpel
+      fcrackzip
+      pdfminer
+      ghidra
+      exiftool
+      sn0int
+      sherlock
+      maigret
+      pdf-parser
+      binwalk
+      steghide
+      stegseek
+      stegsolve
+      zsteg
+      outguess
+      caido
+      nikto
+      exegol
+      h5utils
+      commix
+      wpscan
 
+      #nwg
+      nwg-bar
+      nwg-menu
+      nwg-look
+      nwg-dock
+      nwg-panel
+      nwg-hello
+      nwg-drawer
+      nwg-wrapper
+      nwg-clipman
+      nwg-displays
+      nwg-launchers
+      cliphist
 
-    #nwg
-    nwg-bar
-    nwg-menu
-    nwg-look
-    nwg-dock
-    nwg-panel
-    nwg-hello
-    nwg-drawer
-    nwg-wrapper
-    nwg-clipman
-    nwg-displays
-    nwg-launchers
-    cliphist
+      # Internet & Communication
+      firefox
+      librewolf
+      chromium
+      (vesktop.override {
+        electron = electron_33;
+      })
+      signal-desktop
+      telegram-desktop
+      webcord-vencord
+      bitwarden
+      filezilla
+      element-desktop
+      jwhois
 
-    # Internet & Communication
-    firefox
-    librewolf
-    chromium
-    (vesktop.override {
-    electron = electron_33;})
-    signal-desktop
-    telegram-desktop
-    webcord-vencord
-    bitwarden
-    filezilla
-    zapzap
-    element-desktop
-    jwhois
+      # Media & Entertainment
+      vlc
+      obs-studio
+      gimp-with-plugins
+      waylyrics
+      textsnatcher
 
-    # Media & Entertainment
-    vlc
-    obs-studio
-    gimp-with-plugins
-    waylyrics
-    textsnatcher
+      # Entertainment
+      prismlauncher
+      vitetris
+      ani-cli
+      mov-cli
+      fortune
 
-    # Entertainment
-    prismlauncher
-    vitetris
-    ani-cli
-    mov-cli
-    fortune
+      # File Management & Utilities
+      p7zip
+      yazi
+      zathura
+      qdirstat
+      ncdu
+      bat
+      wl-clipboard
+      appimage-run
+      cosmic-edit
+      fh
 
-    # File Management & Utilities
-    p7zip
-    yazi
-    zathura
-    qdirstat
-    ncdu
-    bat
-    wl-clipboard
-    appimage-run
-    cosmic-edit
-    fh
+      # System Monitoring & Management
+      btop
+      macchina
+      bunnyfetch
+      usbtop
+      usbview
 
-    # System Monitoring & Management
-    btop
-    macchina
-    bunnyfetch
-    usbtop
-    usbview
+      # Network Tools
+      tailscale
+      speedtest-go
+      iperf
+      mtr-gui
 
-    # Network Tools
-    tailscale
-    speedtest-go
-    iperf
-    mtr-gui
+      # Media Download & Management
+      jackett
+      qbittorrent
+      nicotine-plus
 
-    # Media Download & Management
-    jackett
-    qbittorrent
-    nicotine-plus
+      # CLI
+      atuin
+      cool-retro-term
+      asciiquarium-transparent
+      pokemonsay
+      figlet
+      cowsay
+      cmatrix
+      cbonsai
+      pipes-rs
+      sl
+      lolcat
+      hollywood
+      cli-visualizer
+      tmux
+      tgpt
+      element
+      astroterm
 
-    # CLI
-    atuin
-    cool-retro-term
-    asciiquarium-transparent
-    pokemonsay
-    figlet
-    cowsay
-    cmatrix
-    cbonsai
-    pipes-rs
-    sl
-    lolcat
-    hollywood
-    cli-visualizer
-    tmux
-    element
-    astroterm
+      # Productivity & Finance
+      gnucash
+      termdown
+      blanket
+      calcurse
 
-    # Productivity & Finance
-    gnucash
-    termdown
-    blanket
-    calcurse
+      # KDE Connect Integration
+      #kdePackages.kdeconnect-kde
 
-    # KDE Connect Integration
-    #kdePackages.kdeconnect-kde
+      # Hardware Support
+      ledger-live-desktop
 
-    # Hardware Support
-    ledger-live-desktop
+      # Games
+      bottles
+      heroic
+      goverlay
 
-    # Games
-    bottles
-    heroic
-    goverlay
+      # Camera & Video
+      webcamoid
+      flameshot
 
-    # Camera & Video
-    webcamoid
-    flameshot
+      # System Cleaning
+      bleachbit
 
-    # System Cleaning
-    bleachbit
+      # cursors, themes
+      rose-pine-cursor
 
-    # cursors, themes
-    rose-pine-cursor
-
-    # Custom Packages
-    inputs.lobster.packages."x86_64-linux".lobster
-  ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+      # Custom Packages
+      inputs.lobster.packages."x86_64-linux".lobster
+    ]
+    ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   ######################
   # ADDITIONAL CONFIGS #
@@ -370,5 +376,4 @@
       };
     };
   };
-
 }
