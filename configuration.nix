@@ -1,5 +1,10 @@
-{ config, pkgs, inputs, lib, ... }: {
-
+{
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./pksay.nix
@@ -11,59 +16,49 @@
 
   system.stateVersion = "23.11";
 
-  # core system settings
   nix = {
     settings = {
       sandbox = true;
       experimental-features = ["nix-command" "flakes"];
       auto-optimise-store = true;
-      # optimize build performance
       cores = 4;
       max-jobs = 4;
-      # allow closing other processes when building
       builders-use-substitutes = true;
     };
-    # automatic garbage collection
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-    # optimize storage
     optimise = {
       automatic = true;
       dates = ["weekly"];
     };
   };
 
-  # allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # virtual filesystem support
   services.gvfs.enable = true;
 
-#######################
+  #######################
   #   boot & hardware   #
   #######################
 
   boot = {
     kernelPackages = pkgs.linuxPackages_zen; #pkgs.linuxKernel.packages.linux_xanmod_latest; #pkgs.linuxPackages_latest;
 
-    # bootloader configuration
     loader = {
       systemd-boot = {
         enable = true;
-        # optimize boot performance
         consoleMode = "max";
-        editor = false;  # disable boot editor for security
+        editor = false;
       };
       efi.canTouchEfiVariables = true;
       timeout = 3;
     };
 
-    # kernel parameters optimized for amd apu
+    # kernel params optimized for amd apu
     kernelParams = [
-      # cpu optimizations
       "threadirqs"
       "mitigations=off"
       "idle=nomwait"
@@ -71,7 +66,6 @@
       "amd_pstate=active"
       "clearcpuid=rdrand"
 
-      # AMD GPU optimizations
       "amdgpu.ppfeaturemask=0xffffffff"
       "amdgpu.dcfeaturemask=0x8"
       "amdgpu.freesync_video=1"
@@ -79,18 +73,15 @@
       "radeon.si_support=0"
       "amdgpu.si_support=1"
 
-      # System performance
       "preempt=voluntary"
       "transparent_hugepage=never"
       "clocksource=tsc"
       "tsc=reliable"
 
-      # Power management
       "workqueue.power_efficient=off"
       "amd_iommu=off"
       "pcie_aspm=off"
 
-      # Audio and USB
       "amdgpu.audio=0"
       "usbcore.autosuspend=-1"
       "snd_hda_intel.power_save=0"
@@ -98,24 +89,20 @@
     ];
 
     kernel.sysctl = {
-      # Virtual memory tweaks
       "vm.swappiness" = 10;
       "vm.dirty_ratio" = 60;
       "vm.dirty_background_ratio" = 2;
       "vm.vfs_cache_pressure" = 50;
       "vm.max_map_count" = 262144;
 
-      # Kernel scheduler
       "kernel.sched_autogroup_enabled" = 0;
       "kernel.sched_child_runs_first" = 1;
       "kernel.sched_min_granularity_ns" = 10000000;
       "kernel.sched_wakeup_granularity_ns" = 15000000;
 
-      # File system tweaks
       "fs.file-max" = 2097152;
       "fs.inotify.max_user_watches" = 524288;
 
-      # Network optimization
       "net.core.rmem_max" = 2500000;
       "net.core.wmem_max" = 2500000;
       "net.core.rmem_default" = 1048576;
@@ -124,49 +111,40 @@
       "net.ipv4.tcp_congestion_control" = "bbr";
       "net.ipv4.tcp_slow_start_after_idle" = 0;
 
-      # PID optimization
       "kernel.pid_max" = 4194304;
 
-      # Needed for anbox
       "kernel.unprivileged_userns_clone" = 1;
     };
 
-    kernelModules = [ "binder_linux" "ashmem_linux" ];
-
+    kernelModules = ["binder_linux" "ashmem_linux"];
   };
 
+  #######################
+  #  DISPLAY & DESKTOP  #
+  #######################
 
-#######################
-#  DISPLAY & DESKTOP  #
-#######################
-
-xdg.portal = {
-  enable = true;
-  wlr.enable = true;
-  # Enable extra portals
-  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  # Configure default portal behavior
-  config = {
-    common = {
-      default = ["gtk"];
-      "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
-    };
-    # Configure sway-specific portals with priority enforcement
-    sway = {
-      default = lib.mkForce ["wlr"]; # Ensure "wlr" is enforced
-      "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
-      "org.freedesktop.impl.portal.Screencast" = ["wlr"];
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    config = {
+      common = {
+        default = ["gtk"];
+        "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+      };
+      sway = {
+        default = lib.mkForce ["wlr"];
+        "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
+        "org.freedesktop.impl.portal.Screencast" = ["wlr"];
+      };
     };
   };
-};
 
-  # AMD GPU specific hardware config
   hardware = {
     bluetooth.enable = true;
     ledger.enable = true;
     xone.enable = true;
 
-    # New unified graphics setup
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -179,23 +157,19 @@ xdg.portal = {
     };
   };
 
-  # Power management optimization
   powerManagement = {
     cpuFreqGovernor = "performance";
     enable = true;
   };
 
-# Display server configuration
   services.xserver = {
     enable = true;
 
-    # Input settings
     xkb = {
       variant = "";
-};
+    };
 
-    # AMD GPU optimizations
-    videoDrivers = [ "amdgpu" ];
+    videoDrivers = ["amdgpu"];
     deviceSection = ''
       Option "TearFree" "true"
       Option "VariableRefresh" "true"
@@ -203,32 +177,29 @@ xdg.portal = {
       Option "DRI" "3"
       Option "AccelMethod" "glamor"
     '';
-};
+  };
 
-    services.libinput = {
-     enable = true;
-     touchpad = {
+  services.libinput = {
+    enable = true;
+    touchpad = {
       tapping = true;
       naturalScrolling = false;
       scrollMethod = "twofinger";
       accelSpeed = "0.7";
       disableWhileTyping = true;
     };
-   };
+  };
 
-  # Ly service configuration
- services.displayManager.ly = {
+  services.displayManager.ly = {
     enable = true;
-    };
+  };
 
-  # Console settings
   console = {
     useXkbConfig = true;
     font = "Lat2-Terminus16";
   };
 
-  # UWSM and dbus configuration
-  services.dbus.implementation = "broker";  # Use dbus-broker as recommended
+  services.dbus.implementation = "broker";
 
   programs.uwsm = {
     enable = true;
@@ -239,19 +210,16 @@ xdg.portal = {
     };
   };
 
-  # Sway configuration
   programs.sway = {
     enable = true;
     package = pkgs.swayfx;
-    wrapperFeatures.gtk = true;  # Enables GTK integration
+    wrapperFeatures.gtk = true;
   };
 
-  # Wayland configuration
   programs = {
     xwayland.enable = true;
     waybar.enable = false;
 
-    # Game optimizations
     gamemode = {
       enable = true;
       settings = {
@@ -265,7 +233,6 @@ xdg.portal = {
           apply_gpu_optimisations = "accept-responsibility";
           gpu_device = 0;
           amd_performance_level = "high";
-          # APU specific settings
           igpu_power_control = "yes";
           igpu_high_performance = "yes";
         };
@@ -277,17 +244,12 @@ xdg.portal = {
     };
   };
 
-  # Environment variables for Wayland
   environment.variables = {
-    # Wayland
     NIXOS_OZONE_WL = "1";
-    # AMD variables
     AMD_VULKAN_ICD = "RADV";
-    RADV_PERFTEST = "gpl,nosam";  # Optimized for APU
+    RADV_PERFTEST = "gpl,nosam";
     VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
-    # Compatibility
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
-    # Wayland-specific
     MOZ_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
@@ -295,18 +257,15 @@ xdg.portal = {
     SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
     XDG_SESSION_TYPE = "wayland";
-    # Mesa optimization
     MESA_VK_VERSION_OVERRIDE = "1.3";
     MESA_LOADER_DRIVER_OVERRIDE = "radeonsi";
   };
-#######################
+  #######################
   # AUDIO CONFIGURATION #
   #######################
 
-  # Enable RealtimeKit
   security.rtkit.enable = true;
 
-  # PipeWire Configuration
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -314,44 +273,34 @@ xdg.portal = {
     pulse.enable = true;
     jack.enable = true;
 
-    # Low-latency audio configuration
     extraConfig.pipewire = {
       "context.properties" = {
-        # Core settings
         "default.clock.rate" = 48000;
         "default.clock.quantum" = 1024;
         "default.clock.min-quantum" = 1024;
         "default.clock.max-quantum" = 1024;
         "core.clock.power-of-two-quantum" = true;
 
-        # Process settings
         "core.daemon" = true;
         "core.name" = "pipewire-0";
         "mem.allow-mlock" = true;
 
-        # Latency settings
         "node.latency" = "256/48000";
         "vm.overcommit" = true;
 
-        # Sample rates
-        "default.clock.allowed-rates" = [ 44100 48000 88200 96000 ];
+        "default.clock.allowed-rates" = [44100 48000 88200 96000];
 
-        # Recovery settings
         "core.recovery.time" = 10000;
 
-        # Fragment settings
         "default.fragments" = 2;
         "default.fragment.size-max" = 4096;
 
-        # Format settings
         "default.format" = "F32";
         "default.position" = ["FL" "FR"];
 
-        # Additional optimizations
         "support.dbus" = true;
         "log.level" = 2;
 
-        # PulseAudio compatibility settings
         "pulse.min.req" = 256;
         "pulse.default.req" = 256;
         "pulse.max.req" = 256;
@@ -360,7 +309,6 @@ xdg.portal = {
         "pulse.max.frag" = 256;
       };
 
-      # Module configuration
       "context.modules" = [
         {
           name = "libpipewire-module-rtkit";
@@ -370,7 +318,7 @@ xdg.portal = {
             "rt.time.soft" = 2000000;
             "rt.time.hard" = 2000000;
           };
-          flags = [ "ifexists" "nofail" ];
+          flags = ["ifexists" "nofail"];
         }
         {
           name = "libpipewire-module-protocol-pulse";
@@ -386,20 +334,62 @@ xdg.portal = {
     };
   };
 
-  # Unified PAM configuration
   security.pam = {
     loginLimits = [
-      # Audio and realtime limits
-      { domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }
-      { domain = "@audio"; item = "rtprio"; type = "-"; value = "99"; }
-      { domain = "@audio"; item = "nofile"; type = "soft"; value = "99999"; }
-      { domain = "@audio"; item = "nofile"; type = "hard"; value = "99999"; }
-      { domain = "@audio"; item = "nice"; type = "-"; value = "-20"; }
-      { domain = "@realtime"; item = "nice"; type = "-"; value = "-20"; }
-      { domain = "@realtime"; item = "rtprio"; type = "-"; value = "99"; }
-      # System limits
-      { domain = "*"; item = "memlock"; type = "soft"; value = "unlimited"; }
-      { domain = "*"; item = "memlock"; type = "hard"; value = "unlimited"; }
+      {
+        domain = "@audio";
+        item = "memlock";
+        type = "-";
+        value = "unlimited";
+      }
+      {
+        domain = "@audio";
+        item = "rtprio";
+        type = "-";
+        value = "99";
+      }
+      {
+        domain = "@audio";
+        item = "nofile";
+        type = "soft";
+        value = "99999";
+      }
+      {
+        domain = "@audio";
+        item = "nofile";
+        type = "hard";
+        value = "99999";
+      }
+      {
+        domain = "@audio";
+        item = "nice";
+        type = "-";
+        value = "-20";
+      }
+      {
+        domain = "@realtime";
+        item = "nice";
+        type = "-";
+        value = "-20";
+      }
+      {
+        domain = "@realtime";
+        item = "rtprio";
+        type = "-";
+        value = "99";
+      }
+      {
+        domain = "*";
+        item = "memlock";
+        type = "soft";
+        value = "unlimited";
+      }
+      {
+        domain = "*";
+        item = "memlock";
+        type = "hard";
+        value = "unlimited";
+      }
     ];
     services = {
       swaylock.text = "auth include login";
@@ -407,9 +397,7 @@ xdg.portal = {
     };
   };
 
-  # Scheduling services
   systemd.services = {
-    # CPU scheduler
     cpu-scheduler = {
       description = "CPU scheduler optimization";
       script = ''
@@ -420,11 +408,9 @@ xdg.portal = {
         Type = "oneshot";
         RemainAfterExit = true;
       };
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
     };
-
   };
-# Device rules
   services.udev.extraRules = ''
     # CPU and audio optimizations
     SUBSYSTEM=="cpu", ACTION=="add", ATTR{cpufreq/scaling_governor}="performance"
@@ -444,27 +430,24 @@ xdg.portal = {
 
   networking = {
     hostName = "nixosthinkpad";
-    # Network optimization
     networkmanager = {
       enable = true;
       wifi.powersave = false;
     };
 
-    # Firewall configuration
     firewall = {
       enable = true;
-      # Steam ports
-      allowedTCPPorts = [ 27036 27037 ];
-      allowedUDPPorts = [ 27031 27036 ];
+      allowedTCPPorts = [27036 27037];
+      allowedUDPPorts = [27031 27036];
     };
   };
-security.polkit.enable = true;
+  security.polkit.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
 
   services.dbus = {
     enable = true;
-    packages = [ pkgs.gcr ];
+    packages = [pkgs.gcr];
   };
 
   security.pam.services.login.enableGnomeKeyring = true;
@@ -473,7 +456,6 @@ security.polkit.enable = true;
   # GAMING & APPLICATIONS #
   #########################
 
-  # Steam configuration
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
@@ -494,7 +476,6 @@ security.polkit.enable = true;
     };
   };
 
-  # Core programs
   programs = {
     zsh.enable = true;
     direnv.enable = true;
@@ -502,7 +483,6 @@ security.polkit.enable = true;
     adb.enable = true;
     appimage.binfmt.enable = true;
 
-    # Gamescope enhancement
     gamescope = {
       enable = true;
       capSysNice = true;
@@ -513,10 +493,9 @@ security.polkit.enable = true;
         "--steam"
       ];
     };
-    corectrl.enable = true;  # AMD GPU control
+    corectrl.enable = true;
   };
 
-  # Virtualization
   virtualisation = {
     docker = {
       enable = true;
@@ -526,8 +505,7 @@ security.polkit.enable = true;
       };
     };
     podman.enable = true;
-    waydroid.enable = true;
-    #anbox.enable = true;
+    waydroid.enable = false;
   };
 
   #######################
@@ -535,32 +513,27 @@ security.polkit.enable = true;
   #######################
 
   services = {
-    # Printing
     printing = {
       enable = true;
       browsing = true;
-      drivers = with pkgs; [ gutenprint hplip splix ];
+      drivers = with pkgs; [gutenprint hplip splix];
     };
 
-    # Network services
     avahi = {
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
     };
 
-    # System optimization
     fstrim = {
       enable = true;
       interval = "weekly";
     };
 
-    # System services
     tailscale.enable = true;
     udisks2.enable = true;
 
-    # Performance monitoring
-    thermald.enable = true;  # CPU temperature management
+    thermald.enable = true;
   };
 
   #######################
@@ -570,10 +543,10 @@ security.polkit.enable = true;
   systemd.user = {
     services."wayland-wm@" = {
       description = "Wayland compositor session %I";
-      documentation = [ "man:systemd.special(7)" ];
-      bindsTo = [ "graphical-session.target" ];
-      wants = [ "graphical-session-pre.target" ];
-      after = [ "graphical-session-pre.target" ];
+      documentation = ["man:systemd.special(7)"];
+      bindsTo = ["graphical-session.target"];
+      wants = ["graphical-session-pre.target"];
+      after = ["graphical-session-pre.target"];
 
       serviceConfig = {
         Type = "simple";
@@ -583,22 +556,22 @@ security.polkit.enable = true;
         TimeoutStopSec = "10";
       };
 
-      wantedBy = [ "graphical-session.target" ];
+      wantedBy = ["graphical-session.target"];
     };
 
     targets = {
       sway-session = {
         description = "sway compositor session";
-        bindsTo = [ "graphical-session.target" ];
-        wants = [ "graphical-session-pre.target" ];
-        after = [ "graphical-session-pre.target" ];
+        bindsTo = ["graphical-session.target"];
+        wants = ["graphical-session-pre.target"];
+        after = ["graphical-session-pre.target"];
       };
 
       wayland-session = {
         description = "Wayland session";
-        bindsTo = [ "graphical-session.target" ];
-        wants = [ "graphical-session-pre.target" ];
-        after = [ "graphical-session-pre.target" ];
+        bindsTo = ["graphical-session.target"];
+        wants = ["graphical-session-pre.target"];
+        after = ["graphical-session-pre.target"];
       };
     };
   };
@@ -637,6 +610,7 @@ security.polkit.enable = true;
     # Development
     git
     cachix
+    age
 
     # Terminal utilities
     tldr
@@ -644,6 +618,7 @@ security.polkit.enable = true;
     fastfetch
     cpufetch
     alacritty
+    bsdgames
 
     # Window management
     fuzzel
@@ -663,9 +638,6 @@ security.polkit.enable = true;
     radeontop
     radeon-profile
 
-    # Security
-    age
-    
     # Hardware
     libinput
     libinput-gestures
