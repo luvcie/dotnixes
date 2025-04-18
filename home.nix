@@ -51,6 +51,15 @@
   home.packages = with pkgs; [
 
     # Recent additions
+    #mouseless
+    #cherrytree
+    #sqlmap
+    #metasploit
+    yeetgif
+    nushell
+    wf-recorder
+    gpu-screen-recorder-gtk
+    gpu-screen-recorder
     gnupg
     libcaca
     wireshark
@@ -59,6 +68,13 @@
     drill
     hdf5
     asciinema
+    helix
+    clipboard-jh
+    space-cadet-pinball
+    ocaml
+    exploitdb
+    kooha
+    wayfarer
     
     # Sway packages
     sov
@@ -108,8 +124,12 @@
     nasm
     binutils
     gdb
+    cling
 
     #cyber
+    whatweb
+    villain
+    openvpn
     hashcat
     foremost
     radare2
@@ -132,6 +152,9 @@
     nikto
     exegol
     h5utils
+    commix
+    wpscan
+
 
     #nwg
     nwg-bar
@@ -165,7 +188,6 @@
     # Media & Entertainment
     vlc
     obs-studio
-    kooha
     gimp-with-plugins
     waylyrics
     textsnatcher
@@ -186,7 +208,6 @@
     bat
     wl-clipboard
     appimage-run
-    kate
     cosmic-edit
     fh
 
