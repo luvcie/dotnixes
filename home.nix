@@ -58,6 +58,7 @@
       sqlmap
       zapzap
       ghostty
+      obsidian
       #metasploit
       yeetgif
       nushell
