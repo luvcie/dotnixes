@@ -1,5 +1,4 @@
 {
-
   ##########
   # INPUTS #
   ##########
@@ -39,7 +38,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   ###########
@@ -47,7 +45,6 @@
   ###########
 
   outputs = inputs: {
-
     ########################
     # System Configuration #
     ########################
@@ -57,7 +54,7 @@
       specialArgs = { inherit inputs; };
       modules = [
         inputs.nur.modules.nixos.default
-	inputs.lix-module.nixosModules.default
+        inputs.lix-module.nixosModules.default
         ./configuration.nix
         ./hardware-configuration.nix
       ];
@@ -67,18 +64,24 @@
     # Home Configuration  #
     #######################
 
-    homeConfigurations."lucie" = inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = import inputs.nixpkgs {
-        system = "x86_64-linux";
-        overlays = [
-
+    homeConfigurations."lucie" =
+      let
+        pkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+		  config = { allowUnfree = true; };
+          overlays = [ ];
+        };
+      in
+      inputs.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = {
+          inherit inputs pkgs;
+        };
+        modules = inputs.ashley-dotfiles.homeModules ++ [
+          ./home.nix
+          inputs.nixvim.homeManagerModules.nixvim
         ];
       };
-      extraSpecialArgs = { inherit inputs; };
-      modules = inputs.ashley-dotfiles.homeModules ++ [
-      ./home.nix
-      inputs.nixvim.homeManagerModules.nixvim
-      ];
-    };
-  };  
-}     
+  };
+}
+

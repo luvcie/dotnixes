@@ -51,6 +51,8 @@
   home.packages = with pkgs;
     [
       # Recent additions
+	  man-pages
+	  man-pages-posix
       browsers
       via
       mouseless
@@ -58,9 +60,8 @@
       sqlmap
       zapzap
       ghostty
-      obsidian
+      #obsidian
       #metasploit
-      yeetgif
       nushell
       wf-recorder
       gpu-screen-recorder-gtk
@@ -112,10 +113,10 @@
       k9s
       kubectl
       argocd
+	  vscode
       git
       hugo
       micro
-      vscode
       alejandra
       any-nix-shell
       nix-prefetch-scripts

@@ -1,9 +1,20 @@
+{ pkgs, lib, ... }:
 
-{ pkgs, ... }:
+let
+  fortyTwoHeaderRepo = pkgs.fetchFromGitHub {
+    owner = "42paris";
+    repo = "42header";
+    rev = "master";
+    sha256 = "sha256-T4BdswmjlrR3KG+97mzncuJ/1OAvx7GDwXW6MI5fBNE=";
+  };
+in
 {
   home.packages = with pkgs; [
     wl-clipboard
   ];
+
+  home.file."config/nvim/plugin/stdheader.vim".source =
+    "${fortyTwoHeaderRepo}/plugin/stdheader.vim";
 
   programs.nixvim = {
     enable = true;
@@ -17,6 +28,11 @@
     globals = {
       mapleader = " ";
     };
+
+    extraConfigVim = ''
+      let g:user42 = "lucpardo"
+      let g:mail42 = "lucpardo@student.42.fr"
+    '';
 
     opts = {
       encoding = "utf-8";
@@ -40,8 +56,40 @@
     };
 
     keymaps = [
-      # your keymaps remain unchanged
-      # ... (omitted for brevity)
+      { key = "<leader>e"; action = "<cmd>NvimTreeToggle<cr>"; }
+      { key = "<leader>h"; action = "<C-w>h"; }
+      { key = "<leader>j"; action = "<C-w>j"; }
+      { key = "<leader>k"; action = "<C-w>k"; }
+      { key = "<leader>l"; action = "<C-w>l"; }
+      { key = "<leader>q"; action = "<cmd>q!<cr>"; }
+      { key = "<leader>w"; action = "<cmd>w<cr>"; }
+      { key = "<leader><leader>"; action = "<cmd>so %<cr>"; }
+      { key = "<C-s>"; mode = "i"; action = "<esc><cmd>w<cr>a"; }
+      { key = "Y"; action = "y$"; }
+      { key = "n"; action = "nzzzv"; }
+      { key = "N"; action = "Nzzzv"; }
+      { key = "J"; action = "mzJ`z"; }
+      { key = "<C-d>"; action = "<C-d>zz"; }
+      { key = "<C-u>"; action = "<C-u>zz"; }
+      { key = "<leader>v"; action = "<cmd>vsplit<cr>"; }
+      { key = "<leader>s"; action = "<cmd>split<cr>"; }
+      { key = "<esc>"; mode = "t"; action = "<C-\\><C-n>"; }
+      { key = "<leader>tn"; action = "<cmd>tabnew<cr>"; }
+      { key = "<leader>tc"; action = "<cmd>tabclose<cr>"; }
+      { key = "<leader>to"; action = "<cmd>tabonly<cr>"; }
+      { key = "<leader>tp"; action = "<cmd>tabp<cr>"; }
+      { key = "<leader>tbn"; action = "<cmd>tabn<cr>"; }
+      { key = "<leader>u"; action = "<cmd>UndotreeToggle<CR>"; }
+      { key = "<leader>r"; action = "<cmd>lua vim.lsp.buf.rename()<CR>"; }
+      { key = "<leader>ca"; action = "<cmd>lua vim.lsp.buf.code_action()<CR>"; }
+      { key = "<leader>gd"; action = "<cmd>lua vim.lsp.buf.definition()<CR>"; }
+      { key = "<leader>gr"; action = "<cmd>lua vim.lsp.buf.references()<CR>"; }
+      { key = "<leader>gi"; action = "<cmd>lua vim.lsp.buf.implementation()<CR>"; }
+      { key = "<leader>gh"; action = "<cmd>lua vim.lsp.buf.hover()<CR>"; }
+      { key = "<leader>gs"; action = "<cmd>lua vim.lsp.buf.signature_help()<CR>"; }
+      { key = "<leader>cd"; action = "<cmd>lua vim.diagnostic.open_float()<CR>"; }
+      { key = "<leader>cp"; action = "<cmd>lua vim.diagnostic.goto_prev()<CR>"; }
+      { key = "<leader>cn"; action = "<cmd>lua vim.diagnostic.goto_next()<CR>"; }
     ];
 
     plugins = {
@@ -150,6 +198,21 @@
       colorizer.enable = true;
       vim-surround.enable = true;
       web-devicons.enable = true;
+      nvim-tree = {
+        enable = true;
+        view = {
+          width = 30;
+          side = "left";
+        };
+      };
+      undotree.enable = true;
+      luasnip.enable = true;
+      cmp-nvim-lsp.enable = true;
+      cmp-buffer.enable = true;
+      cmp-path.enable = true;
+      cmp-cmdline.enable = true;
+      cmp_luasnip.enable = true;
+
     };
   };
 }
