@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   fortyTwoHeaderRepo = pkgs.fetchFromGitHub {
@@ -7,14 +7,17 @@ let
     rev = "master";
     sha256 = "sha256-T4BdswmjlrR3KG+97mzncuJ/1OAvx7GDwXW6MI5fBNE=";
   };
+
+  fortyTwoHeaderPlugin = pkgs.vimUtils.buildVimPlugin {
+    name = "42header-vim";
+    src = fortyTwoHeaderRepo;
+  };
+
 in
 {
   home.packages = with pkgs; [
     wl-clipboard
   ];
-
-  home.file."config/nvim/plugin/stdheader.vim".source =
-    "${fortyTwoHeaderRepo}/plugin/stdheader.vim";
 
   programs.nixvim = {
     enable = true;
@@ -22,16 +25,21 @@ in
     viAlias = true;
     vimAlias = true;
 
+    extraPlugins = [
+      fortyTwoHeaderPlugin
+    ];
+
     clipboard.providers.wl-copy.enable = true;
     colorschemes.oxocarbon.enable = true;
 
     globals = {
       mapleader = " ";
+      user42 = "lucpardo";
+      mail42 = "lucpardo@student.42.fr";
     };
 
     extraConfigVim = ''
-      let g:user42 = "lucpardo"
-      let g:mail42 = "lucpardo@student.42.fr"
+
     '';
 
     opts = {
@@ -86,10 +94,10 @@ in
       { key = "<leader>gr"; action = "<cmd>lua vim.lsp.buf.references()<CR>"; }
       { key = "<leader>gi"; action = "<cmd>lua vim.lsp.buf.implementation()<CR>"; }
       { key = "<leader>gh"; action = "<cmd>lua vim.lsp.buf.hover()<CR>"; }
-      { key = "<leader>gs"; action = "<cmd>lua vim.lsp.buf.signature_help()<CR>"; }
-      { key = "<leader>cd"; action = "<cmd>lua vim.diagnostic.open_float()<CR>"; }
+      { key = "<leader>gs"; action = "<cmd>lua vim.diagnostic.open_float()<CR>"; }
       { key = "<leader>cp"; action = "<cmd>lua vim.diagnostic.goto_prev()<CR>"; }
       { key = "<leader>cn"; action = "<cmd>lua vim.diagnostic.goto_next()<CR>"; }
+      { key = "<F1>"; action = "<cmd>Stdheader<CR>"; }
     ];
 
     plugins = {
