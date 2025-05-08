@@ -51,6 +51,9 @@
   home.packages = with pkgs;
     [
       # Recent additions
+	  pinentry-gnome3
+	  seahorse
+	  blueberry
 	  man-pages
 	  man-pages-posix
       browsers
@@ -292,10 +295,12 @@
 
   programs.git = {
     enable = true;
-    userName = "lucie";
-    userEmail = "your.email@example.com";
+    userName = "luvcie";
+    userEmail = "lucpardo@student.42.fr";
 
     extraConfig = {
+    credential.helper = "${pkgs.git}/libexec/git-core/git-credential-libsecret";
+
       init.defaultBranch = "main";
       pull.rebase = true;
       core.editor = "nvim";
