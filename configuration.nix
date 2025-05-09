@@ -21,8 +21,6 @@
       sandbox = true;
       experimental-features = ["nix-command" "flakes"];
       auto-optimise-store = true;
-      cores = 4;
-      max-jobs = 4;
       builders-use-substitutes = true;
     };
     gc = {
@@ -45,7 +43,7 @@
   #######################
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_zen; #pkgs.linuxKernel.packages.linux_xanmod_latest; #pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_zen;
 
     loader = {
       systemd-boot = {
@@ -57,48 +55,23 @@
       timeout = 3;
     };
 
-    # kernel params optimized for amd apu
     kernelParams = [
       "threadirqs"
       "mitigations=off"
-      "idle=nomwait"
-      "processor.max_cstate=1"
       "amd_pstate=active"
-      "clearcpuid=rdrand"
-
       "amdgpu.ppfeaturemask=0xffffffff"
-      "amdgpu.dcfeaturemask=0x8"
       "amdgpu.freesync_video=1"
       "amdgpu.gpu_recovery=1"
-      "radeon.si_support=0"
-      "amdgpu.si_support=1"
-
-      "preempt=voluntary"
       "transparent_hugepage=never"
-      "clocksource=tsc"
-      "tsc=reliable"
-
-      "workqueue.power_efficient=off"
-      "amd_iommu=off"
-      "pcie_aspm=off"
-
-      "amdgpu.audio=0"
-      "usbcore.autosuspend=-1"
-      "snd_hda_intel.power_save=0"
-      "snd_hda_intel.probe_mask=1"
     ];
 
     kernel.sysctl = {
       "vm.swappiness" = 10;
-      "vm.dirty_ratio" = 60;
-      "vm.dirty_background_ratio" = 2;
       "vm.vfs_cache_pressure" = 50;
       "vm.max_map_count" = 262144;
 
       "kernel.sched_autogroup_enabled" = 0;
       "kernel.sched_child_runs_first" = 1;
-      "kernel.sched_min_granularity_ns" = 10000000;
-      "kernel.sched_wakeup_granularity_ns" = 15000000;
 
       "fs.file-max" = 2097152;
       "fs.inotify.max_user_watches" = 524288;
@@ -109,7 +82,6 @@
       "net.core.wmem_default" = 1048576;
       "net.ipv4.tcp_fastopen" = 3;
       "net.ipv4.tcp_congestion_control" = "bbr";
-      "net.ipv4.tcp_slow_start_after_idle" = 0;
 
       "kernel.pid_max" = 4194304;
 
@@ -148,12 +120,6 @@
     graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [
-        amdvlk
-      ];
-      extraPackages32 = with pkgs; [
-        driversi686Linux.amdvlk
-      ];
     };
   };
 
@@ -171,11 +137,8 @@
 
     videoDrivers = ["amdgpu"];
     deviceSection = ''
-      Option "TearFree" "true"
       Option "VariableRefresh" "true"
-      Option "AsyncFlipSecondaries" "true"
       Option "DRI" "3"
-      Option "AccelMethod" "glamor"
     '';
   };
 
@@ -232,7 +195,7 @@
         gpu = {
           apply_gpu_optimisations = "accept-responsibility";
           gpu_device = 0;
-          amd_performance_level = "high";
+          # amd_performance_level = "high"; # Removed
           igpu_power_control = "yes";
           igpu_high_performance = "yes";
         };
@@ -248,7 +211,6 @@
     NIXOS_OZONE_WL = "1";
     AMD_VULKAN_ICD = "RADV";
     RADV_PERFTEST = "gpl,nosam";
-    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
     MOZ_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
@@ -257,8 +219,6 @@
     SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
     XDG_SESSION_TYPE = "wayland";
-    MESA_VK_VERSION_OVERRIDE = "1.3";
-    MESA_LOADER_DRIVER_OVERRIDE = "radeonsi";
   };
   #######################
   # AUDIO CONFIGURATION #
@@ -397,35 +357,10 @@
     };
   };
 
-  systemd.services = {
-    cpu-scheduler = {
-      description = "CPU scheduler optimization";
-      script = ''
-        echo 2 > /sys/class/rtc/rtc0/max_user_freq
-        echo 2048 > /proc/sys/vm/nr_hugepages
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      wantedBy = ["multi-user.target"];
-    };
-  };
-  services.udev.extraRules = ''
-    # CPU and audio optimizations
-    SUBSYSTEM=="cpu", ACTION=="add", ATTR{cpufreq/scaling_governor}="performance"
-    SUBSYSTEM=="sound", ATTR{power/control}="on"
-    # USB audio priority
-    SUBSYSTEM=="usb", ATTR{power/control}="on"
-    SUBSYSTEM=="usb", ATTR{power/autosuspend}="-1"
-    # AMD GPU specific rules
-    KERNEL=="card0", SUBSYSTEM=="drm", DRIVERS=="amdgpu", ATTR{device/power_dpm_force_performance_level}="high"
-    # Audio device rules
-    KERNEL=="snd_*", ENV{PULSE_IGNORE}="1"
-  '';
+  services.udev.extraRules = ""
 
   #######################
-  #      NETWORKING     #
+  #     NETWORKING      #
   #######################
 
   networking = {
@@ -537,7 +472,7 @@
   };
 
   #######################
-  #    SYSTEMD USER    #
+  #    SYSTEMD USER     #
   #######################
 
   systemd.user = {
