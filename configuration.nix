@@ -56,11 +56,6 @@
     };
 
     kernelParams = [
-      "threadirqs"
-      "mitigations=off"
-      "amd_pstate=active"
-      "amdgpu.ppfeaturemask=0xffffffff"
-      "amdgpu.freesync_video=1"
       "amdgpu.gpu_recovery=1"
       "transparent_hugepage=never"
     ];
@@ -164,15 +159,6 @@
 
   services.dbus.implementation = "broker";
 
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors.sway = {
-      prettyName = "Sway";
-      binPath = "${pkgs.swayfx}/bin/sway";
-      comment = "Tiling Wayland compositor";
-    };
-  };
-
   programs.sway = {
     enable = true;
     package = pkgs.swayfx;
@@ -195,7 +181,6 @@
         gpu = {
           apply_gpu_optimisations = "accept-responsibility";
           gpu_device = 0;
-          # amd_performance_level = "high"; # Removed
           igpu_power_control = "yes";
           igpu_high_performance = "yes";
         };
@@ -357,7 +342,7 @@
     };
   };
 
-  services.udev.extraRules = ""
+  services.udev.extraRules = "";
 
   #######################
   #     NETWORKING      #
@@ -472,54 +457,11 @@
   };
 
   #######################
-  #    SYSTEMD USER     #
-  #######################
-
-  systemd.user = {
-    services."wayland-wm@" = {
-      description = "Wayland compositor session %I";
-      documentation = ["man:systemd.special(7)"];
-      bindsTo = ["graphical-session.target"];
-      wants = ["graphical-session-pre.target"];
-      after = ["graphical-session-pre.target"];
-
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.uwsm}/bin/uwsm start %i";
-        Restart = "on-failure";
-        RestartSec = "1";
-        TimeoutStopSec = "10";
-      };
-
-      wantedBy = ["graphical-session.target"];
-    };
-
-    targets = {
-      sway-session = {
-        description = "sway compositor session";
-        bindsTo = ["graphical-session.target"];
-        wants = ["graphical-session-pre.target"];
-        after = ["graphical-session-pre.target"];
-      };
-
-      wayland-session = {
-        description = "Wayland session";
-        bindsTo = ["graphical-session.target"];
-        wants = ["graphical-session-pre.target"];
-        after = ["graphical-session-pre.target"];
-      };
-    };
-  };
-
-  #######################
   #   SYSTEM PACKAGES   #
   #######################
 
   environment.systemPackages = with pkgs; [
-    # Login Manager
     ly
-
-    # System utilities
     pavucontrol
     usbutils
     udiskie
@@ -534,46 +476,30 @@
     wlogout
     nemo-with-extensions
     lsof
-
-    # Sway essentials
     swaylock
     swayidle
     swayfx
     dmenu
     xwayland
-
-    # Development
     git
     cachix
     age
-
-    # Terminal utilities
     tldr
     ranger
     fastfetch
     cpufetch
     alacritty
     bsdgames
-
-    # Window management
     fuzzel
     wofi
-
-    # Network utilities
     wget
     nmap
     inetutils
     magic-wormhole-rs
     networkmanagerapplet
-
-    # Media
     yt-dlp
-
-    # AMD utilities
     radeontop
     radeon-profile
-
-    # Hardware
     libinput
     libinput-gestures
   ];
