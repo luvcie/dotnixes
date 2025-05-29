@@ -36,10 +36,21 @@
     };
   };
 
+  boot = {
+	loader = {
+		systemd-boot = {        
+		enable = true;
+		consoleMode = "max";
+        editor = false;      
+		};
+		efi.canTouchEfiVariables = true;
+		timeout = 3;
+	};
+	};
+
   nixpkgs.config.allowUnfree = true;
 
   services.gvfs.enable = true;
-  services.flatpak.enable = true;
 
   #######################
   #  DISPLAY & DESKTOP  #
@@ -215,6 +226,8 @@
   #########################
   # GAMING & APPLICATIONS #
   #########################
+
+  services.flatpak.enable = true;
 
   programs.steam = {
     enable = true;
