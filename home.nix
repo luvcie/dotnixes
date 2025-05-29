@@ -2,6 +2,7 @@
   inputs,
   config,
   pkgs,
+  lib,
   ...
 }: {
   ######################
@@ -14,13 +15,13 @@
     ./modules/zsh.nix
     ./modules/nixvim.nix
     ./modules/sway.nix
-    ./modules/niri.nix
+    ./modules/sway.nix
     ./modules/theme.nix
   ];
 
   programs.home-manager.enable = true;
 
-  home.sessionVariables = {
+  home.sessionVariables = lib.mkForce {
     XDG_CURRENT_DESKTOP = "sway";
     XDG_SESSION_DESKTOP = "sway";
     GDK_BACKEND = "wayland";
