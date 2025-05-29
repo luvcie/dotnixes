@@ -57,12 +57,16 @@
 	  man-pages
 	  man-pages-posix
       browsers
-      via
       mouseless
       cherrytree
       sqlmap
-      zapzap
       ghostty
+	  gnumake
+		(pkgs.buildEnv {
+        name = "clang-only";
+        paths = [ clang_12 ];
+        ignoreCollisions = true;
+      })
       #obsidian
       #metasploit
       nushell
@@ -85,6 +89,7 @@
       kooha
       wayfarer
       pentestgpt
+	  zellij
 
       # Sway packages
       sov
@@ -130,11 +135,9 @@
       barrier
       lazydocker
       helix
-      distcc
-      nasm
-      binutils
-      gdb
-      cling
+      #distcc
+      #nasm
+      #binutils
 
       #cyber
       whatweb
