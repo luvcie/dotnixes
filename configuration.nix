@@ -70,6 +70,11 @@
         "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
         "org.freedesktop.impl.portal.Screencast" = ["wlr"];
       };
+	        niri = {
+        default = ["wlr"];
+        "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
+        "org.freedesktop.impl.portal.Screencast" = ["wlr"];
+	};
     };
   };
 
@@ -130,6 +135,8 @@
     package = pkgs.swayfx;
     wrapperFeatures.gtk = true;
   };
+
+  programs.niri.enable = true;
 
   programs = {
     xwayland.enable = true;
