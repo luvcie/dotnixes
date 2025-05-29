@@ -14,6 +14,7 @@
     ./modules/zsh.nix
     ./modules/nixvim.nix
     ./modules/sway.nix
+    ./modules/niri.nix
     ./modules/theme.nix
   ];
 
