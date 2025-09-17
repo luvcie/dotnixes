@@ -47,7 +47,7 @@ in {
 
     config = rec {
       modifier = "Mod4";
-      terminal = "wezterm";
+      terminal = "terminator";
       menu = "${pkgs.wofi}/bin/wofi --show drun";
       output = {
         "*" = {
@@ -64,7 +64,7 @@ in {
         border = 3;
         commands = [
           {
-            criteria = { app_id = "chromium"; };
+            criteria = { app_id = "zen-alpha"; };
             command = "move container to workspace 2";
           }
           {

@@ -8,8 +8,8 @@
   imports = [
     ./hardware-configuration.nix
     ./pksay.nix
-	./modules/audio.nix
-	./modules/kernel.nix
+    ./modules/audio.nix
+    ./modules/kernel.nix
   ];
 
   #######################
@@ -34,21 +34,28 @@
       automatic = true;
       dates = ["weekly"];
     };
+    package = lib.mkForce (pkgs.lix.overrideAttrs (oldAttrs: {
+      separateDebugInfo = false;
+      __structuredAttrs = true;
+    }));
   };
 
   boot = {
-	loader = {
-		systemd-boot = {        
-		enable = true;
-		consoleMode = "max";
-        editor = false;      
-		};
-		efi.canTouchEfiVariables = true;
-		timeout = 3;
-	};
-	};
+    loader = {
+      systemd-boot = {
+        enable = true;
+        consoleMode = "max";
+        editor = false;
+      };
+      efi.canTouchEfiVariables = true;
+      timeout = 3;
+    };
+  };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowunfree = true;
+    separateDebugInfo = false;
+  };
 
   services.gvfs.enable = true;
 
@@ -70,11 +77,11 @@
         "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
         "org.freedesktop.impl.portal.Screencast" = ["wlr"];
       };
-	        niri = {
+      niri = {
         default = ["wlr"];
         "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
         "org.freedesktop.impl.portal.Screencast" = ["wlr"];
-	};
+      };
     };
   };
 

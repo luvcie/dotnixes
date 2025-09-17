@@ -15,7 +15,8 @@
     ./modules/zsh.nix
     ./modules/nixvim.nix
     ./modules/sway.nix
-    ./modules/sway.nix
+    ./modules/niri.nix
+	./modules/niriconf.nix
     ./modules/theme.nix
   ];
 
@@ -53,13 +54,29 @@
   home.packages = with pkgs;
     [
       # Recent additions
+	  picocom
+	  minicom
+	  screen
+	  techmino
+	  newsboat
+	  anki
+	  eaglemode
+	  upscayl
+	  mgba
+	  masterpdfeditor4
+	  cables
+	  wine
+	  winetricks
+	  bubblewrap
 	  pinentry-gnome3
+	  fuse-overlayfs
 	  seahorse
 	  blueberry
 	  man-pages
 	  man-pages-posix
       browsers
       mouseless
+	  dwarfs
       cherrytree
       sqlmap
       ghostty
@@ -188,9 +205,10 @@
       firefox
       librewolf
       chromium
-      (vesktop.override {
-        electron = electron_33;
-      })
+	  vesktop
+      #(vesktop.override {
+      #  electron = electron_33;
+      #})
       signal-desktop
       telegram-desktop
       webcord-vencord
@@ -256,7 +274,6 @@
       sl
       lolcat
       hollywood
-      cli-visualizer
       tmux
       tgpt
       element

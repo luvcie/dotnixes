@@ -6,7 +6,7 @@
             #######
   programs.starship.enable = true;
   programs.fzf.enable = true;
-  programs.thefuck.enable = true;
+  programs.pay-respects.enable = true;
   programs.zoxide.enable = true;
 
   programs.zsh = {
@@ -65,7 +65,7 @@
       }
     ];
 
-    initExtra = ''
+    initContent = ''
       HISTSIZE=10000
       SAVEHIST=10000
       setopt SHARE_HISTORY
