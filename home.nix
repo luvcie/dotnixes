@@ -54,6 +54,7 @@
   home.packages = with pkgs;
     [
       # Recent additions
+	  (tetrio-desktop.override { withTetrioPlus = true; })
 	  picocom
 	  minicom
 	  screen
