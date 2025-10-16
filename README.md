@@ -19,7 +19,7 @@ My NixOS configuration.
 
 ```
 
-Cheatsheet of useful NixOS and git commands:
+### Cheatsheet of useful NixOS and git commands:
 
 sudo nix-collect-garbage -d
 
