@@ -266,7 +266,6 @@
   programs = {
     zsh.enable = true;
     direnv.enable = true;
-    git.enable = true;
     adb.enable = true;
     appimage.binfmt.enable = true;
 
@@ -347,7 +346,6 @@
     swayfx
     dmenu
     xwayland
-    git
     cachix
     age
     tldr

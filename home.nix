@@ -143,6 +143,8 @@
       argocd
 	  vscode
       git
+      git-credential-manager
+      libsecret
       hugo
       micro
       alejandra
@@ -322,7 +324,8 @@
     userEmail = "lucpardo@student.42.fr";
 
     extraConfig = {
-    credential.helper = "${pkgs.git}/libexec/git-core/git-credential-libsecret";
+      credential.helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
+      credential.credentialStore = "secretservice";
 
       init.defaultBranch = "main";
       pull.rebase = true;
