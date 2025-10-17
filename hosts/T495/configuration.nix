@@ -82,6 +82,11 @@
         "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
         "org.freedesktop.impl.portal.Screencast" = ["wlr"];
       };
+      hyprland = {
+        default = ["wlr"];
+        "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
+        "org.freedesktop.impl.portal.Screencast" = ["wlr"];
+      };
     };
   };
 
@@ -144,6 +149,7 @@
   };
 
   programs.niri.enable = true;
+  programs.hyprland.enable = true;
 
   programs = {
     xwayland.enable = true;
@@ -350,7 +356,6 @@
     cachix
     age
     tldr
-    ranger
     fastfetch
     cpufetch
     alacritty

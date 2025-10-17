@@ -18,13 +18,14 @@
     ./modules/niri.nix
 	./modules/niriconf.nix
     ./modules/theme.nix
+	./modules/caelestia.nix
   ];
 
   programs.home-manager.enable = true;
 
   home.sessionVariables = lib.mkForce {
-    XDG_CURRENT_DESKTOP = "sway";
-    XDG_SESSION_DESKTOP = "sway";
+    # XDG_CURRENT_DESKTOP will be set by the compositor
+    # XDG_SESSION_DESKTOP will be set by the compositor
     GDK_BACKEND = "wayland";
     QT_QPA_PLATFORM = "wayland";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
@@ -44,7 +45,6 @@
     ];
   };
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = _: true;
 
   ######################
@@ -128,7 +128,6 @@
     swayidle
     wofi
     scenefx
-    eww
     autotiling-rs
 
     # Wayland Utilities
