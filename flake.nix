@@ -33,7 +33,6 @@
       url = "github:justchokingaround/lobster";
     };
 
-    # Nixvim
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";

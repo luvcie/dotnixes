@@ -7,9 +7,9 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./pksay.nix
-    ./modules/audio.nix
-    ./modules/kernel.nix
+    ../../pksay.nix
+    ../../modules/audio.nix
+    ../../modules/kernel.nix
   ];
 
   #######################
