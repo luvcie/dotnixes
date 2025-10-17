@@ -214,7 +214,7 @@
   #######################
 
   networking = {
-    hostName = "nixosthinkpad";
+    hostName = "T495";
     networkmanager = {
       enable = true;
       wifi.powersave = false;

@@ -49,14 +49,14 @@
     # System Configuration #
     ########################
 
-    nixosConfigurations.nixosthinkpad = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.T495 = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
         inputs.nur.modules.nixos.default
         inputs.lix-module.nixosModules.default
-        ./configuration.nix
-        ./hardware-configuration.nix
+        ./hosts/T495/configuration.nix
+        ./hosts/T495/hardware-configuration.nix
 		{
 			nixpkgs.config.allowUnfree = true;
 		}

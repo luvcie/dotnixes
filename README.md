@@ -25,12 +25,12 @@ My NixOS configuration files.
 
 Apply system configuration:
 ```bash
-sudo nixos-rebuild switch --flake .
+sudo nixos-rebuild switch --flake .#<hostname>
 ```
 
 Apply user configuration:
 ```bash
-home-manager switch --flake .#lucie
+home-manager switch --flake .#<user>
 ```
 
 ## Configuration Structure
@@ -52,17 +52,17 @@ nix flake update
 
 Rebuild and switch system configuration:
 ```bash
-sudo nixos-rebuild switch --flake .
+sudo nixos-rebuild switch --flake .#<hostname>
 ```
 
 Test configuration without switching:
 ```bash
-sudo nixos-rebuild test --flake .
+sudo nixos-rebuild test --flake .#<hostname>
 ```
 
 Rebuild configuration without switching (bootable):
 ```bash
-sudo nixos-rebuild boot --flake .
+sudo nixos-rebuild boot --flake .#<hostname>
 ```
 
 List system generations:
@@ -128,7 +128,7 @@ nix-store --query --references /run/current-system
 
 Switch home configuration:
 ```bash
-home-manager switch --flake .#lucie
+home-manager switch --flake .#<user>
 ```
 
 List home generations:
@@ -138,7 +138,7 @@ home-manager generations
 
 Check home-manager news:
 ```bash
-home-manager news --flake .
+home-manager news --flake .#<user>
 ```
 
 Rollback home configuration:
