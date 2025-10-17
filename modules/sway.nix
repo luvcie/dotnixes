@@ -47,7 +47,7 @@ in {
 
     config = rec {
       modifier = "Mod4";
-      terminal = "terminator";
+      terminal = "wezterm";
       menu = "${pkgs.wofi}/bin/wofi --show drun";
       output = {
         "*" = {
