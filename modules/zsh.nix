@@ -8,6 +8,19 @@
   programs.fzf.enable = true;
   programs.pay-respects.enable = true;
   programs.zoxide.enable = true;
+  
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      auto_sync = true;
+      sync_frequency = "5m";
+      search_mode = "fuzzy";
+      filter_mode = "global";
+      workspaces = false;
+      ctrl_n_shortcuts = true;
+    };
+  };
 
   programs.zsh = {
     enable = true;

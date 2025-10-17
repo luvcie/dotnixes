@@ -228,6 +228,52 @@ Restore specific file:
 git restore <file>
 ```
 
+## Running External Binaries
+
+NixOS cannot run dynamically linked executables intended for generic Linux environments out of the box. This configuration includes `nix-ld` to provide compatibility.
+
+### Basic External Binaries
+
+Most external binaries should work automatically with nix-ld enabled:
+```bash
+./some-external-binary
+```
+
+### Adding Libraries for Complex Binaries
+
+Configure additional libraries in system configuration:
+```nix
+programs.nix-ld = {
+  enable = true;
+  libraries = with pkgs; [
+    stdenv.cc.cc
+    openssl
+    curl
+    zlib
+    # Add other libraries as needed
+  ];
+};
+```
+
+### Using nix-alien for Complex Cases
+
+For binaries requiring more complex setup:
+```bash
+# Install nix-alien
+nix shell nixpkgs#nix-alien
+
+# Run external binary through nix-alien
+nix-alien ./external-binary
+```
+
+### FHS Environment for Standard Linux Software
+
+Create temporary standard Linux filesystem environment:
+```bash
+nix shell --impure nixpkgs#fhs --command bash
+# Run your binary inside this environment
+```
+
 ## Additional Commands
 
 Launch Steam games with GameMode:

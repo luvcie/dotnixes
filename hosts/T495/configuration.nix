@@ -268,6 +268,7 @@
     direnv.enable = true;
     adb.enable = true;
     appimage.binfmt.enable = true;
+    nix-ld.enable = true;
 
     gamescope = {
       enable = true;
