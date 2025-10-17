@@ -51,267 +51,388 @@
   # PACKAGE MANAGEMENT #
   ######################
 
-  home.packages = with pkgs;
-    [
-      # Recent additions
-	  (tetrio-desktop.override { withTetrioPlus = true; })
-	  picocom
-	  minicom
-	  screen
-	  techmino
-	  newsboat
-	  anki
-	  eaglemode
-	  upscayl
-	  mgba
-	  masterpdfeditor4
-	  cables
-	  wine
-	  winetricks
-	  bubblewrap
-	  pinentry-gnome3
-	  fuse-overlayfs
-	  seahorse
-	  blueberry
-	  man-pages
-	  man-pages-posix
-      browsers
-      mouseless
-	  dwarfs
-      cherrytree
-      sqlmap
-      ghostty
-	  gnumake
-		(pkgs.buildEnv {
-        name = "clang-only";
-        paths = [ clang_12 ];
-        ignoreCollisions = true;
-      })
-      #obsidian
-      #metasploit
-      nushell
-      wf-recorder
-      gpu-screen-recorder-gtk
-      gpu-screen-recorder
-      gnupg
-      libcaca
-      wireshark
-      openssl
-      terminator
-      drill
-      hdf5
-      asciinema
-      helix
-      clipboard-jh
-      space-cadet-pinball
-      ocaml
-      exploitdb
-      kooha
-      wayfarer
-      pentestgpt
-	  zellij
+  home.packages = with pkgs; [
+    ###################
+    # WEB BROWSERS    #
+    ###################
+    firefox
+    librewolf
+    chromium
+    google-chrome
 
-      # Sway packages
-      sov
-      swayfx
-      swaylock
-      swayidle
-      wofi
-      scenefx
-      eww
-      jq
-      wireplumber
-      slurp
-      grim
-      satty
-      wl-clipboard
-      brightnessctl
-      pamixer
-      gawk
-      autotiling-rs
-      #otherstuff
-      wev
-      evtest
-      foot
-      xclip
-      # Development Tools
-      jdk
-      lua
-      norminette
-      k9s
-      kubectl
-      argocd
-	  vscode
-      git
-      git-credential-manager
-      libsecret
-      hugo
-      micro
-      alejandra
-      any-nix-shell
-      nix-prefetch-scripts
-      google-chrome
-      chromedriver
-      perl
-      distrobox
-      barrier
-      lazydocker
-      helix
-      #distcc
-      #nasm
-      #binutils
+    #######################
+    # TERMINAL EMULATORS  #
+    #######################
+    terminator
+    foot
+    cool-retro-term
+    ghostty
 
-      #cyber
-      whatweb
-      villain
-      openvpn
-      hashcat
-      foremost
-      radare2
-      scalpel
-      fcrackzip
-      pdfminer
-      ghidra
-      exiftool
-      sn0int
-      sherlock
-      maigret
-      pdf-parser
-      binwalk
-      steghide
-      stegseek
-      stegsolve
-      zsteg
-      outguess
-      caido
-      nikto
-      exegol
-      h5utils
-      commix
-      wpscan
+    ####################
+    # DEVELOPMENT TOOLS #
+    ####################
+    # Version Control
+    git
+    git-credential-manager
+    libsecret
 
-      #nwg
-      nwg-bar
-      nwg-menu
-      nwg-look
-      nwg-dock
-      nwg-panel
-      nwg-hello
-      nwg-drawer
-      nwg-wrapper
-      nwg-clipman
-      nwg-displays
-      nwg-launchers
-      cliphist
+    # IDEs & Editors
+    vscode
+    helix
+    micro
+    cosmic-edit
+    claude-code
 
-      # Internet & Communication
-      firefox
-      librewolf
-      chromium
-	  vesktop
-      #(vesktop.override {
-      #  electron = electron_33;
-      #})
-      signal-desktop
-      telegram-desktop
-      webcord-vencord
-      bitwarden
-      filezilla
-      element-desktop
-      jwhois
+    # Programming Languages & Runtimes
+    jdk
+    lua
+    ocaml
+    perl
+    python313
+    
+    # Build Tools & Compilers
+    gnumake
+    (pkgs.buildEnv {
+      name = "clang-only";
+      paths = [ clang_12 ];
+      ignoreCollisions = true;
+    })
 
-      # Media & Entertainment
-      vlc
-      obs-studio
-      gimp-with-plugins
-      waylyrics
-      textsnatcher
+    # Development Utilities
+    hugo
+    alejandra
+    any-nix-shell
+    nix-prefetch-scripts
+    norminette
+    distrobox
+    bubblewrap
+    fuse-overlayfs
+    undollar
+    gemini-cli
+    file
+    valgrind
 
-      # Entertainment
-      prismlauncher
-      vitetris
-      ani-cli
-      mov-cli
-      fortune
+    # Container & Kubernetes Tools
+    k9s
+    kubectl
+    argocd
+    lazydocker
 
-      # File Management & Utilities
-      p7zip
-      yazi
-      zathura
-      qdirstat
-      ncdu
-      bat
-      wl-clipboard
-      appimage-run
-      cosmic-edit
-      fh
+    ###################
+    # WAYLAND/SWAY UI #
+    ###################
+    # Core Sway Components
+    sov
+    swayfx
+    swaylock
+    swayidle
+    wofi
+    scenefx
+    eww
+    autotiling-rs
 
-      # System Monitoring & Management
-      btop
-      macchina
-      bunnyfetch
-      usbtop
-      usbview
+    # Wayland Utilities
+    wl-clipboard
+    slurp
+    grim
+    satty
+    wev
+    evtest
 
-      # Network Tools
-      tailscale
-      speedtest-go
-      iperf
-      mtr-gui
+    # System Control
+    brightnessctl
+    pamixer
+    wireplumber
 
-      # Media Download & Management
-      jackett
-      qbittorrent
-      nicotine-plus
+    # NWG Suite
+    nwg-bar
+    nwg-menu
+    nwg-look
+    nwg-dock
+    nwg-panel
+    nwg-hello
+    nwg-drawer
+    nwg-wrapper
+    nwg-clipman
+    nwg-displays
+    nwg-launchers
+    cliphist
 
-      # CLI
-      atuin
-      cool-retro-term
-      asciiquarium-transparent
-      pokemonsay
-      figlet
-      cowsay
-      cmatrix
-      cbonsai
-      pipes-rs
-      sl
-      lolcat
-      hollywood
-      tmux
-      tgpt
-      element
-      astroterm
+    ########################
+    # COMMUNICATION & CHAT #
+    ########################
+    vesktop
+    signal-desktop
+    telegram-desktop
+    webcord-vencord
+    element-desktop
 
-      # Productivity & Finance
-      gnucash
-      termdown
-      blanket
-      calcurse
+    ######################
+    # MULTIMEDIA & MEDIA #
+    ######################
+    # Video & Audio
+    vlc
+    obs-studio
+    waylyrics
+    wf-recorder
+    gpu-screen-recorder-gtk
+    gpu-screen-recorder
+    kooha
 
-      # KDE Connect Integration
-      #kdePackages.kdeconnect-kde
+    # Audio Production & Music Creation
+    alsa-utils
+    hydrogen
+    carla
+    a2jmidid
+    yoshimi
+    zynaddsubfx
+    supercollider-with-plugins
+    fluidsynth
+    soundfont-fluid
+    pipewire.jack
 
-      # Hardware Support
-      ledger-live-desktop
+    # Music Trackers & Chiptune
+    schismtracker
+    goattracker-stereo
+    orca-c
+    sunvox
+    famistudio
 
-      # Games
-      bottles
-      heroic
-      goverlay
+    # Audio Utilities
+    breakpad
+    helm
+    surge
 
-      # Camera & Video
-      webcamoid
-      flameshot
+    # Image & Graphics
+    gimp-with-plugins
+    upscayl
+    flameshot
+    webcamoid
 
-      # System Cleaning
-      bleachbit
+    # Media Download
+    yt-dlp
+    jackett
+    qbittorrent
+    nicotine-plus
+    ani-cli
+    mov-cli
 
-      # cursors, themes
-      rose-pine-cursor
+    ###################
+    # FILE MANAGEMENT #
+    ###################
+    yazi
+    p7zip
+    qdirstat
+    ncdu
+    fh
+    appimage-run
 
-      # Custom Packages
-      inputs.lobster.packages."x86_64-linux".lobster
-    ]
+    ####################
+    # SYSTEM UTILITIES #
+    ####################
+    # System Monitoring
+    btop
+    macchina
+    bunnyfetch
+    usbtop
+    usbview
+    memtester
+
+    # Hardware & System
+    seahorse
+    blueberry
+    pinentry-gnome3
+    bleachbit
+    ledger-live-desktop
+    nvme-cli
+    stress-ng
+    smartmontools
+    rasdaemon
+
+    # Documentation
+    man-pages
+    man-pages-posix
+    zathura
+
+    ###############
+    # CLI TOOLS   #
+    ###############
+    # Shells & Session Management
+    nushell
+    tmux
+    zellij
+    atuin
+    screen
+	claude-code
+	gemini-cli
+
+    # Terminal Communication
+    picocom
+    minicom
+
+    # Terminal Utilities
+    jq
+    gawk
+    bat
+    clipboard-jh
+    xclip
+    textsnatcher
+
+    # Fun CLI Tools
+    asciiquarium-transparent
+    pokemonsay
+    figlet
+    cowsay
+    cmatrix
+    cbonsai
+    pipes-rs
+    sl
+    lolcat
+    hollywood
+    fortune
+    astroterm
+
+    ################
+    # NETWORK TOOLS #
+    ################
+    tailscale
+    speedtest-go
+    iperf
+    mtr-gui
+    openvpn
+    drill
+    jwhois
+
+    ########################
+    # SECURITY & PENTEST   #
+    ########################
+    # Network Security
+    wireshark
+    whatweb
+    nikto
+    nmap
+    
+    # Web Application Testing
+    sqlmap
+    commix
+    wpscan
+    caido
+
+    # Reverse Engineering
+    ghidra
+    radare2
+    binwalk
+    exiftool
+
+    # Cryptography & Hashing
+    hashcat
+    gnupg
+    openssl
+
+    # Steganography
+    steghide
+    stegseek
+    stegsolve
+    zsteg
+    outguess
+
+    # Forensics
+    foremost
+    scalpel
+    fcrackzip
+    pdfminer
+    pdf-parser
+
+    # OSINT
+    sn0int
+    sherlock
+    maigret
+
+    # Penetration Testing Frameworks
+    villain
+    exploitdb
+    exegol
+    pentestgpt
+
+    #############
+    # GAMING    #
+    #############
+    # Game Launchers
+    prismlauncher
+    bottles
+    heroic
+    goverlay
+
+    # Games
+    (tetrio-desktop.override { withTetrioPlus = true; })
+    techmino
+    vitetris
+    mgba
+    space-cadet-pinball
+
+    # Gaming Support
+    wine
+    winetricks
+
+    ####################
+    # PRODUCTIVITY     #
+    ####################
+    # Note Taking & Organization
+    cherrytree
+    newsboat
+    anki
+    #obsidian
+
+    # Finance & Time Management
+    gnucash
+    termdown
+    blanket
+    calcurse
+
+    # Document Viewing & Editing
+    masterpdfeditor4
+
+    # Password Management
+    bitwarden
+
+    ##################
+    # FILE TRANSFER  #
+    ##################
+    filezilla
+    barrier
+
+    ###################
+    # MISC UTILITIES  #
+    ###################
+    browsers
+    mouseless
+    dwarfs
+    cables
+    eaglemode
+    libcaca
+    hdf5
+    h5utils
+    asciinema
+    wayfarer
+    tgpt
+    element
+    artem
+
+    #####################
+    # THEMES & CURSORS  #
+    #####################
+    rose-pine-cursor
+
+    ###################
+    # CUSTOM PACKAGES #
+    ###################
+    inputs.lobster.packages."x86_64-linux".lobster
+
+    ###################
+    # DRIVER SUPPORT  #
+    ###################
+    chromedriver
+  ]
     ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   ######################
