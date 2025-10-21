@@ -155,7 +155,7 @@ in
       lsp = {
         enable = true;
         servers = {
-          ansiblels.enable = true;
+          # ansiblels.enable = true;  # Disabled due to missing package
           bashls.enable = true;
           terraformls.enable = true;
           pyright.enable = true;

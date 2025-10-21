@@ -16,6 +16,10 @@
     };
   };
 
+  # Force overwrite existing GTK files
+  xdg.configFile."gtk-4.0/settings.ini".force = true;
+  xdg.configFile."gtk-4.0/gtk.css".force = true;
+
   qt = {
     enable = true;
     platformTheme.name = "gtk";

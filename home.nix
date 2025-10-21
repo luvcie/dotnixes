@@ -96,11 +96,12 @@
     
     # Build Tools & Compilers
     gnumake
-    (pkgs.buildEnv {
-      name = "clang-only";
-      paths = [ clang_12 ];
-      ignoreCollisions = true;
-    })
+    # Temporarily commenting out clang 12 as it has been removed
+    # (pkgs.buildEnv {
+    #   name = "clang-only";
+    #   paths = [ llvmPackages_12.clang ];
+    #   ignoreCollisions = true;
+    # })
 
     # Development Utilities
     hugo
@@ -206,7 +207,7 @@
     # Audio Utilities
     breakpad
     helm
-    surge
+    # surge  # Temporarily disabled due to CMake build error
 
     # Image & Graphics
     gimp-with-plugins
@@ -410,7 +411,7 @@
     # FILE TRANSFER  #
     ##################
     filezilla
-    barrier
+    input-leap
 
     ###################
     # MISC UTILITIES  #
@@ -452,10 +453,13 @@
 
   programs.git = {
     enable = true;
-    userName = "luvcie";
-    userEmail = "lucpardo@student.42.fr";
+    
+    settings = {
+      user = {
+        name = "luvcie";
+        email = "lucpardo@student.42.fr";
+      };
 
-    extraConfig = {
       credential.helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
       credential.credentialStore = "secretservice";
 
