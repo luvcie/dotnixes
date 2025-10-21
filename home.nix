@@ -19,6 +19,7 @@
 	./modules/niriconf.nix
     ./modules/theme.nix
 	./modules/caelestia.nix
+	./modules/retroism.nix
   ];
 
   programs.home-manager.enable = true;
@@ -46,6 +47,9 @@
   };
 
   nixpkgs.config.allowUnfreePredicate = _: true;
+
+  # Enable retroism theme
+  programs.retroism.enable = true;
 
   ######################
   # PACKAGE MANAGEMENT #
@@ -78,7 +82,7 @@
 
     # IDEs & Editors
     vscode
-    helix
+	evil-helix
     micro
     cosmic-edit
     claude-code
@@ -103,6 +107,7 @@
     alejandra
     any-nix-shell
     nix-prefetch-scripts
+	nix-search-cli
     norminette
     distrobox
     bubblewrap
@@ -189,6 +194,7 @@
     fluidsynth
     soundfont-fluid
     pipewire.jack
+	qpwgraph
 
     # Music Trackers & Chiptune
     schismtracker
@@ -236,6 +242,8 @@
     usbtop
     usbview
     memtester
+	batmon
+	sutils
 
     # Hardware & System
     seahorse
@@ -252,6 +260,9 @@
     man-pages
     man-pages-posix
     zathura
+	typora
+	marktext
+	zettlr
 
     ###############
     # CLI TOOLS   #
@@ -290,6 +301,7 @@
     hollywood
     fortune
     astroterm
+	zalgo
 
     ################
     # NETWORK TOOLS #
@@ -505,6 +517,8 @@
     };
   };
 
+  home.file."goinfre/.keep".text = "";
+
   xdg = {
     enable = true;
     userDirs = {
@@ -527,6 +541,20 @@
         "image/*" = ["imv.desktop"];
         "video/*" = ["vlc.desktop"];
       };
+    };
+  };
+
+  systemd.user.services.goinfre-cleanup = {
+    Unit = {
+      Description = "Clean goinfre directory on boot";
+      After = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'find ${config.home.homeDirectory}/goinfre -mindepth 1 -not -name .keep -delete 2>/dev/null || true'";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
     };
   };
 }

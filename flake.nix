@@ -42,6 +42,11 @@
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    linux-retroism = {
+      url = "github:diinki/linux-retroism";
+      flake = false;
+    };
   };
 
   ###########

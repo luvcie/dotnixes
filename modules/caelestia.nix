@@ -74,7 +74,7 @@
       enable = true;
       settings = {
         theme.enableTerm = true;
-        theme.enableHypr = true;
+#       theme.enableHypr = true;
         theme.enableSpicetirfy = true;
         theme.enableGtk = true;
         theme.enableQt = true;
