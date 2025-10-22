@@ -7,18 +7,12 @@
       size = 11;
     };
     theme = {
-      name = "rose-pine";
-      package = pkgs.rose-pine-gtk-theme;
+      name = "ClassicPlatinumStreamlined";
     };
     iconTheme = {
-      name = "rose-pine";
-      package = pkgs.rose-pine-icon-theme;
+      name = "RetroismIcons";
     };
   };
-
-  # Force overwrite existing GTK files
-  xdg.configFile."gtk-4.0/settings.ini".force = true;
-  xdg.configFile."gtk-4.0/gtk.css".force = true;
 
   qt = {
     enable = true;

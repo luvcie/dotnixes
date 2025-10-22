@@ -20,6 +20,7 @@
     ./modules/theme.nix
 	./modules/caelestia.nix
 	./modules/retroism.nix
+	./modules/rice-manager.nix
   ];
 
   programs.home-manager.enable = true;
@@ -50,6 +51,13 @@
 
   # Enable retroism theme
   programs.retroism.enable = true;
+
+  # Rice Manager - Control which rice auto-starts
+  # Change currentRice to switch between "retroism", "caelestia", or "none"
+  programs.riceManager = {
+    enable = true;
+    currentRice = "retroism";
+  };
 
   ######################
   # PACKAGE MANAGEMENT #
@@ -82,7 +90,7 @@
 
     # IDEs & Editors
     vscode
-	evil-helix
+	  evil-helix
     micro
     cosmic-edit
     claude-code
@@ -130,6 +138,7 @@
     # Core Sway Components
     sov
     swayfx
+	swaybg
     swaylock
     swayidle
     wofi
@@ -166,7 +175,7 @@
     ########################
     # COMMUNICATION & CHAT #
     ########################
-    vesktop
+    (discord.override {withOpenASAR = true; withVencord = true;})
     signal-desktop
     telegram-desktop
     webcord-vencord
@@ -519,6 +528,72 @@
       color_scheme = 6;
       cpu_count_from_one = 0;
     };
+  };
+
+  # Configure kitty terminal
+  programs.kitty = {
+    enable = true;
+
+    font = {
+      name = "FiraCode Nerd Font";
+      size = 11;
+    };
+
+    settings = {
+      # Use GTK theme
+      linux_display_server = "wayland";
+      wayland_titlebar_color = "system";
+
+      # Shell integration
+      shell_integration = "no-cursor";
+
+      # Cursor
+      cursor_shape = "block";
+
+      # Padding
+      window_padding_width = 7;
+
+      # Scrollback
+      scrollback_lines = 3000;
+
+      # Background opacity
+      background_opacity = "0.985";
+
+      # Colors - Retroism theme
+      cursor = "#626335";
+      selection_background = "#1e1d1b";
+      selection_foreground = "#d9caba";
+      background = "#baafa1";
+      foreground = "#1e1d1b";
+
+      # Color palette
+      color0 = "#9400ff";
+      color8 = "#92fcfa";
+      color1 = "#ff0000";
+      color9 = "#ff0000";
+      color2 = "#00ff5d";
+      color10 = "#00ff5d";
+      color3 = "#AC82E9";
+      color11 = "#AC82E9";
+      color4 = "#7b91fc";
+      color12 = "#7b91fc";
+      color5 = "#fce40f";
+      color13 = "#fce40f";
+      color6 = "#8F56E1";
+      color14 = "#8F56E1";
+      color7 = "#ff00ee";
+      color15 = "#d3d3d3";
+    };
+
+    keybindings = {
+      "ctrl+shift+plus" = "change_font_size all +1.0";
+      "ctrl+shift+minus" = "change_font_size all -1.0";
+    };
+
+    extraConfig = ''
+      # Additional padding for height (vertical padding)
+      window_padding_height 10
+    '';
   };
 
   home.file."goinfre/.keep".text = "";

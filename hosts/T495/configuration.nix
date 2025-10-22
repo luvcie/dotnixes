@@ -276,6 +276,12 @@
     appimage.binfmt.enable = true;
     nix-ld.enable = true;
 
+    nh = {
+      enable = true;
+      clean.enable = true;
+      flake = "/home/lucie/dotnixes";
+    };
+
     gamescope = {
       enable = true;
       capSysNice = true;

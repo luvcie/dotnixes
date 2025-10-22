@@ -7,7 +7,10 @@
   programs.caelestia = {
     enable = true;
     systemd = {
-      enable = true;
+      # Disable auto-start if rice manager is controlling startup
+      enable = if config.programs.riceManager.enable or false
+               then false
+               else true;
       target = "graphical-session.target";
       environment = [];
     };

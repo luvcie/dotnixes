@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  wallpaper = ../assets/wallpapers/wallpaper.png;
+  wallpaper = ../assets/wallpapers/amigakeeb.jpg;
 in {
   wayland.windowManager.sway = {
     enable = true;
@@ -20,7 +20,7 @@ in {
       for_window [app_id="chromium-browser"] {
       opacity 1;
       }
-      corner_radius 6
+      corner_radius 0
       shadows enable
       blur enable
       titlebar_separator disable
@@ -50,9 +50,7 @@ in {
       terminal = "wezterm";
       menu = "${pkgs.wofi}/bin/wofi --show drun";
       output = {
-        "*" = {
-          bg = "${wallpaper} fill";
-        };
+        "*" = {};
       };
 
       gaps = {
@@ -78,6 +76,7 @@ in {
         { command = "swaymsg 'workspace 1'"; }
         { command = "nm-applet --indicator"; }
 #       { command = "nwg-panel"; }
+        { command = "${pkgs.swaybg}/bin/swaybg -i ${wallpaper} -m fill"; }
       ];
 
       keybindings = {
