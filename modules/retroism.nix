@@ -4,13 +4,12 @@
   pkgs,
   lib,
   ...
-}: 
-let
+}: let
   cfg = config.programs.retroism;
 in {
   options.programs.retroism = {
     enable = lib.mkEnableOption "Linux Retroism theme and configuration";
-    
+
     configPath = lib.mkOption {
       type = lib.types.str;
       default = "${config.xdg.configHome}/retroism";
@@ -25,14 +24,14 @@ in {
         source = inputs.linux-retroism;
         recursive = true;
       };
-      
+
       # Copy GTK theme to themes directory
       ".local/share/themes/ClassicPlatinumStreamlined" = {
         source = "${inputs.linux-retroism}/gtk_theme/ClassicPlatinumStreamlined";
         recursive = true;
       };
-      
-      # Copy icon theme to icons directory  
+
+      # Copy icon theme to icons directory
       ".local/share/icons/RetroismIcons" = {
         source = "${inputs.linux-retroism}/icon_theme/RetroismIcons";
         recursive = true;
@@ -52,12 +51,12 @@ in {
       kitty
       nwg-look
       quickshell
-      
+
       # Screenshot utilities
       grim
       slurp
       swappy
-      
+
       # Additional utilities
       hyprshot
     ];

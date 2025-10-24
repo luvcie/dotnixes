@@ -1,14 +1,12 @@
-{ pkgs, ... }:
-
-{
-            #######
-            #SHELL#
-            #######
+{pkgs, ...}: {
+  #######
+  #SHELL#
+  #######
   programs.starship.enable = true;
   programs.fzf.enable = true;
   programs.pay-respects.enable = true;
   programs.zoxide.enable = true;
-  
+
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
@@ -43,7 +41,7 @@
       sysinfo = "macchina";
       temp = "sensors";
       bunnyfetch = "bunnyfetch 2>/dev/null";
-      mini="~/mini-moulinette/mini-moul.sh";
+      mini = "~/mini-moulinette/mini-moul.sh";
     };
 
     plugins = [

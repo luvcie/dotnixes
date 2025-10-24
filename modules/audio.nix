@@ -1,9 +1,11 @@
-{ config, pkgs, lib, ... }:
-
-let
-  cfg = config.modules.audio;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.audio;
+in {
   options.modules.audio = {
     enable = lib.mkEnableOption "Custom audio configuration using PipeWire, RTKit, and PAM limits";
     userName = lib.mkOption {
@@ -14,7 +16,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-
     #######################
     # AUDIO CONFIGURATION #
     #######################
@@ -43,7 +44,7 @@ in
           "node.latency" = "256/48000";
           "vm.overcommit" = true;
 
-          "default.clock.allowed-rates" = [ 44100 48000 88200 96000 ];
+          "default.clock.allowed-rates" = [44100 48000 88200 96000];
 
           "core.recovery.time" = 10000;
 
@@ -51,7 +52,7 @@ in
           "default.fragment.size-max" = 4096;
 
           "default.format" = "F32";
-          "default.position" = [ "FL" "FR" ];
+          "default.position" = ["FL" "FR"];
 
           "support.dbus" = true;
           "log.level" = 2;
@@ -73,7 +74,7 @@ in
               "rt.time.soft" = 2000000;
               "rt.time.hard" = 2000000;
             };
-            flags = [ "ifexists" "nofail" ];
+            flags = ["ifexists" "nofail"];
           }
           {
             name = "libpipewire-module-protocol-pulse";
@@ -139,7 +140,7 @@ in
     ];
 
     users.users = lib.mkIf (cfg.userName != null && config.users.users."${cfg.userName}" != null) {
-      "${cfg.userName}".extraGroups = [ "audio" "realtime" ];
+      "${cfg.userName}".extraGroups = ["audio" "realtime"];
     };
   };
 }

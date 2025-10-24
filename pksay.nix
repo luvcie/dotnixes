@@ -1,6 +1,8 @@
- { config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   system.activationScripts = {
     printMessage = ''
       phrases_file=${./egregore.txt}

@@ -16,11 +16,11 @@
     ./modules/nixvim.nix
     ./modules/sway.nix
     ./modules/niri.nix
-	./modules/niriconf.nix
+    ./modules/niriconf.nix
     ./modules/theme.nix
-	./modules/caelestia.nix
-	./modules/retroism.nix
-	./modules/rice-manager.nix
+    ./modules/caelestia.nix
+    ./modules/retroism.nix
+    ./modules/rice-manager.nix
   ];
 
   programs.home-manager.enable = true;
@@ -63,397 +63,404 @@
   # PACKAGE MANAGEMENT #
   ######################
 
-  home.packages = with pkgs; [
-    ###################
-    # WEB BROWSERS    #
-    ###################
-    firefox
-    librewolf
-    chromium
-    google-chrome
+  home.packages = with pkgs;
+    [
+      ###################
+      # WEB BROWSERS    #
+      ###################
+      firefox
+      librewolf
+      chromium
+      google-chrome
 
-    #######################
-    # TERMINAL EMULATORS  #
-    #######################
-    terminator
-    foot
-    cool-retro-term
-    ghostty
+      #######################
+      # TERMINAL EMULATORS  #
+      #######################
+      terminator
+      foot
+      cool-retro-term
+      ghostty
 
-    ####################
-    # DEVELOPMENT TOOLS #
-    ####################
-    # Version Control
-    git
-    git-credential-manager
-    libsecret
+      ####################
+      # DEVELOPMENT TOOLS #
+      ####################
+      # Version Control
+      git
+      git-credential-manager
+      libsecret
 
-    # IDEs & Editors
-    vscode
-	  evil-helix
-    micro
-    cosmic-edit
-    claude-code
+      # IDEs & Editors
+      vscode
+      evil-helix
+      micro
+      cosmic-edit
+      claude-code
 
-    # Programming Languages & Runtimes
-    jdk
-    lua
-    ocaml
-    perl
-    python313
-    
-    # Build Tools & Compilers
-    gnumake
-    # Temporarily commenting out clang 12 as it has been removed
-    # (pkgs.buildEnv {
-    #   name = "clang-only";
-    #   paths = [ llvmPackages_12.clang ];
-    #   ignoreCollisions = true;
-    # })
+      # Programming Languages & Runtimes
+      jdk
+      lua
+      ocaml
+      perl
+      python314
+      clang
 
-    # Development Utilities
-    hugo
-    alejandra
-    any-nix-shell
-    nix-prefetch-scripts
-	nix-search-cli
-    norminette
-    distrobox
-    bubblewrap
-    fuse-overlayfs
-    undollar
-    gemini-cli
-    file
-    valgrind
+      # Build Tools & Compilers
+      gnumake
+      # Temporarily commenting out clang 12 as it has been removed
+      # (pkgs.buildEnv {
+      #   name = "clang-only";
+      #   paths = [ llvmPackages_12.clang ];
+      #   ignoreCollisions = true;
+      # })
 
-    # Container & Kubernetes Tools
-    k9s
-    kubectl
-    argocd
-    lazydocker
+      # Development Utilities
+      hugo
+      alejandra
+      any-nix-shell
+      nix-prefetch-scripts
+      nix-search-cli
+      norminette
+      distrobox
+      bubblewrap
+      fuse-overlayfs
+      undollar
+      gemini-cli
+      file
+      valgrind
 
-    ###################
-    # WAYLAND/SWAY UI #
-    ###################
-    # Core Sway Components
-    sov
-    swayfx
-	swaybg
-    swaylock
-    swayidle
-    wofi
-    scenefx
-    autotiling-rs
+      # Container & Kubernetes Tools
+      k9s
+      kubectl
+      argocd
+      lazydocker
 
-    # Wayland Utilities
-    wl-clipboard
-    slurp
-    grim
-    satty
-    wev
-    evtest
+      ###################
+      # WAYLAND/SWAY UI #
+      ###################
+      # Core Sway Components
+      sov
+      swayfx
+      swaybg
+      swaylock
+      swayidle
+      wofi
+      scenefx
+      autotiling-rs
 
-    # System Control
-    brightnessctl
-    pamixer
-    wireplumber
+      # Wayland Utilities
+      wl-clipboard
+      slurp
+      grim
+      satty
+      wev
+      evtest
 
-    # NWG Suite
-    nwg-bar
-    nwg-menu
-    nwg-look
-    nwg-dock
-    nwg-panel
-    nwg-hello
-    nwg-drawer
-    nwg-wrapper
-    nwg-clipman
-    nwg-displays
-    nwg-launchers
-    cliphist
+      # System Control
+      brightnessctl
+      pamixer
+      wireplumber
 
-    ########################
-    # COMMUNICATION & CHAT #
-    ########################
-    (discord.override {withOpenASAR = true; withVencord = true;})
-    signal-desktop
-    telegram-desktop
-    webcord-vencord
-    element-desktop
+      # NWG Suite
+      nwg-bar
+      nwg-menu
+      nwg-look
+      nwg-dock
+      nwg-panel
+      nwg-hello
+      nwg-drawer
+      nwg-wrapper
+      nwg-clipman
+      nwg-displays
+      nwg-launchers
+      cliphist
 
-    ######################
-    # MULTIMEDIA & MEDIA #
-    ######################
-    # Video & Audio
-    vlc
-    obs-studio
-    waylyrics
-    wf-recorder
-    gpu-screen-recorder-gtk
-    gpu-screen-recorder
-    kooha
+      ########################
+      # COMMUNICATION & CHAT #
+      ########################
+      (discord.override {
+        withOpenASAR = true;
+        withVencord = true;
+      })
+      signal-desktop
+      telegram-desktop
+      webcord-vencord
+      element-desktop
 
-    # Audio Production & Music Creation
-    alsa-utils
-    hydrogen
-    carla
-    a2jmidid
-    yoshimi
-    zynaddsubfx
-    supercollider-with-plugins
-    fluidsynth
-    soundfont-fluid
-    pipewire.jack
-	qpwgraph
+      ######################
+      # MULTIMEDIA & MEDIA #
+      ######################
+      # Video & Audio
+      vlc
+      obs-studio
+      waylyrics
+      wf-recorder
+      gpu-screen-recorder-gtk
+      gpu-screen-recorder
+      kooha
 
-    # Music Trackers & Chiptune
-    schismtracker
-    goattracker-stereo
-    orca-c
-    sunvox
-    famistudio
+      # Audio Production & Music Creation
+      alsa-utils
+      hydrogen
+      carla
+      a2jmidid
+      yoshimi
+      zynaddsubfx
+      supercollider-with-plugins
+      fluidsynth
+      soundfont-fluid
+      pipewire.jack
+      qpwgraph
 
-    # Audio Utilities
-    breakpad
-    helm
-    # surge  # Temporarily disabled due to CMake build error
+      # Music Trackers & Chiptune
+      schismtracker
+      goattracker-stereo
+      orca-c
+      sunvox
+      famistudio
 
-    # Image & Graphics
-    gimp-with-plugins
-    upscayl
-    flameshot
-    webcamoid
+      # Audio Utilities
+      breakpad
+      helm
+      # surge  # Temporarily disabled due to CMake build error
 
-    # Media Download
-    yt-dlp
-    jackett
-    qbittorrent
-    nicotine-plus
-    ani-cli
-    mov-cli
+      # Image & Graphics
+      gimp-with-plugins
+      upscayl
+      flameshot
+      webcamoid
 
-    ###################
-    # FILE MANAGEMENT #
-    ###################
-    yazi
-    p7zip
-    qdirstat
-    ncdu
-    fh
-    appimage-run
+      # Media Download
+      yt-dlp
+      jackett
+      qbittorrent
+      nicotine-plus
+      ani-cli
+      mov-cli
 
-    ####################
-    # SYSTEM UTILITIES #
-    ####################
-    # System Monitoring
-    btop
-    macchina
-    bunnyfetch
-    usbtop
-    usbview
-    memtester
-	batmon
-	sutils
+      ###################
+      # FILE MANAGEMENT #
+      ###################
+      yazi
+      p7zip
+      qdirstat
+      ncdu
+      fh
+      appimage-run
 
-    # Hardware & System
-    seahorse
-    blueberry
-    pinentry-gnome3
-    bleachbit
-    ledger-live-desktop
-    nvme-cli
-    stress-ng
-    smartmontools
-    rasdaemon
+      ####################
+      # SYSTEM UTILITIES #
+      ####################
+      # System Monitoring
+      btop
+      macchina
+      bunnyfetch
+      usbtop
+      usbview
+      memtester
+      batmon
+      sutils
 
-    # Documentation
-    man-pages
-    man-pages-posix
-    zathura
-	typora
-	marktext
-	zettlr
+      # Hardware & System
+      seahorse
+      blueberry
+      pinentry-gnome3
+      bleachbit
+      ledger-live-desktop
+      nvme-cli
+      stress-ng
+      smartmontools
+      rasdaemon
 
-    ###############
-    # CLI TOOLS   #
-    ###############
-    # Shells & Session Management
-    nushell
-    tmux
-    zellij
-    atuin
-    screen
-	claude-code
-	gemini-cli
+      # Documentation
+      man-pages
+      man-pages-posix
+      zathura
+      typora
+      marktext
+      zettlr
 
-    # Terminal Communication
-    picocom
-    minicom
+      ###############
+      # CLI TOOLS   #
+      ###############
+      # Shells & Session Management
+      nushell
+      tmux
+      zellij
+      atuin
+      screen
+      claude-code
+      gemini-cli
 
-    # Terminal Utilities
-    jq
-    gawk
-    bat
-    clipboard-jh
-    xclip
-    textsnatcher
+      # Terminal Communication
+      picocom
+      minicom
 
-    # Fun CLI Tools
-    asciiquarium-transparent
-    pokemonsay
-    figlet
-    cowsay
-    cmatrix
-    cbonsai
-    pipes-rs
-    sl
-    lolcat
-    hollywood
-    fortune
-    astroterm
-	zalgo
+      # Terminal Utilities
+      jq
+      gawk
+      bat
+      clipboard-jh
+      xclip
+      textsnatcher
 
-    ################
-    # NETWORK TOOLS #
-    ################
-    tailscale
-    speedtest-go
-    iperf
-    mtr-gui
-    openvpn
-    drill
-    jwhois
+      # Fun CLI Tools
+      asciiquarium-transparent
+      pokemonsay
+      figlet
+      cowsay
+      cmatrix
+      cbonsai
+      pipes-rs
+      sl
+      lolcat
+      hollywood
+      fortune
+      astroterm
+      zalgo
 
-    ########################
-    # SECURITY & PENTEST   #
-    ########################
-    # Network Security
-    wireshark
-    whatweb
-    nikto
-    nmap
-    
-    # Web Application Testing
-    sqlmap
-    commix
-    wpscan
-    caido
+      ################
+      # NETWORK TOOLS #
+      ################
+      tailscale
+      speedtest-go
+      iperf
+      mtr-gui
+      openvpn
+      drill
+      jwhois
 
-    # Reverse Engineering
-    ghidra
-    radare2
-    binwalk
-    exiftool
+      ########################
+      # SECURITY & PENTEST   #
+      ########################
+      # Network Security
+      wireshark
+      whatweb
+      nikto
+      nmap
 
-    # Cryptography & Hashing
-    hashcat
-    gnupg
-    openssl
+      # Web Application Testing
+      sqlmap
+      commix
+      wpscan
+      caido
 
-    # Steganography
-    steghide
-    stegseek
-    stegsolve
-    zsteg
-    outguess
+      # Reverse Engineering
+      ghidra
+      radare2
+      binwalk
+      exiftool
 
-    # Forensics
-    foremost
-    scalpel
-    fcrackzip
-    pdfminer
-    pdf-parser
+      # Cryptography & Hashing
+      hashcat
+      gnupg
+      openssl
 
-    # OSINT
-    sn0int
-    sherlock
-    maigret
+      # Steganography
+      steghide
+      stegseek
+      stegsolve
+      zsteg
+      outguess
 
-    # Penetration Testing Frameworks
-    villain
-    exploitdb
-    exegol
-    pentestgpt
+      # Forensics
+      foremost
+      scalpel
+      fcrackzip
+      pdfminer
+      pdf-parser
 
-    #############
-    # GAMING    #
-    #############
-    # Game Launchers
-    prismlauncher
-    bottles
-    heroic
-    goverlay
+      # OSINT
+      sn0int
+      sherlock
+      maigret
 
-    # Games
-    (tetrio-desktop.override { withTetrioPlus = true; })
-    techmino
-    vitetris
-    mgba
-    space-cadet-pinball
+      # Penetration Testing Frameworks
+      villain
+      exploitdb
+      exegol
+      pentestgpt
 
-    # Gaming Support
-    wine
-    winetricks
+      #############
+      # GAMING    #
+      #############
+      # Game Launchers
+      prismlauncher
+      bottles
+      heroic
+      goverlay
 
-    ####################
-    # PRODUCTIVITY     #
-    ####################
-    # Note Taking & Organization
-    cherrytree
-    newsboat
-    anki
-    #obsidian
+      # Games
+      (tetrio-desktop.override {withTetrioPlus = true;})
+      techmino
+      vitetris
+      mgba
+      space-cadet-pinball
+      vvvvvv
+      abbaye-des-morts
 
-    # Finance & Time Management
-    gnucash
-    termdown
-    blanket
-    calcurse
+      # Gaming Support
+      wine
+      winetricks
 
-    # Document Viewing & Editing
-    masterpdfeditor4
+      ####################
+      # PRODUCTIVITY     #
+      ####################
+      # Note Taking & Organization
+      cherrytree
+      newsboat
+      anki
+      #obsidian
 
-    # Password Management
-    bitwarden
+      # Finance & Time Management
+      gnucash
+      termdown
+      blanket
+      calcurse
 
-    ##################
-    # FILE TRANSFER  #
-    ##################
-    filezilla
-    input-leap
+      # Document Viewing & Editing
+      masterpdfeditor4
 
-    ###################
-    # MISC UTILITIES  #
-    ###################
-    browsers
-    mouseless
-    dwarfs
-    cables
-    eaglemode
-    libcaca
-    hdf5
-    h5utils
-    asciinema
-    wayfarer
-    tgpt
-    element
-    artem
+      # Password Management
+      bitwarden
 
-    #####################
-    # THEMES & CURSORS  #
-    #####################
-    rose-pine-cursor
+      ##################
+      # FILE TRANSFER  #
+      ##################
+      filezilla
+      input-leap
 
-    ###################
-    # CUSTOM PACKAGES #
-    ###################
-    inputs.lobster.packages."x86_64-linux".lobster
+      ###################
+      # MISC UTILITIES  #
+      ###################
+      browsers
+      mouseless
+      dwarfs
+      cables
+      eaglemode
+      libcaca
+      hdf5
+      h5utils
+      asciinema
+      wayfarer
+      tgpt
+      element
+      artem
 
-    ###################
-    # DRIVER SUPPORT  #
-    ###################
-    chromedriver
-  ]
+      #####################
+      # THEMES & CURSORS  #
+      #####################
+      rose-pine-cursor
+
+      ###################
+      # CUSTOM PACKAGES #
+      ###################
+      inputs.lobster.packages."x86_64-linux".lobster
+
+      ###################
+      # DRIVER SUPPORT  #
+      ###################
+      chromedriver
+    ]
     ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   ######################
@@ -462,7 +469,7 @@
 
   programs.git = {
     enable = true;
-    
+
     settings = {
       user = {
         name = "luvcie";
@@ -539,6 +546,8 @@
       size = 11;
     };
 
+    themeFile = "Solarized_Light";
+
     settings = {
       # Use GTK theme
       linux_display_server = "wayland";
@@ -559,30 +568,30 @@
       # Background opacity
       background_opacity = "0.985";
 
-      # Colors - Retroism theme
-      cursor = "#626335";
-      selection_background = "#1e1d1b";
-      selection_foreground = "#d9caba";
-      background = "#baafa1";
-      foreground = "#1e1d1b";
+      # Colors - Retroism theme (commented out in favor of Solarized_Light)
+      # cursor = "#626335";
+      # selection_background = "#1e1d1b";
+      # selection_foreground = "#d9caba";
+      # background = "#baafa1";
+      # foreground = "#1e1d1b";
 
       # Color palette
-      color0 = "#9400ff";
-      color8 = "#92fcfa";
-      color1 = "#ff0000";
-      color9 = "#ff0000";
-      color2 = "#00ff5d";
-      color10 = "#00ff5d";
-      color3 = "#AC82E9";
-      color11 = "#AC82E9";
-      color4 = "#7b91fc";
-      color12 = "#7b91fc";
-      color5 = "#fce40f";
-      color13 = "#fce40f";
-      color6 = "#8F56E1";
-      color14 = "#8F56E1";
-      color7 = "#ff00ee";
-      color15 = "#d3d3d3";
+      # color0 = "#9400ff";
+      # color8 = "#92fcfa";
+      # color1 = "#ff0000";
+      # color9 = "#ff0000";
+      # color2 = "#00ff5d";
+      # color10 = "#00ff5d";
+      # color3 = "#AC82E9";
+      # color11 = "#AC82E9";
+      # color4 = "#7b91fc";
+      # color12 = "#7b91fc";
+      # color5 = "#fce40f";
+      # color13 = "#fce40f";
+      # color6 = "#8F56E1";
+      # color14 = "#8F56E1";
+      # color7 = "#ff00ee";
+      # color15 = "#d3d3d3";
     };
 
     keybindings = {
@@ -596,7 +605,7 @@
     '';
   };
 
-  home.file."goinfre/.keep".text = "";
+  #  home.file."goinfre/.keep".text = "";
 
   xdg = {
     enable = true;
@@ -623,17 +632,17 @@
     };
   };
 
-  systemd.user.services.goinfre-cleanup = {
-    Unit = {
-      Description = "Clean goinfre directory on boot";
-      After = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.bash}/bin/bash -c 'find ${config.home.homeDirectory}/goinfre -mindepth 1 -not -name .keep -delete 2>/dev/null || true'";
-    };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
-  };
+  #  systemd.user.services.goinfre-cleanup = {
+  #   Unit = {
+  #     Description = "Clean goinfre directory on boot";
+  #     After = ["graphical-session.target"];
+  #   };
+  #   Service = {
+  #     Type = "oneshot";
+  #     ExecStart = "${pkgs.bash}/bin/bash -c 'find ${config.home.homeDirectory}/goinfre -mindepth 1 -not -name .keep -delete 2>/dev/null || true'";
+  #   };
+  #   Install = {
+  #     WantedBy = ["default.target"];
+  #   };
+  # };
 }

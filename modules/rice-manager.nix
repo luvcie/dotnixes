@@ -1,12 +1,16 @@
-{ config, pkgs, lib, ... }:
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   cfg = config.programs.riceManager;
 in {
   options.programs.riceManager = {
     enable = lib.mkEnableOption "Rice manager for switching between different desktop rices";
 
     currentRice = lib.mkOption {
-      type = lib.types.enum [ "retroism" "caelestia" "none" ];
+      type = lib.types.enum ["retroism" "caelestia" "none"];
       default = "none";
       description = ''
         Select which rice configuration to use.

@@ -1,5 +1,10 @@
-{inputs, pkgs, lib, config, ... }:
 {
+  inputs,
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
   imports = [
     inputs.caelestia-shell.homeManagerModules.default
   ];
@@ -8,19 +13,20 @@
     enable = true;
     systemd = {
       # Disable auto-start if rice manager is controlling startup
-      enable = if config.programs.riceManager.enable or false
-               then false
-               else true;
+      enable =
+        if config.programs.riceManager.enable or false
+        then false
+        else true;
       target = "graphical-session.target";
       environment = [];
     };
     settings = {
       paths.wallpaperDir = "~/Wallpapers/";
       services.weatherLocation = "Paris";
-	  services.useFahrenheit = false;
+      services.useFahrenheit = false;
       workspaces.showWindows = false;
       workspaces.shown = 10;
-      
+
       bar = {
         clock.showIcon = false;
         workspaces.showWindows = false;
@@ -77,12 +83,11 @@
       enable = true;
       settings = {
         theme.enableTerm = true;
-#       theme.enableHypr = true;
+        #       theme.enableHypr = true;
         theme.enableSpicetirfy = true;
         theme.enableGtk = true;
         theme.enableQt = true;
       };
     };
   };
-  
 }

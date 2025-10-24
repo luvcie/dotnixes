@@ -1,9 +1,11 @@
-{ config, pkgs, lib, ... }:
-
-let
-  cfg = config.modules.kernel;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  cfg = config.modules.kernel;
+in {
   options.modules.kernel = {
     enable = lib.mkEnableOption "Custom kernel, bootloader, and kernel parameter configurations for this host";
   };

@@ -23,13 +23,13 @@
     nur.url = "github:nix-community/NUR";
 
     # Additional Repositories
-#    ashley-dotfiles = {
-#      url = "github:ashe/dotfiles/";
-#      inputs.nixpkgs.follows = "nixpkgs";
-#    };
+    #    ashley-dotfiles = {
+    #      url = "github:ashe/dotfiles/";
+    #      inputs.nixpkgs.follows = "nixpkgs";
+    #    };
 
     # Applications
-    lobster = { 
+    lobster = {
       url = "github:justchokingaround/lobster";
     };
 
@@ -60,15 +60,15 @@
 
     nixosConfigurations.T495 = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      specialArgs = {inherit inputs;};
       modules = [
         inputs.nur.modules.nixos.default
         inputs.lix-module.nixosModules.default
         ./hosts/T495/configuration.nix
         ./hosts/T495/hardware-configuration.nix
-		{
-			nixpkgs.config.allowUnfree = true;
-		}
+        {
+          nixpkgs.config.allowUnfree = true;
+        }
       ];
     };
 
@@ -76,23 +76,22 @@
     # Home Configuration  #
     #######################
 
-    homeConfigurations."lucie" =
-      let
-        pkgs = import inputs.nixpkgs {
-          system = "x86_64-linux";
-		  config = { allowUnfree = true; };
-          overlays = [ ];
-        };
-      in
+    homeConfigurations."lucie" = let
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        config = {allowUnfree = true;};
+        overlays = [];
+      };
+    in
       inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = {
           inherit inputs pkgs;
         };
-		modules = [
-			./home.nix
-			inputs.nixvim.homeModules.nixvim
-		];
+        modules = [
+          ./home.nix
+          inputs.nixvim.homeModules.nixvim
+        ];
         #modules = inputs.ashley-dotfiles.homeModules ++ [
         #  ./home.nix
         #  inputs.nixvim.homeManagerModules.nixvim
@@ -100,4 +99,3 @@
       };
   };
 }
-
