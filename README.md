@@ -21,7 +21,40 @@ My NixOS configuration files.
 
 ---
 
-## Quick Start
+## NH - Nix Helper
+
+**nh** is a Nix helper tool that provides prettier output, automatic garbage collection, and better UX than raw nix commands.
+
+### Most Common Commands
+
+Rebuild home configuration:
+```bash
+nh home switch .
+```
+
+Rebuild system configuration:
+```bash
+nh os switch
+```
+
+Update flake inputs and rebuild:
+```bash
+nh home switch . --update
+```
+
+Clean old generations and garbage collect:
+```bash
+nh clean all
+```
+
+Search for packages:
+```bash
+nh search <package-name>
+```
+
+---
+
+## Quick Start (Traditional Commands)
 
 Apply system configuration:
 ```bash
