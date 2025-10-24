@@ -193,10 +193,8 @@
       vlc
       obs-studio
       waylyrics
-      wf-recorder
-      gpu-screen-recorder-gtk
-      gpu-screen-recorder
       kooha
+	  qmmp
 
       # Audio Production & Music Creation
       alsa-utils
@@ -271,13 +269,12 @@
       smartmontools
       rasdaemon
 
-      # Documentation
+      # Documents
       man-pages
       man-pages-posix
       zathura
       typora
       marktext
-      zettlr
 
       ###############
       # CLI TOOLS   #
@@ -302,6 +299,7 @@
       clipboard-jh
       xclip
       textsnatcher
+	  lsd
 
       # Fun CLI Tools
       asciiquarium-transparent
@@ -606,6 +604,14 @@
   };
 
   #  home.file."goinfre/.keep".text = "";
+
+  # Run flatpak update after every home-manager rebuild
+  home.activation.flatpakUpdate = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if command -v flatpak &> /dev/null; then
+      echo "Running flatpak update..."
+      ${pkgs.flatpak}/bin/flatpak update -y || true
+    fi
+  '';
 
   xdg = {
     enable = true;
