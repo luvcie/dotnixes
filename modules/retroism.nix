@@ -37,9 +37,9 @@ in {
         recursive = true;
       };
 
-      # Copy quickshell configs if they exist in the configs directory
-      ".config/quickshell" = lib.mkIf (builtins.pathExists "${inputs.linux-retroism}/configs") {
-        source = "${inputs.linux-retroism}/configs";
+      # Copy quickshell configs to the correct location
+      ".config/quickshell" = {
+        source = "${inputs.linux-retroism}/configs/quickshell";
         recursive = true;
       };
     };

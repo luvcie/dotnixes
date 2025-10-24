@@ -68,10 +68,8 @@
       ###################
       # WEB BROWSERS    #
       ###################
-      firefox
       librewolf
       chromium
-      google-chrome
 
       #######################
       # TERMINAL EMULATORS  #
@@ -544,7 +542,7 @@
       size = 11;
     };
 
-    themeFile = "Solarized_Light";
+    themeFile = "Belafonte_Day";
 
     settings = {
       # Use GTK theme
