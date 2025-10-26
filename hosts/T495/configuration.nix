@@ -21,12 +21,12 @@
   nix = {
     settings = {
       sandbox = true;
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = ["nix-command" "flakes" "flake-self-attrs"];
       auto-optimise-store = true;
       builders-use-substitutes = true;
     };
     gc = {
-      automatic = true;
+      automatic = false;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
@@ -253,7 +253,7 @@
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
-    package = pkgs.steam.override {
+    package = pkgs.steam-millennium.override {
       extraProfile = ''
         # Steam game optimizations
         export STEAM_RUNTIME_PREFER_HOST_LIBRARIES=0

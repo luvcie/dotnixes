@@ -47,6 +47,10 @@
       url = "github:diinki/linux-retroism";
       flake = false;
     };
+
+    millennium = {
+      url = "git+https://github.com/SteamClientHomebrew/Millennium";
+    };
   };
 
   ###########
@@ -68,6 +72,9 @@
         ./hosts/T495/hardware-configuration.nix
         {
           nixpkgs.config.allowUnfree = true;
+          nixpkgs.overlays = [
+            inputs.millennium.overlays.default
+          ];
         }
       ];
     };
