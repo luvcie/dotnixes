@@ -10,7 +10,9 @@
       size = 11;
     };
     theme = {
-      name = "ClassicPlatinumStreamlined";
+      name = "ClassicGleepStreamlined"; 
+	  # ClassicPlatinumStreamlined | ClassicGleepStreamlined
+	  # ClassicYorhaStreamlined | ClassicCherryStreamlined
     };
     iconTheme = {
       name = "RetroismIcons";
