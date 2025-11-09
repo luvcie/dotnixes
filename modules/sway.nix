@@ -4,7 +4,31 @@
   lib,
   ...
 }: let
-  wallpaper = ../assets/wallpapers/amigakeeb.jpg;
+  wallpaperDir = "/home/lucie/dotnixes/assets/wallpapers";
+  cycleWallpaper = pkgs.writeShellScript "cycle-wallpaper" ''
+    STATE_FILE="/tmp/sway-wallpaper-index"
+
+    # Get sorted list of wallpapers
+    wallpapers=($(${pkgs.coreutils}/bin/ls ${wallpaperDir}/*.{jpg,png} 2>/dev/null | ${pkgs.coreutils}/bin/sort))
+
+    # Read current index, default to 0
+    if [ -f "$STATE_FILE" ]; then
+      current_index=$(${pkgs.coreutils}/bin/cat "$STATE_FILE")
+    else
+      current_index=0
+    fi
+
+    # Get next wallpaper (circular)
+    next_index=$(( (current_index + 1) % ''${#wallpapers[@]} ))
+    wallpaper="''${wallpapers[$next_index]}"
+
+    # Save new index
+    echo "$next_index" > "$STATE_FILE"
+
+    # Set wallpaper
+    ${pkgs.procps}/bin/pkill swaybg
+    ${pkgs.swaybg}/bin/swaybg -i "$wallpaper" -m fill &
+  '';
 in {
   wayland.windowManager.sway = {
     enable = true;
@@ -80,7 +104,9 @@ in {
         {command = "swaymsg 'workspace 1'";}
         {command = "nm-applet --indicator";}
         #       { command = "nwg-panel"; }
-        {command = "${pkgs.swaybg}/bin/swaybg -i ${wallpaper} -m fill";}
+        {command = "${cycleWallpaper}";}
+        {command = "${pkgs.swayidle}/bin/swayidle -w timeout 600 'swaylock -f' timeout 900 'swaymsg \"output * dpms off\"' resume 'swaymsg \"output * dpms on\"' before-sleep 'swaylock -f' --fork-after-sleep-command";}
+        {command = "${pkgs.quickshell}/bin/quickshell";}
       ];
 
       keybindings = {
@@ -139,10 +165,12 @@ in {
         "${modifier}+a" = "focus parent";
         "${modifier}+r" = "mode resize";
 
-        "${modifier}+Shift+c" = "reload";
+        "${modifier}+Shift+c" = "exec swaymsg reload";
         "${modifier}+Shift+q" = "kill";
         "${modifier}+d" = "exec ${menu}";
-        "${modifier}+l" = "exec ~/.config/sway/lock.sh";
+        "${modifier}+Shift+d" = "exec ${pkgs.wofi}/bin/wofi --show run";
+        "${modifier}+l" = "exec ${pkgs.swaylock}/bin/swaylock -f";
+        "${modifier}+w" = "exec ${cycleWallpaper}";
         "${modifier}+Return" = "exec ${terminal}";
         "${modifier}+Shift+Return" = "exec $browser";
         "${modifier}+p" = "exec \"echo 'toggle visibility' > /tmp/wcp\"";
@@ -157,6 +185,7 @@ in {
         "--locked --no-repeat XF86AudioMute" = "exec pamixer -t";
         "--locked --no-repeat XF86AudioRaiseVolume" = "exec pamixer --increase 2";
         "--locked --no-repeat XF86AudioLowerVolume" = "exec pamixer --decrease 2";
+        "--locked --no-repeat XF86AudioMicMute" = "exec pamixer --default-source -t";
 
         "${modifier}+XF86AudioPlay" = "exec \"echo 1 > /tmp/vmp\"";
         "${modifier}+XF86AudioNext" = "exec \"echo 2 > /tmp/vmp\"";
