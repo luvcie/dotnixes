@@ -12,11 +12,7 @@
   programs.caelestia = {
     enable = true;
     systemd = {
-      # Disable auto-start if rice manager is controlling startup
-      enable =
-        if config.programs.riceManager.enable or false
-        then false
-        else true;
+      enable = false;  # Disabled auto-start, manually start with: systemctl --user start caelestia.service
       target = "graphical-session.target";
       environment = [];
     };
