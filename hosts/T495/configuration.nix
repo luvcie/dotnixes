@@ -50,6 +50,23 @@
       efi.canTouchEfiVariables = true;
       timeout = 3;
     };
+
+    plymouth = {
+      enable = true;
+      theme = "script";
+    };
+
+    # Hide boot messages for clean plymouth experience
+    consoleLogLevel = 3;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
   };
 
   nixpkgs.config = {
@@ -131,6 +148,12 @@
     };
   };
 
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchExternalPower = "suspend";
+    lidSwitchDocked = "ignore";
+  };
+
   services.displayManager.ly = {
     enable = true;
   };
@@ -190,6 +213,12 @@
     SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
     XDG_SESSION_TYPE = "wayland";
+    # Steam optimizations
+    STEAM_RUNTIME_PREFER_HOST_LIBRARIES = "0";
+    PROTON_FORCE_LARGE_ADDRESS_AWARE = "1";
+    PROTON_USE_SECCOMP = "1";
+    STEAM_GAMESCOPE_HDR = "1";
+    STEAM_USE_DYNAMIC_VRS = "1";
   };
 
   security.pam = {
@@ -253,20 +282,10 @@
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
-    package = pkgs.steam-millennium.override {
-      extraProfile = ''
-        # Steam game optimizations
-        export STEAM_RUNTIME_PREFER_HOST_LIBRARIES=0
-        export PROTON_FORCE_LARGE_ADDRESS_AWARE=1
-        export PROTON_USE_SECCOMP=1
-        export SDL_VIDEODRIVER=wayland
-        export STEAM_GAMESCOPE_HDR=1
-        export STEAM_USE_DYNAMIC_VRS=1
-        # AMD specific
-        export AMD_VULKAN_ICD=RADV
-        export RADV_PERFTEST=gpl,nosam
-      '';
-    };
+    package = pkgs.steam-millennium;
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
   };
 
   programs = {
@@ -340,6 +359,7 @@
   #######################
 
   environment.systemPackages = with pkgs; [
+	clang
     ly
     usbutils
     udiskie
