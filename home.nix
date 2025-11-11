@@ -109,6 +109,10 @@
       # })
 
       # Development Utilities
+	  kicad
+	  fritzing
+	  arduino-ide
+	  arduino-cli
 	  cmake
       hugo
       alejandra
