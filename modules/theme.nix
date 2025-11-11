@@ -10,7 +10,7 @@
       size = 11;
     };
     theme = {
-      name = "ClassicGleepStreamlined"; 
+      name = "ClassicGleepStreamlined";
 	  # ClassicPlatinumStreamlined | ClassicGleepStreamlined
 	  # ClassicYorhaStreamlined | ClassicCherryStreamlined
     };
@@ -18,6 +18,8 @@
       name = "RetroismIcons";
     };
   };
+
+  xdg.configFile."gtk-4.0/settings.ini".force = true;
 
   qt = {
     enable = true;
