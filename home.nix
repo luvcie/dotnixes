@@ -12,6 +12,7 @@
   imports = [
     ./modules/wezterm.nix
     ./modules/vscode.nix
+    ./modules/zed.nix
     ./modules/zsh.nix
     ./modules/nixvim.nix
     ./modules/sway.nix
