@@ -282,7 +282,7 @@
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
-    package = pkgs.steam-millennium;
+    # package = pkgs.steam-millennium;  # Temporarily disabled for faster builds
     extraCompatPackages = with pkgs; [
       proton-ge-bin
     ];
@@ -416,6 +416,7 @@
       "render"
       "gamemode"
       "kvm"
+      "dialout"
     ];
     shell = pkgs.zsh;
   };
