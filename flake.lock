@@ -281,18 +281,18 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1761495687,
-        "narHash": "sha256-IRWr8VtTAQRtRdkgOajjERt0JGwggRC5uHU+huPZdoQ=",
-        "ref": "refs/heads/fix-nix-assets-hash",
-        "rev": "a32ebdf20045d8e8d824e3ba324dd186541e052d",
-        "revCount": 2099,
+        "lastModified": 1762404404,
+        "narHash": "sha256-b/t8dFUQU9jm2fCqXHihQtpJB0MTTS5X5qIb+RatLes=",
+        "ref": "refs/heads/main",
+        "rev": "f06afc812f959f686d2e8f5baf29f5d46d32c6dc",
+        "revCount": 2105,
         "submodules": true,
         "type": "git",
-        "url": "file:///tmp/Millennium"
+        "url": "https://github.com/SteamClientHomebrew/Millennium"
       },
       "original": {
         "type": "git",
-        "url": "file:///tmp/Millennium"
+        "url": "https://github.com/SteamClientHomebrew/Millennium"
       }
     },
     "nixpkgs": {
