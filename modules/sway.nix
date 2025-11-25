@@ -78,6 +78,15 @@ in {
       terminal = "wezterm";
       menu = "${pkgs.wofi}/bin/wofi --show drun";
       output = {
+        # External monitor (Lenovo) - positioned at top
+        "DP-1" = {
+          position = "0,0";
+        };
+        # Laptop screen - positioned below external monitor
+        "eDP-1" = {
+          position = "0,1440";
+        };
+        # Fallback for any other displays
         "*" = {};
       };
 

@@ -83,7 +83,10 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-gnome
+    ];
     config = {
       common = {
         default = ["gtk"];
@@ -419,5 +422,18 @@
       "dialout"
     ];
     shell = pkgs.zsh;
+  };
+
+  # ThinkPad LED morse code service
+  systemd.services.morse-led = {
+    description = "ThinkPad LED morse code (42)";
+    wantedBy = ["multi-user.target"];
+    after = ["multi-user.target"];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.bash}/bin/bash /home/lucie/dotnixes/morse.sh";
+      Restart = "always";
+      RestartSec = "10s";
+    };
   };
 }

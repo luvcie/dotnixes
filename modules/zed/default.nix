@@ -1,19 +1,17 @@
 {
   config,
-  pkgs,
   lib,
+  pkgs,
   ...
 }: let
-  customLib = import ../lib/default.nix;
+  customLib = import ../../lib/default.nix;
 in {
   programs.zed-editor = {
     enable = true;
     package = config.lib.nixGL.wrap pkgs.zed-editor;
+    userSettings = customLib.fromJsonFile ./settings.json;
+    userKeymaps = customLib.fromJsonFile ./keymap.json;
 
-    userSettings = customLib.fromJsonFile ./zed/settings.json;
-    userKeymaps = customLib.fromJsonFile ./zed/keymap.json;
-
-    # allow editing configs in zed itself
     mutableUserSettings = true;
     mutableUserKeymaps = true;
     mutableUserTasks = true;
@@ -33,4 +31,8 @@ in {
       "scss"
     ];
   };
+
+  home.packages = with pkgs; [
+    nerd-fonts.fira-code
+  ];
 }

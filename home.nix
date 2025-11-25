@@ -12,14 +12,14 @@
   imports = [
     ./modules/wezterm.nix
     ./modules/vscode.nix
-    ./modules/zed.nix
+    ./modules/zed
     ./modules/zsh.nix
     ./modules/nixvim.nix
     ./modules/sway.nix
     ./modules/niri.nix
     ./modules/niriconf.nix
     ./modules/theme.nix
-    ./modules/caelestia.nix
+   # ./modules/caelestia.nix
     ./modules/retroism.nix
   ];
 
@@ -71,7 +71,9 @@
       # TERMINAL EMULATORS  #
       #######################
       terminator
+  	  pterm
       foot
+	    xfce.xfce4-terminal
       cool-retro-term
       ghostty
 
@@ -82,7 +84,7 @@
       git
       git-credential-manager
       libsecret
-	  gh
+	    gh
 
       # IDEs & Editors
       vscode
@@ -90,6 +92,7 @@
       micro
       cosmic-edit
       claude-code
+	    csview
 
       # Programming Languages & Runtimes
       jdk
@@ -110,9 +113,12 @@
       # })
 
       # Development Utilities
-	  kicad
+	  #kicad
 	  fritzing
 	  arduino-ide
+	  probe-rs-tools
+	  espup
+	  pkgsCross.avr.buildPackages.gcc
 	  arduino-cli
 	  cmake
       hugo
@@ -123,6 +129,7 @@
       nix-search-cli
       norminette
       distrobox
+	  distroshelf
       bubblewrap
       fuse-overlayfs
       undollar
@@ -187,7 +194,6 @@
       })
       signal-desktop
       telegram-desktop
-      webcord-vencord
       element-desktop
 
       ######################
@@ -227,8 +233,9 @@
 
       # Image & Graphics
       gimp-with-plugins
+	  imv
       upscayl
-      flameshot
+      #flameshot
       webcamoid
 	  kdePackages.kcolorchooser
 
@@ -293,6 +300,7 @@
       screen
       claude-code
       gemini-cli
+	  wrangler
 
       # Terminal Communication
       picocom
@@ -305,7 +313,8 @@
       clipboard-jh
       xclip
       textsnatcher
-	  lsd
+	    lsd
+	    powertop
 
       # Fun CLI Tools
       asciiquarium-transparent
@@ -349,7 +358,7 @@
       #caido
 
       # Reverse Engineering
-      ghidra
+      #ghidra
       radare2
       binwalk
       exiftool
@@ -388,9 +397,9 @@
       # GAMING    #
       #############
       # Game Launchers
-      prismlauncher
+      #prismlauncher
       bottles
-      heroic
+      #heroic
       goverlay
 
       # Games
@@ -426,7 +435,7 @@
       #masterpdfeditor4
 
       # Password Management
-      bitwarden
+      bitwarden-desktop
 
       ##################
       # FILE TRANSFER  #

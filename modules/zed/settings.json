@@ -1,30 +1,13 @@
 {
-  // appearance
-  "theme": "Tokyo Night",
-  "ui_font_size": 16,
-  "buffer_font_size": 14,
-  "buffer_font_family": "FiraCode Nerd Font",
-
-  // editor behavior
-  "vim_mode": false,
-  "tab_size": 2,
   "hard_tabs": false,
-  "soft_wrap": "editor_width",
-  "show_whitespaces": "selection",
-  "relative_line_numbers": false,
-
-  "format_on_save": "on",
-  "autosave": "on_focus_change",
-
-  "terminal": {
-    "shell": "zsh"
-  },
-
-  "lsp": {
-    "nix": {
-      "binary": {
-        "path": "nil"
-      }
-    }
+  "buffer_font_family": "FiraCode Nerd Font",
+  "vim_mode": false,
+  "ui_font_family": "FiraCode Nerd Font",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "system",
+    "light": "Tokyo Night Light",
+    "dark": "Tokyo Night"
   }
 }
