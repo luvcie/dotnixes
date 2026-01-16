@@ -25,15 +25,7 @@
 
   programs.home-manager.enable = true;
 
-  home.sessionVariables = lib.mkForce {
-    # XDG_CURRENT_DESKTOP will be set by the compositor
-    # XDG_SESSION_DESKTOP will be set by the compositor
-    GDK_BACKEND = "wayland";
-    QT_QPA_PLATFORM = "wayland";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    SDL_VIDEODRIVER = "wayland";
-    MOZ_ENABLE_WAYLAND = "1";
-    CLUTTER_BACKEND = "wayland";
+  home.sessionVariables = {
     _JAVA_AWT_WM_NONREPARENTING = "1";
   };
 
@@ -52,6 +44,9 @@
   # Enable retroism theme
   programs.retroism.enable = true;
 
+  # Let Home Manager install and manage fonts.
+  fonts.fontconfig.enable = true;
+
   # Enable caelestia (disable one or the other to switch)
   # programs.caelestia.enable = false;
 
@@ -61,11 +56,67 @@
 
   home.packages = with pkgs;
     [
+	  # latest additions
+	  mangohud
+	  mangojuice
+	  wlrctl
+	  hydrus
+	  python314
+	  python313Packages.pip
+	  rofi
+	  wmctrl
+	  ydotool
+	  gdb
+	  libGL
+	  libGLU
+	  android-studio
+	  scanmem
+	  android-studio-tools
+	  scrcpy
+	  xorg.xhost
+	  jmtpfs
+	  jdk17
+	  python313Packages.tkinter
+	  corefonts
+	  poppler-utils
+	  xxd
+	  mktorrent
+	  audacity
+	  qdl
+	  android-tools
+	  # edl  # broken in new nixpkgs
+	  payload-dumper-go
+	  gnome-mahjongg
+	  spotube
+	  nomacs
+	  cozette
+	  handlr
+	  # dsniff  # broken in new nixpkgs - libnids build fails
+	  zip
+	  jujutsu
+	  lazyjj
+	  nodejs_24
+	  pnpm
+#	  deno
+	  lazynpm
+	  iw
+	  aircrack-ng
+	  sslscan
+	  mdk4
+	  arp-scan
+	  tcpdump
+	  netdiscover
+#	  airgorah
+#	  wifite2
+	  bettercap
+#	  airgeddon
+	  pipx
       ###################
       # WEB BROWSERS    #
       ###################
       librewolf
       chromium
+	  firefox
 
       #######################
       # TERMINAL EMULATORS  #
@@ -73,7 +124,7 @@
       terminator
   	  pterm
       foot
-	    xfce.xfce4-terminal
+	  xfce4-terminal
       cool-retro-term
       ghostty
 
@@ -91,11 +142,9 @@
       evil-helix
       micro
       cosmic-edit
-      claude-code
 	    csview
 
       # Programming Languages & Runtimes
-      jdk
       lua
       ocaml
       perl
@@ -114,10 +163,10 @@
 
       # Development Utilities
 	  #kicad
-	  fritzing
-	  arduino-ide
-	  probe-rs-tools
-	  espup
+	  #fritzing
+	  #arduino-ide
+	  #probe-rs-tools
+	  #espup
 	  pkgsCross.avr.buildPackages.gcc
 	  arduino-cli
 	  cmake
@@ -133,14 +182,13 @@
       bubblewrap
       fuse-overlayfs
       undollar
-      gemini-cli
       file
       valgrind
 	  ceedling
 	  ruby
 
       # Container & Kubernetes Tools
-      k9s
+     #k9s
       kubectl
       argocd
       lazydocker
@@ -201,7 +249,7 @@
       ######################
       # Video & Audio
       vlc
-      obs-studio
+      # obs-studio
       waylyrics
       kooha
 	  qmmp
@@ -214,10 +262,11 @@
       yoshimi
       zynaddsubfx
       supercollider-with-plugins
-      fluidsynth
-      soundfont-fluid
+      #fluidsynth
+      #soundfont-fluid
       pipewire.jack
       qpwgraph
+	  easyeffects
 
       # Music Trackers & Chiptune
       schismtracker
@@ -238,6 +287,7 @@
       #flameshot
       webcamoid
 	  kdePackages.kcolorchooser
+	  kdePackages.kquickimageedit
 
       # Media Download
       yt-dlp
@@ -298,9 +348,7 @@
       zellij
       atuin
       screen
-      claude-code
-      gemini-cli
-	  wrangler
+	  #wrangler
 
       # Terminal Communication
       picocom
@@ -340,7 +388,6 @@
       mtr-gui
       openvpn
       drill
-      jwhois
 
       ########################
       # SECURITY & PENTEST   #
@@ -373,7 +420,7 @@
       stegseek
       stegsolve
       zsteg
-      outguess
+      # outguess  # broken in new nixpkgs - jpeg library issues
 
       # Forensics
       foremost
@@ -390,7 +437,7 @@
       # Penetration Testing Frameworks
       villain
       exploitdb
-      exegol
+      #exegol
       #pentestgpt
 
       #############
@@ -403,7 +450,7 @@
       goverlay
 
       # Games
-      (tetrio-desktop.override {withTetrioPlus = true;})
+      # tetrio-desktop  # temporarily disabled - tetrio-plus is broken in new nixpkgs
       techmino
       vitetris
       mgba
@@ -411,6 +458,7 @@
       vvvvvv
       abbaye-des-morts
 	  kdePackages.kpat
+	  kdePackages.kshisen
 
       # Gaming Support
       wine
@@ -449,7 +497,6 @@
       browsers
       mouseless
       dwarfs
-      cables
       eaglemode
       libcaca
       hdf5
@@ -464,6 +511,7 @@
       # THEMES & CURSORS  #
       #####################
       rose-pine-cursor
+      cozette
 
       ###################
       # CUSTOM PACKAGES #
@@ -645,8 +693,6 @@
     '';
   };
 
-  #  home.file."goinfre/.keep".text = "";
-
   # Run flatpak update after every home-manager rebuild
   home.activation.flatpakUpdate = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if command -v flatpak &> /dev/null; then
@@ -654,43 +700,4 @@
       ${pkgs.flatpak}/bin/flatpak update -y || true
     fi
   '';
-
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-      desktop = "${config.home.homeDirectory}/Desktop";
-      documents = "${config.home.homeDirectory}/Documents";
-      download = "${config.home.homeDirectory}/Downloads";
-      music = "${config.home.homeDirectory}/Music";
-      pictures = "${config.home.homeDirectory}/Pictures";
-      videos = "${config.home.homeDirectory}/Videos";
-    };
-    mimeApps = {
-      enable = true;
-      defaultApplications = {
-        "text/html" = ["app.zen_browser.zen.desktop"];
-        "x-scheme-handler/http" = ["app.zen_browser.zen.desktop"];
-        "x-scheme-handler/https" = ["app.zen_browser.zen.desktop"];
-        "application/pdf" = ["org.pwmt.zathura.desktop"];
-        "image/*" = ["imv.desktop"];
-        "video/*" = ["vlc.desktop"];
-      };
-    };
-  };
-
-  #  systemd.user.services.goinfre-cleanup = {
-  #   Unit = {
-  #     Description = "Clean goinfre directory on boot";
-  #     After = ["graphical-session.target"];
-  #   };
-  #   Service = {
-  #     Type = "oneshot";
-  #     ExecStart = "${pkgs.bash}/bin/bash -c 'find ${config.home.homeDirectory}/goinfre -mindepth 1 -not -name .keep -delete 2>/dev/null || true'";
-  #   };
-  #   Install = {
-  #     WantedBy = ["default.target"];
-  #   };
-  # };
 }

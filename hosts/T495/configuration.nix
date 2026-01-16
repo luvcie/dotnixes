@@ -21,7 +21,7 @@
   nix = {
     settings = {
       sandbox = true;
-      experimental-features = ["nix-command" "flakes" "flake-self-attrs"];
+      experimental-features = ["nix-command" "flakes"];
       auto-optimise-store = true;
       builders-use-substitutes = true;
     };
@@ -34,7 +34,7 @@
       automatic = true;
       dates = ["weekly"];
     };
-    package = lib.mkForce (pkgs.lix.overrideAttrs (oldAttrs: {
+    package = lib.mkForce (pkgs.nix.overrideAttrs (oldAttrs: {
       separateDebugInfo = false;
       __structuredAttrs = true;
     }));
@@ -67,6 +67,11 @@
       "rd.udev.log_level=3"
       "udev.log_priority=3"
     ];
+
+    kernel.sysctl = {
+      "vm.swappiness" = 10;
+      "vm.vfs_cache_pressure" = 50;
+    };
   };
 
   nixpkgs.config = {
@@ -98,7 +103,7 @@
         "org.freedesktop.impl.portal.Screencast" = ["wlr"];
       };
       niri = {
-        default = ["wlr"];
+        default = lib.mkForce ["wlr"];
         "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
         "org.freedesktop.impl.portal.Screencast" = ["wlr"];
       };
@@ -106,6 +111,14 @@
         default = ["wlr"];
         "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
         "org.freedesktop.impl.portal.Screencast" = ["wlr"];
+      };
+      xfce = {
+        default = ["gtk"];
+        "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+      };
+      cinnamon = {
+        default = ["gtk"];
+        "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
       };
     };
   };
@@ -122,7 +135,7 @@
   };
 
   powerManagement = {
-    cpuFreqGovernor = "performance";
+    cpuFreqGovernor = "schedutil";
     enable = true;
   };
 
@@ -138,6 +151,14 @@
       Option "VariableRefresh" "true"
       Option "DRI" "3"
     '';
+
+    desktopManager = {
+      xfce = {
+        enable = true;
+        enableScreensaver = false;
+      };
+      cinnamon.enable = true;
+    };
   };
 
   services.libinput = {
@@ -151,14 +172,15 @@
     };
   };
 
-  services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchExternalPower = "suspend";
-    lidSwitchDocked = "ignore";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "suspend";
+    HandleLidSwitchDocked = "ignore";
   };
 
-  services.displayManager.ly = {
-    enable = true;
+  services.displayManager = {
+    ly.enable = true;
+    defaultSession = "cinnamon";
   };
 
   console = {
@@ -205,18 +227,9 @@
   };
 
   environment.variables = {
-    NIXOS_OZONE_WL = "1";
     AMD_VULKAN_ICD = "RADV";
     RADV_PERFTEST = "gpl,nosam";
     STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
-    MOZ_ENABLE_WAYLAND = "1";
-    QT_QPA_PLATFORM = "wayland";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    GDK_BACKEND = "wayland";
-    SDL_VIDEODRIVER = "wayland";
-    CLUTTER_BACKEND = "wayland";
-    XDG_SESSION_TYPE = "wayland";
-    # Steam optimizations
     STEAM_RUNTIME_PREFER_HOST_LIBRARIES = "0";
     PROTON_FORCE_LARGE_ADDRESS_AWARE = "1";
     PROTON_USE_SECCOMP = "1";
@@ -294,7 +307,6 @@
   programs = {
     zsh.enable = true;
     direnv.enable = true;
-    adb.enable = true;
     appimage.binfmt.enable = true;
     nix-ld.enable = true;
 
@@ -304,16 +316,13 @@
       flake = "/home/lucie/dotnixes";
     };
 
-    gamescope = {
-      enable = true;
-      capSysNice = true;
-      args = [
-        "--immediate-submit"
-        "--adaptive-sync"
-        "--expose-wayland"
-        "--steam"
-      ];
-    };
+    # gamescope = {
+    #   enable = true;
+    #   capSysNice = true;
+    #   args = [
+    #     "--adaptive-sync"
+    #   ];
+    # };
     corectrl.enable = true;
   };
 
@@ -363,7 +372,9 @@
 
   environment.systemPackages = with pkgs; [
 	clang
+    gamescope
     ly
+    android-tools
     usbutils
     udiskie
     udisks

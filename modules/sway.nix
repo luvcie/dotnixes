@@ -52,7 +52,7 @@ in {
       shadows enable
       blur enable
       titlebar_separator disable
-      font pango:monospace 10
+      font pango:Cozette 10
       gaps outer 0
       gaps inner 6
       titlebar_border_thickness 0
@@ -71,6 +71,14 @@ in {
     extraSessionCommands = ''
       export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
       export WLR_NO_HARDWARE_CURSORS=1
+      export NIXOS_OZONE_WL=1
+      export MOZ_ENABLE_WAYLAND=1
+      export QT_QPA_PLATFORM=wayland
+      export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+      export GDK_BACKEND=wayland
+      export SDL_VIDEODRIVER=wayland
+      export CLUTTER_BACKEND=wayland
+      export XDG_SESSION_TYPE=wayland
     '';
 
     config = rec {
@@ -105,6 +113,20 @@ in {
           {
             criteria = {app_id = "vesktop";};
             command = "move container to workspace 3";
+          }
+          # Higurashi and other Unity/Wine games that resist fullscreen
+          {
+            criteria = {title = "Higurashi When They Cry.*";};
+            command = "floating enable, border none, resize set 1366 768, move position 0 0";
+          }
+          # Habbo fishing auto-clicker
+          {
+            criteria = {title = "Fishing Setup";};
+            command = "floating enable";
+          }
+          {
+            criteria = {title = "Fishing...";};
+            command = "floating enable";
           }
         ];
       };
@@ -187,6 +209,7 @@ in {
         "${modifier}+Print" = "exec grim - | wl-copy";
         "${modifier}+Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') - | wl-copy";
         "Print" = "exec grim -g \"$(slurp)\" - | satty --filename - --output-filename - --copy-command wl-copy";
+        "Control+Print" = "exec mkdir -p ~/Pictures/Screenshots && grim ~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S.png')";
 
         "XF86MonBrightnessDown" = "exec brightnessctl set 2%-";
         "XF86MonBrightnessUp" = "exec brightnessctl set +2%";
