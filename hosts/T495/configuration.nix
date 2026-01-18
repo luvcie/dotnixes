@@ -120,6 +120,9 @@
         default = ["gtk"];
         "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
       };
+      cosmic = {
+        default = ["cosmic" "gtk"];
+      };
     };
   };
 
@@ -160,6 +163,8 @@
       cinnamon.enable = true;
     };
   };
+
+  services.desktopManager.cosmic.enable = true;
 
   services.libinput = {
     enable = true;
