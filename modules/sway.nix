@@ -254,6 +254,18 @@ in {
         habbo_safety = {
           "Escape" = "nop";
           "${modifier}+h" = "mode default";
+
+          # Enable workspace switching in safety mode
+          "--no-repeat ${modifier}+1" = "workspace number 1; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+2" = "workspace number 2; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+3" = "workspace number 3; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+4" = "workspace number 4; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+5" = "workspace number 5; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+6" = "workspace number 6; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+7" = "workspace number 7; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+8" = "workspace number 8; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+9" = "workspace number 9; exec \"echo 1 > /tmp/sovpipe\"";
+          "--no-repeat ${modifier}+0" = "workspace number 10; exec \"echo 1 > /tmp/sovpipe\"";
         };
       };
 
