@@ -128,6 +128,15 @@ in {
             criteria = {title = "Fishing...";};
             command = "floating enable";
           }
+          # Auto-enter safety mode for Habbo Hotel Origins
+          {
+            criteria = {class = "steam_app_3809900";};
+            command = "mode habbo_safety";
+          }
+          {
+            criteria = {title = "Habbo Hotel Origins";};
+            command = "mode habbo_safety";
+          }
         ];
       };
 
