@@ -224,6 +224,8 @@ in {
         "${modifier}+XF86AudioPrev" = "exec \"echo 3 > /tmp/vmp\"";
 
         "${modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'";
+
+        "${modifier}+h" = "mode habbo_safety";
       };
 
       input = {
@@ -248,6 +250,10 @@ in {
           "Right" = "resize grow width 10 px";
           "Return" = "mode default";
           "Escape" = "mode default";
+        };
+        habbo_safety = {
+          "Escape" = "nop";
+          "${modifier}+h" = "mode default";
         };
       };
 

@@ -87,6 +87,7 @@
       setopt COMPLETE_ALIASES
       eval "$(direnv hook zsh)"
       eval "$(starship init zsh)"
+	  export PATH="$HOME/.npm-global/bin:$PATH"
     '';
   };
 }

@@ -57,6 +57,7 @@
   home.packages = with pkgs;
     [
 	  # latest additions
+	  vesktop
 	  mangohud
 	  mangojuice
 	  wlrctl
