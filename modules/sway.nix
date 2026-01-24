@@ -29,7 +29,54 @@
     ${pkgs.procps}/bin/pkill swaybg
     ${pkgs.swaybg}/bin/swaybg -i "$wallpaper" -m fill &
   '';
+
+  swayGameMode = pkgs.writers.writePython3Bin "sway-gamemode" {
+    libraries = [ pkgs.python3Packages.i3ipc ];
+  } ''
+    import i3ipc
+
+    # Configuration
+    TARGET_APP_ID = "gamescope"
+    TARGET_TITLE = "Habbo Hotel: Origins"
+    SAFETY_MODE = "habbo_safety"
+    DEFAULT_MODE = "default"
+
+    ipc = i3ipc.Connection()
+
+
+    def on_window_focus(ipc, event):
+        container = event.container
+
+        # Check if we are focusing the target game
+        if (container and
+                container.app_id == TARGET_APP_ID and
+                container.name == TARGET_TITLE):
+            ipc.command(f"mode {SAFETY_MODE}")
+        else:
+            # If we are NOT focusing the game, ensure we are in default mode
+            ipc.command(f"mode {DEFAULT_MODE}")
+
+
+    ipc.on("window::focus", on_window_focus)
+    ipc.main()
+  '';
 in {
+  systemd.user.services.sway-gamemode = {
+    Unit = {
+      Description = "Sway Game Mode Auto-Switcher";
+      After = [ "sway-session.target" ];
+      PartOf = [ "sway-session.target" ];
+    };
+    Service = {
+      ExecStart = "${swayGameMode}/bin/sway-gamemode";
+      Restart = "always";
+      RestartSec = "5s";
+    };
+    Install = {
+      WantedBy = [ "sway-session.target" ];
+    };
+  };
+
   wayland.windowManager.sway = {
     enable = true;
     package = pkgs.swayfx;
@@ -127,15 +174,6 @@ in {
           {
             criteria = {title = "Fishing...";};
             command = "floating enable";
-          }
-          # Auto-enter safety mode for Habbo Hotel Origins
-          {
-            criteria = {class = "steam_app_3809900";};
-            command = "mode habbo_safety";
-          }
-          {
-            criteria = {title = "Habbo Hotel Origins";};
-            command = "mode habbo_safety";
           }
         ];
       };
