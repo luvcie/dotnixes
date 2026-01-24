@@ -313,6 +313,12 @@ in {
           "--no-repeat ${modifier}+8" = "workspace number 8";
           "--no-repeat ${modifier}+9" = "workspace number 9";
           "--no-repeat ${modifier}+0" = "workspace number 10";
+
+          # Enable screenshots in safety mode
+          "${modifier}+Print" = "exec grim - | wl-copy";
+          "${modifier}+Shift+Print" = "exec grim -g \"$(slurp)\" ~/Pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') - | wl-copy";
+          "Print" = "exec grim -g \"$(slurp)\" - | satty --filename - --output-filename - --copy-command wl-copy";
+          "Control+Print" = "exec mkdir -p ~/Pictures/Screenshots && grim ~/Pictures/Screenshots/$(date +'%Y-%m-%d-%H%M%S.png')";
         };
       };
 
