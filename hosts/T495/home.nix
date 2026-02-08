@@ -10,17 +10,17 @@
   ######################
 
   imports = [
-    ./modules/wezterm.nix
-    ./modules/vscode.nix
-    ./modules/zed
-    ./modules/zsh.nix
-    ./modules/nixvim.nix
-    ./modules/sway.nix
-    ./modules/niri.nix
-    ./modules/niriconf.nix
-    ./modules/theme.nix
-   # ./modules/caelestia.nix
-    ./modules/retroism.nix
+    ../../modules/wezterm.nix
+    ../../modules/vscode.nix
+    ../../modules/zed
+    ../../modules/zsh.nix
+    ../../modules/nixvim.nix
+    ../../modules/sway.nix
+    ../../modules/niri.nix
+    ../../modules/niriconf.nix
+    ../../modules/theme.nix
+   # ../../modules/caelestia.nix
+    ../../modules/retroism.nix
   ];
 
   programs.home-manager.enable = true;

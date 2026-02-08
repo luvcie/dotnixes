@@ -1,0 +1,50 @@
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
+  # grab the modules
+  imports = [
+    ../../modules/zsh.nix
+    ../../modules/copyparty.nix
+  ];
+
+  programs.home-manager.enable = true;
+
+  home = {
+    username = "weew";
+    homeDirectory = "/home/weew";
+    stateVersion = "23.11";
+
+    sessionPath = [
+      "$HOME/.local/bin"
+    ];
+
+    packages = with pkgs; [
+      btop
+      yazi
+      bat
+      gh
+      ripgrep
+      fd
+      nh
+      sops
+      age
+    ];
+  };
+
+  nixpkgs.config.allowUnfree = true;
+
+  sops = {
+    defaultSopsFile = ../../vault/encrypted-sops-secrets.yaml;
+    # point to your master key
+    age.keyFile = "/home/weew/.config/sops/age/keys.txt";
+    
+    secrets = {
+      copyparty_princess_password = {};
+      copyparty_guest_password = {};
+    };
+  };
+}

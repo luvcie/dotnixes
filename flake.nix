@@ -41,6 +41,11 @@
       url = "github:diinki/linux-retroism";
       flake = false;
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   ###########
@@ -69,6 +74,25 @@
     # Home Configuration  #
     #######################
 
+    homeConfigurations."weew" = let
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        config = {allowUnfree = true;};
+        overlays = [];
+      };
+    in
+      inputs.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = {
+          inherit inputs pkgs;
+        };
+        modules = [
+          ./hosts/proxmox-lab/home.nix
+          inputs.nixvim.homeModules.nixvim
+          inputs.sops-nix.homeManagerModules.sops
+        ];
+      };
+
     homeConfigurations."lucie" = let
       pkgs = import inputs.nixpkgs {
         system = "x86_64-linux";
@@ -82,7 +106,7 @@
           inherit inputs pkgs;
         };
         modules = [
-          ./home.nix
+          ./hosts/T495/home.nix
           inputs.nixvim.homeModules.nixvim
         ];
         #modules = inputs.ashley-dotfiles.homeModules ++ [

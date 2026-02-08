@@ -1,0 +1,8 @@
+keys:
+  - &admin_key age1qam60ldlt5zfpvtq7km5afwukx5dj7k8zef6wqg2h40p2wpdtqks589q79
+
+creation_rules:
+  - path_regex: .*\.yaml$
+    key_groups:
+      - age:
+        - *admin_key
