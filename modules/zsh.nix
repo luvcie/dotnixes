@@ -85,7 +85,6 @@
       setopt PUSHD_IGNORE_DUPS
       setopt PUSHD_SILENT
       setopt COMPLETE_ALIASES
-      eval "$(direnv hook zsh)"
       eval "$(starship init zsh)"
 	  export PATH="$HOME/.npm-global/bin:$PATH"
     '';

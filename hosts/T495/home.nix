@@ -563,21 +563,6 @@
     };
   };
 
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-    stdlib = ''
-      layout_python() {
-        local python=''${1:-python3}
-        unset PYTHONHOME
-        export VIRTUAL_ENV=.venv
-        if [[ ! -d $VIRTUAL_ENV ]]; then
-          $python -m venv $VIRTUAL_ENV
-        fi
-        export PYTHONPATH=$VIRTUAL_ENV
-        PATH_add "$VIRTUAL_ENV/bin"
-      }
-    '';
   };
 
   programs.bat = {
