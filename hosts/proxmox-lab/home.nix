@@ -12,6 +12,7 @@
     ../../modules/vnc.nix
     ../../modules/homepage.nix
     ../../modules/cloudflared.nix
+    ../../modules/portainer.nix
   ];
 
   programs.home-manager.enable = true;

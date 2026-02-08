@@ -16,6 +16,8 @@
         service: http://localhost:3923
       - hostname: files.luvcie.love
         service: http://localhost:3923
+      - hostname: containers.luvcie.love
+        service: http://localhost:9000
       - hostname: home.luvcie.love
         service: http://localhost:3000
       - service: http_status:404

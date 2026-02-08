@@ -24,6 +24,10 @@ in {
             icon: proxmox.png
             href: https://192.168.1.50:8006
             description: hypervisor
+        - Portainer:
+            icon: portainer.png
+            href: https://containers.luvcie.love
+            description: container management
   '';
 
   home.file."${configDir}/bookmarks.yaml".text = ''
