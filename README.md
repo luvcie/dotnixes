@@ -303,3 +303,46 @@ Launch Steam games with GameMode:
 ```bash
 gamemoderun %command%
 ```
+
+---
+
+## Copyparty Management
+
+Useful commands for managing the file server and its tunnel.
+
+### Service Management (User Units)
+
+Check status of the server and tunnel:
+```bash
+systemctl --user status copyparty.service cloudflared.service
+```
+
+Restart services (to apply non-global config changes):
+```bash
+systemctl --user restart copyparty.service cloudflared.service
+```
+
+View server logs:
+```bash
+podman logs -f copyparty
+```
+
+View tunnel logs:
+```bash
+journalctl --user -u cloudflared -f
+```
+
+### Secrets & Config
+
+Edit passwords (using sops):
+```bash
+cd ~/dotnixes
+sops vault/encrypted-sops-secrets.yaml
+```
+
+Reload config without restarting (to apply volume/account changes):
+```bash
+pkill -USR1 -f copyparty.py
+```
+
+
