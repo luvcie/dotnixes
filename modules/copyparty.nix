@@ -9,7 +9,6 @@
 in {
   home.packages = with pkgs; [
     podman
-    cloudflared
   ];
 
   # secrets template for the config file
@@ -44,7 +43,7 @@ in {
     '';
   };
 
-  # rootless podman + cloudflare tunnel services
+  # rootless podman service
   systemd.user.services.copyparty = {
     Unit = {
       Description = "copyparty podman container";
@@ -58,22 +57,6 @@ in {
       ];
       ExecStart = "${pkgs.podman}/bin/podman run --name copyparty -p 3923:3923 -v /nix/store:/nix/store:ro -v ${config.xdg.configHome}/sops-nix/secrets/rendered/copyparty.conf:/cfg/copyparty.conf:ro -v ${copypartyDir}:${copypartyDir}:Z docker.io/copyparty/ac";
       ExecStop = "${pkgs.podman}/bin/podman stop copyparty";
-    };
-    Install = {
-      WantedBy = ["default.target"];
-    };
-  };
-
-  systemd.user.services.cloudflared = {
-    Unit = {
-      Description = "cloudflare tunnel for copyparty";
-      After = ["network.target"];
-    };
-    Service = {
-      Type = "simple";
-      ExecStart = "${pkgs.cloudflared}/bin/cloudflared tunnel run copyparty-tunnel";
-      Restart = "always";
-      RestartSec = "5";
     };
     Install = {
       WantedBy = ["default.target"];

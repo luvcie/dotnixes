@@ -10,6 +10,8 @@
     ../../modules/zsh.nix
     ../../modules/copyparty.nix
     ../../modules/vnc.nix
+    ../../modules/homepage.nix
+    ../../modules/cloudflared.nix
   ];
 
   programs.home-manager.enable = true;
