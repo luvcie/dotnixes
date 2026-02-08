@@ -9,6 +9,7 @@
   imports = [
     ../../modules/zsh.nix
     ../../modules/copyparty.nix
+    ../../modules/vnc.nix
   ];
 
   programs.home-manager.enable = true;
