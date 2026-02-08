@@ -13,6 +13,8 @@
     ../../modules/homepage.nix
     ../../modules/cloudflared.nix
     ../../modules/portainer.nix
+    ../../modules/shell-bridge.nix
+    ../../modules/website.nix
   ];
 
   programs.home-manager.enable = true;
@@ -49,6 +51,7 @@
     secrets = {
       copyparty_princess_password = {};
       copyparty_guest_password = {};
+      proxmox_api_token = {};
     };
   };
 }
