@@ -17,6 +17,7 @@
     ../../modules/website.nix
     ../../modules/tailscale-certs.nix
     ../../modules/proxmox-cert-sync.nix
+    ../../modules/i2pd.nix
   ];
 
   programs.home-manager.enable = true;

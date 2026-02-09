@@ -306,43 +306,71 @@ gamemoderun %command%
 
 ---
 
-## Copyparty Management
+## Lab Services
 
-Useful commands for managing the file server and its tunnel.
+### i2pd
+i2p router in rootless podman with `--network=host`.
 
-### Service Management (User Units)
+- web console: `http://proxmox-lab.tail5296cb.ts.net:7070`
+- http proxy: `proxmox-lab.tail5296cb.ts.net:4444`
+- socks proxy: `proxmox-lab.tail5296cb.ts.net:4447`
+- sam bridge: `proxmox-lab.tail5296cb.ts.net:7656`
+- i2pcontrol api: `https://127.0.0.1:7650` (localhost only)
+- p2p port: `31000` (tcp/udp, forwarded on the router)
+- config: `modules/i2pd.nix`
+- data: `~/i2pd/`
 
-Check status of the server and tunnel:
+#### browsing .i2p sites in firefox
+in `about:config` set these:
+- `network.proxy.allow_hijacking_localhost` to `true`
+- `keyword.enabled` to `false`
+- `network.dns.blockDotOnion` to `false`
+
+then in firefox settings, network settings, manual proxy configuration:
+- http proxy: `proxmox-lab.tail5296cb.ts.net`, port `4444`
+- check "also use this proxy for HTTPS"
+- check "proxy DNS when using SOCKS v5"
+
+
+#### i2pcontrol api
+for monitoring/automation, default password is `itoopie`, change it before using.
+
 ```bash
-systemctl --user status copyparty.service cloudflared.service
+# get a token
+curl -sk -X POST https://127.0.0.1:7650 \
+  -d '{"id":1,"jsonrpc":"2.0","method":"Authenticate","params":{"API":1,"Password":"itoopie"},"Token":""}'
+
+# query router info (use the token from above)
+curl -sk -X POST https://127.0.0.1:7650 \
+  -d '{"id":2,"jsonrpc":"2.0","method":"RouterInfo","params":{
+    "i2p.router.status":"",
+    "i2p.router.net.status":"",
+    "i2p.router.net.tunnels.participating":"",
+    "i2p.router.netdb.knownpeers":"",
+    "i2p.router.uptime":"",
+    "i2p.router.net.bw.inbound.1s":"",
+    "i2p.router.net.bw.outbound.1s":""
+  },"Token":"<TOKEN>"}'
 ```
 
-Restart services (to apply non-global config changes):
-```bash
-systemctl --user restart copyparty.service cloudflared.service
-```
+methods: `Authenticate`, `RouterInfo`, `RouterManager`, `NetworkSetting`.
 
-View server logs:
-```bash
-podman logs -f copyparty
-```
+#### torrents (biglybt etc)
+1. enable i2p support in the client
+2. set i2p router host to `proxmox-lab.tail5296cb.ts.net`
+3. set sam port to `7656`
 
-View tunnel logs:
-```bash
-journalctl --user -u cloudflared -f
-```
+#### networking stuff
+- `--network=host` because pasta caused i2pd to report symmetric NAT
+- i2pd auto-detects external ip through peer testing
+- port 31000 forwarded on the router (NAT/PAT) and allowed through ufw
 
-### Secrets & Config
+### proxmox
+secure hypervisor access via tailscale.
+- url: `https://proxmox-lab.tail5296cb.ts.net:8006`
+- certs: automated via tailscale-certs + proxmox-cert-sync
 
-Edit passwords (using sops):
-```bash
-cd ~/dotnixes
-sops vault/encrypted-sops-secrets.yaml
-```
-
-Reload config without restarting (to apply volume/account changes):
-```bash
-pkill -USR1 -f copyparty.py
-```
-
-
+### copyparty
+file server with sops-managed accounts.
+- url: `https://files.luvcie.love`
+- edit passwords: `sops vault/encrypted-sops-secrets.yaml`

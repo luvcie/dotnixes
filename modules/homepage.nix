@@ -50,6 +50,10 @@ in {
               icon: portainer.png
               href: https://containers.luvcie.love
               description: container management
+          - i2pd:
+              icon: i2pd.png
+              href: http://proxmox-lab.tail5296cb.ts.net:7070
+              description: i2p router console
       - Infrastructure:
           - Proxmox:
               icon: proxmox.png
