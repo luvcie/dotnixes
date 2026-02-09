@@ -15,6 +15,7 @@
     ../../modules/portainer.nix
     ../../modules/shell-bridge.nix
     ../../modules/website.nix
+    ../../modules/tailscale-certs.nix
   ];
 
   programs.home-manager.enable = true;
@@ -38,6 +39,7 @@
       nh
       sops
       age
+      tailscale
     ];
   };
 

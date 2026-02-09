@@ -53,15 +53,14 @@ in {
       - Infrastructure:
           - Proxmox:
               icon: proxmox.png
-              href: https://proxmox-lab:8006
+              href: https://proxmox-lab.tail5296cb.ts.net:8006
               description: hypervisor
               widget:
                 type: proxmox
-                url: https://host.containers.internal:8006
+                url: https://proxmox-lab.tail5296cb.ts.net:8006
                 username: root@pam!homepage
                 password: ${config.sops.placeholder.proxmox_api_token}
                 node: proxmox-lab
-                enableInsecure: true
     '';
   };
 
