@@ -16,6 +16,7 @@
     ../../modules/shell-bridge.nix
     ../../modules/website.nix
     ../../modules/tailscale-certs.nix
+    ../../modules/proxmox-cert-sync.nix
   ];
 
   programs.home-manager.enable = true;
