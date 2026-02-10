@@ -4,7 +4,7 @@
   config,
   ...
 }: let
-  bridgeDir = "${config.home.homeDirectory}/Development/shell-bridge";
+  bridgeDir = "${config.home.homeDirectory}/Development/luvcie-website/shell-bridge";
   podmanPath = "${config.home.homeDirectory}/.nix-profile/bin/podman";
 
   terminalImage = pkgs.dockerTools.buildImage {
