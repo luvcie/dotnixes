@@ -42,6 +42,7 @@
       sops
       age
       tailscale
+      fuse-overlayfs
     ];
   };
 
