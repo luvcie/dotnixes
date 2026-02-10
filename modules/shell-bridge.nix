@@ -17,6 +17,7 @@
       bash
       fastfetch
       neofetch
+      bunnyfetch
       figlet
       cowsay
       lolcat
@@ -26,18 +27,23 @@
       vitetris
       solitaire-tui
       tree
+      yazi
+      nbsdgames
+      bsdgames
       file
       nano
       vim
+      emacs
       helix
       pfetch-rs
       cpufetch
+      ncurses
       ];
       pathsToLink = ["/bin" "/etc" "/share"];
     };
     config = {
       Cmd = ["/bin/sh"];
-      WorkingDir = "/root";
+      WorkingDir = "/";
     };
   };
 in {
@@ -49,8 +55,15 @@ in {
     };
     Service = {
       WorkingDirectory = bridgeDir;
-      ExecStartPre = "${podmanPath} load -i ${terminalImage}";
+      ExecStartPre = pkgs.writeShellScript "load-luvcie-lab" ''
+        marker="$HOME/.local/share/containers/luvcie-lab-loaded"
+        if [ ! -f "$marker" ] || [ "$(cat "$marker")" != "${terminalImage}" ]; then
+          ${podmanPath} load -i ${terminalImage}
+          echo "${terminalImage}" > "$marker"
+        fi
+      '';
       ExecStart = "${pkgs.nodejs_24}/bin/node ${bridgeDir}/server.js";
+      ExecStopPost = "${podmanPath} rm -f -a";
       Restart = "always";
       RestartSec = 5;
       TimeoutStartSec = 300;
