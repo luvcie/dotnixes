@@ -28,6 +28,8 @@ in {
         "--httpproxy.address=0.0.0.0 --socksproxy.address=0.0.0.0 " +
         "--sam.address=0.0.0.0 --port=31000 --ntcp2.port=31000 --ssu2.port=31000 " +
         "--nat " +
+        "--bandwidth=L --share=30 " +
+        "--ntcp2.published=true --ssu2.published=true " +
         "--i2pcontrol.enabled=true --i2pcontrol.address=127.0.0.1 --i2pcontrol.port=7650";
       ExecStop = "${pkgs.podman}/bin/podman stop i2pd";
     };
