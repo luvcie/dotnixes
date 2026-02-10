@@ -131,6 +131,56 @@ in {
     convert -size 1x1 xc:"#09090b" $out
   '';
 
+  # widgets with back-to-portfolio link
+  home.file."${configDir}/widgets.yaml" = {
+    force = true;
+    text = ''
+      - logo:
+          href: https://test.luvcie.love
+      - resources:
+          cpu: true
+          memory: true
+          disk: /
+      - search:
+          provider: duckduckgo
+          target: _blank
+    '';
+  };
+
+  # style the logo widget as a back button
+  home.file."${configDir}/custom.css" = {
+    force = true;
+    text = ''
+      .information-widget-logo.widget-container {
+        padding: 0.4rem 0.8rem !important;
+        border: 1px solid rgba(63, 63, 70, 0.5) !important;
+        border-radius: 0.5rem !important;
+        transition: border-color 0.2s !important;
+      }
+      .information-widget-logo.widget-container:hover {
+        border-color: rgba(236, 72, 153, 0.3) !important;
+      }
+      .information-widget-logo.widget-container > * {
+        display: none !important;
+      }
+      .information-widget-logo.widget-container::before {
+        content: "\2190  portfolio";
+        font-size: 0.75rem;
+        font-family: monospace;
+        color: #a1a1aa;
+        letter-spacing: 0.05em;
+      }
+      .information-widget-logo.widget-container:hover::before {
+        color: #ec4899;
+      }
+    '';
+  };
+
+  home.file."${configDir}/custom.js" = {
+    force = true;
+    text = "";
+  };
+
   # systemd service for homepage
   systemd.user.services.homepage = {
     Unit = {
@@ -150,7 +200,8 @@ in {
         "-v ${config.xdg.configHome}/sops-nix/secrets/rendered/services.yaml:/app/config/services.yaml:ro " +
         "-v ${configDir}:/app/config:Z " +
         "-v ${homepageDir}/images:/app/public/images:Z " +
-        "ghcr.io/benphelps/homepage:latest";
+        "-e HOMEPAGE_ALLOWED_HOSTS=home.luvcie.love " +
+        "ghcr.io/gethomepage/homepage:latest";
       ExecStop = "${pkgs.podman}/bin/podman stop homepage";
     };
     Install = {
