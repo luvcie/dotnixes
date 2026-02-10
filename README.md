@@ -365,6 +365,32 @@ methods: `Authenticate`, `RouterInfo`, `RouterManager`, `NetworkSetting`.
 - i2pd auto-detects external ip through peer testing
 - port 31000 forwarded on the router (NAT/PAT) and allowed through ufw
 
+### yggdrasil
+encrypted ipv6 mesh network (200::/7) in rootless podman with a socks5 proxy sidecar.
+
+- config: `modules/yggdrasil.nix`
+- private key: sops-managed (`yggdrasil_private_key` in vault)
+- container images: nix-built (official docker image stuck on 0.4.2)
+- socks proxy: `proxmox-lab.tail5296cb.ts.net:1080`
+
+#### browsing yggdrasil sites in a browser
+in browser proxy settings, set **only** the socks host:
+- socks host: `proxmox-lab.tail5296cb.ts.net`, port `1080`, socks v5
+- check "proxy DNS when using SOCKS v5"
+- leave http/ssl/ftp proxy fields **empty**
+
+site directory and service list: https://yggdrasil-network.github.io/services.html
+
+#### managing the service
+```bash
+# check status
+systemctl --user status yggdrasil
+systemctl --user status yggdrasil-proxy
+
+# restart
+systemctl --user restart yggdrasil
+```
+
 ### proxmox
 secure hypervisor access via tailscale.
 - url: `https://proxmox-lab.tail5296cb.ts.net:8006`

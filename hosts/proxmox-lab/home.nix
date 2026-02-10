@@ -18,6 +18,7 @@
     ../../modules/tailscale-certs.nix
     ../../modules/proxmox-cert-sync.nix
     ../../modules/i2pd.nix
+    ../../modules/yggdrasil.nix
   ];
 
   programs.home-manager.enable = true;
@@ -57,6 +58,7 @@
       copyparty_princess_password = {};
       copyparty_guest_password = {};
       proxmox_api_token = {};
+      yggdrasil_private_key = {};
     };
   };
 }
