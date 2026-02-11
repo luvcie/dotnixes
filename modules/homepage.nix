@@ -49,6 +49,10 @@ in {
               icon: plex.png
               href: https://plex.luvcie.love
               description: media server
+          - Navidrome:
+              icon: navidrome.png
+              href: https://music.luvcie.love
+              description: music streaming
       - Infrastructure:
           - Proxmox:
               icon: proxmox.png

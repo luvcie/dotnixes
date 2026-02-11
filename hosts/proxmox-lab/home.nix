@@ -15,6 +15,7 @@
     ../../modules/portainer.nix
     ../../modules/shell-bridge.nix
     ../../modules/plex.nix
+    ../../modules/navidrome.nix
     ../../modules/website.nix
     ../../modules/tailscale-certs.nix
     ../../modules/proxmox-cert-sync.nix
