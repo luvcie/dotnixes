@@ -50,6 +50,10 @@ in {
               icon: portainer.png
               href: https://containers.luvcie.love
               description: container management
+          - Plex:
+              icon: plex.png
+              href: https://plex.luvcie.love
+              description: media server
       - Infrastructure:
           - Yggdrasil:
               icon: /images/yggdrasil.png
@@ -63,12 +67,6 @@ in {
               icon: proxmox.png
               href: https://proxmox-lab.tail5296cb.ts.net:8006
               description: hypervisor
-              widget:
-                type: proxmox
-                url: https://proxmox-lab.tail5296cb.ts.net:8006
-                username: root@pam!homepage
-                password: ${config.sops.placeholder.proxmox_api_token}
-                node: proxmox-lab
     '';
   };
 
@@ -141,10 +139,32 @@ in {
     text = ''
       - logo:
           href: https://test.luvcie.love
+      - datetime:
+          text_size: xl
+          format:
+            hour: numeric
+            minute: numeric
+            timeZoneName: short
+            timeZone: Europe/Paris
+          locale: fr-FR
+      - datetime:
+          text_size: xl
+          format:
+            hour: numeric
+            minute: numeric
+            timeZoneName: short
+            timeZone: America/Chicago
+          locale: en-US
       - resources:
           cpu: true
           memory: true
           disk: /
+      - openmeteo:
+          label: Paris
+          latitude: 48.8566
+          longitude: 2.3522
+          units: metric
+          cache: 15
       - search:
           provider: duckduckgo
           target: _blank

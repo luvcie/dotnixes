@@ -24,6 +24,8 @@
         service: http://127.0.0.1:4321
       - hostname: home.luvcie.love
         service: http://127.0.0.1:3000
+      - hostname: plex.luvcie.love
+        service: http://127.0.0.1:32400
       - service: http_status:404
   '';
 

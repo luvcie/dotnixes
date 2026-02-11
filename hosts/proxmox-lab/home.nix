@@ -14,6 +14,7 @@
     ../../modules/cloudflared.nix
     ../../modules/portainer.nix
     ../../modules/shell-bridge.nix
+    ../../modules/plex.nix
     ../../modules/website.nix
     ../../modules/tailscale-certs.nix
     ../../modules/proxmox-cert-sync.nix
@@ -33,6 +34,7 @@
     ];
 
     packages = with pkgs; [
+      lvm2_vdo
       btop
       yazi
       bat
@@ -59,6 +61,7 @@
       copyparty_guest_password = {};
       proxmox_api_token = {};
       yggdrasil_private_key = {};
+      plex_claim_token = {};
     };
   };
 }
