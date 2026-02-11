@@ -8,7 +8,6 @@
   configDir = "${homepageDir}/config";
   imagesDir = "${homepageDir}/images";
 in {
-  # minimalist settings
   home.file."${configDir}/settings.yaml".text = ''
     title: luvcie lab
     theme: dark
@@ -51,10 +50,10 @@ in {
               href: https://plex.luvcie.love
               description: media server
       - Infrastructure:
-          - Portainer:
-              icon: portainer.png
-              href: http://proxmox-lab.tail5296cb.ts.net:9000
-              description: container management
+          - Proxmox:
+              icon: proxmox.png
+              href: https://proxmox-lab.tail5296cb.ts.net:8006
+              description: hypervisor
           - Yggdrasil:
               icon: /images/yggdrasil.png
               href: "http://[21e:e795:8e82:a9e2:ff48:952d:55f2:f0bb]/"
@@ -63,18 +62,21 @@ in {
               icon: i2pd.png
               href: http://proxmox-lab.tail5296cb.ts.net:7070
               description: i2p router console
-          - Proxmox:
-              icon: proxmox.png
-              href: https://proxmox-lab.tail5296cb.ts.net:8006
-              description: hypervisor
+          - Portainer:
+              icon: portainer.png
+              href: http://proxmox-lab.tail5296cb.ts.net:9000
+              description: container management
           - Sunshine:
               icon: /images/sunshine.png
               href: https://proxmox-lab.tail5296cb.ts.net:47990
               description: game streaming
+          - Tailscale:
+              icon: tailscale.png
+              href: https://login.tailscale.com/admin/machines
+              description: mesh vpn
     '';
   };
 
-  # bookmarks with custom abbreviations
   home.file."${configDir}/bookmarks.yaml".text = ''
     - development:
         - github:
@@ -89,9 +91,9 @@ in {
         - exploit-db:
             - abbr: EDB
               href: https://exploit-db.com
-        - tailscale:
-            - icon: tailscale.png
-              href: https://login.tailscale.com/admin/machines
+        - shodan:
+            - abbr: SHO
+              href: https://shodan.io
     - social:
         - uboachan:
             - abbr: UB
