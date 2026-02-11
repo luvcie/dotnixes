@@ -16,8 +16,6 @@
         service: http://127.0.0.1:3923
       - hostname: files.luvcie.love
         service: http://127.0.0.1:3923
-      - hostname: containers.luvcie.love
-        service: http://127.0.0.1:9000
       - hostname: term.luvcie.love
         service: http://127.0.0.1:3001
       - hostname: test.luvcie.love

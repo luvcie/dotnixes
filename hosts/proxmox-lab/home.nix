@@ -20,6 +20,7 @@
     ../../modules/proxmox-cert-sync.nix
     ../../modules/i2pd.nix
     ../../modules/yggdrasil.nix
+    ../../modules/sunshine.nix
   ];
 
   programs.home-manager.enable = true;
@@ -34,6 +35,7 @@
     ];
 
     packages = with pkgs; [
+      kmod
       lvm2_vdo
       btop
       yazi

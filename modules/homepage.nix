@@ -17,9 +17,9 @@ in {
       opacity: 100
       brightness: 100
     layout:
-      Tools:
+      Services:
         style: row
-        columns: 4
+        columns: 2
       Infrastructure:
         style: row
         columns: 4
@@ -41,20 +41,20 @@ in {
   sops.templates."services.yaml" = {
     path = "${configDir}/services.yaml";
     content = ''
-      - Tools:
+      - Services:
           - Copyparty:
               icon: copyparty.png
               href: https://files.luvcie.love
               description: file stash
-          - Portainer:
-              icon: portainer.png
-              href: https://containers.luvcie.love
-              description: container management
           - Plex:
               icon: plex.png
               href: https://plex.luvcie.love
               description: media server
       - Infrastructure:
+          - Portainer:
+              icon: portainer.png
+              href: http://proxmox-lab.tail5296cb.ts.net:9000
+              description: container management
           - Yggdrasil:
               icon: /images/yggdrasil.png
               href: "http://[21e:e795:8e82:a9e2:ff48:952d:55f2:f0bb]/"
@@ -67,6 +67,10 @@ in {
               icon: proxmox.png
               href: https://proxmox-lab.tail5296cb.ts.net:8006
               description: hypervisor
+          - Sunshine:
+              icon: /images/sunshine.png
+              href: https://proxmox-lab.tail5296cb.ts.net:47990
+              description: game streaming
     '';
   };
 
@@ -85,6 +89,9 @@ in {
         - exploit-db:
             - abbr: EDB
               href: https://exploit-db.com
+        - tailscale:
+            - icon: tailscale.png
+              href: https://login.tailscale.com/admin/machines
     - social:
         - uboachan:
             - abbr: UB
@@ -125,6 +132,11 @@ in {
             - abbr: JS
               href: https://jstris.jezevec10.com/
   '';
+
+  home.file."homepage/images/sunshine.png".source = pkgs.fetchurl {
+    url = "https://docs.lizardbyte.dev/projects/sunshine/latest/sunshine.png";
+    sha256 = "115n80fx5q7wgvqj8rzhz4h8l81b149d2ixqnc0ir9rvnzxjcack";
+  };
 
   # generate a solid color pixel to force the background color natively
   home.file."homepage/images/bg.png".source = pkgs.runCommand "bg.png" {
