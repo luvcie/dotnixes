@@ -50,11 +50,15 @@ in {
               icon: portainer.png
               href: https://containers.luvcie.love
               description: container management
+      - Infrastructure:
+          - Yggdrasil:
+              icon: /images/yggdrasil.png
+              href: "http://[21e:e795:8e82:a9e2:ff48:952d:55f2:f0bb]/"
+              description: network map
           - i2pd:
               icon: i2pd.png
               href: http://proxmox-lab.tail5296cb.ts.net:7070
               description: i2p router console
-      - Infrastructure:
           - Proxmox:
               icon: proxmox.png
               href: https://proxmox-lab.tail5296cb.ts.net:8006
