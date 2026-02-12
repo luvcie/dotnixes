@@ -123,6 +123,9 @@ in {
         - bluesky:
             - icon: bluesky.png
               href: https://bsky.app
+        - friends:
+            - abbr: 42
+              href: https://friends.42paris.fr/
     - logging:
         - letterboxd:
             - abbr: LB
