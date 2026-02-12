@@ -48,6 +48,11 @@ in {
           r: guest
           r: princess
 
+      [/downloads]
+        /mnt/media/downloads
+        accs:
+          A: princess
+
       [global]
         p: 3923
         e2dsa
@@ -73,7 +78,7 @@ in {
         "-${pkgs.podman}/bin/podman stop copyparty"
         "-${pkgs.podman}/bin/podman rm copyparty"
       ];
-      ExecStart = "${pkgs.podman}/bin/podman run --name copyparty -p 3923:3923 -v /nix/store:/nix/store:ro -v ${config.xdg.configHome}/sops-nix/secrets/rendered/copyparty.conf:/cfg/copyparty.conf:ro -v ${copypartyDir}:${copypartyDir}:Z -v /mnt/media/music:/mnt/media/music:ro -v /mnt/media/movies:/mnt/media/movies:ro -v /mnt/media/tv:/mnt/media/tv:ro docker.io/copyparty/ac";
+      ExecStart = "${pkgs.podman}/bin/podman run --name copyparty -p 3923:3923 -v /nix/store:/nix/store:ro -v ${config.xdg.configHome}/sops-nix/secrets/rendered/copyparty.conf:/cfg/copyparty.conf:ro -v ${copypartyDir}:${copypartyDir}:Z -v /mnt/media/music:/mnt/media/music:ro -v /mnt/media/movies:/mnt/media/movies:ro -v /mnt/media/tv:/mnt/media/tv:ro -v /mnt/media/downloads:/mnt/media/downloads:ro docker.io/copyparty/ac";
       ExecStop = "${pkgs.podman}/bin/podman stop copyparty";
     };
     Install = {
