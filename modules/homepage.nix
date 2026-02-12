@@ -78,6 +78,18 @@ in {
               icon: tailscale.png
               href: https://login.tailscale.com/admin/machines
               description: mesh vpn
+          - qBittorrent:
+              icon: qbittorrent.png
+              href: http://proxmox-lab.tail5296cb.ts.net:8085
+              description: torrent client
+          - Jackett:
+              icon: jackett.png
+              href: http://proxmox-lab.tail5296cb.ts.net:9117
+              description: torrent indexer
+          - Lidarr:
+              icon: lidarr.png
+              href: http://proxmox-lab.tail5296cb.ts.net:8686
+              description: music automation
     '';
   };
 
