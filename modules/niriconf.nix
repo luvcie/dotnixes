@@ -22,7 +22,6 @@ in {
         accel-profile "adaptive"
         tap-button-map "left-right-middle"
         scroll-method "two-finger"
-        dwt
       }
 
       mouse {

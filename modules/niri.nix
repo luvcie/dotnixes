@@ -15,7 +15,5 @@
   ];
 
   home.sessionVariables = lib.mkDefault {
-    XDG_CURRENT_DESKTOP = "niri";
-    XDG_SESSION_DESKTOP = "niri";
   };
 }

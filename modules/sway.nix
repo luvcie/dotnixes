@@ -117,15 +117,6 @@ in {
 
     extraSessionCommands = ''
       export SWAYSOCK=/run/user/$UID/sway-ipc.$UID.$(pgrep -x sway).sock
-      export WLR_NO_HARDWARE_CURSORS=1
-      export NIXOS_OZONE_WL=1
-      export MOZ_ENABLE_WAYLAND=1
-      export QT_QPA_PLATFORM=wayland
-      export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-      export GDK_BACKEND=wayland
-      export SDL_VIDEODRIVER=wayland
-      export CLUTTER_BACKEND=wayland
-      export XDG_SESSION_TYPE=wayland
     '';
 
     config = rec {
@@ -281,6 +272,7 @@ in {
           natural_scroll = "disabled";
           middle_emulation = "enabled";
           pointer_accel = "0.8";
+          dwt = "disabled";
         };
         "type:keyboard" = {
           xkb_layout = "us";

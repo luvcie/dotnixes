@@ -57,7 +57,23 @@
   home.packages = with pkgs;
     [
 	  # latest additions
+	  stoat-desktop
+	  tor
+	  rsync
+	  palemoon-bin
+	  hyprpicker
+	  wireguard-tools
+	  remmina
+	  jadx
+	  autossh
+	  proton-vpn-cli
+	  wl-color-picker
+	  go
+	  heroic
 	  vesktop
+	  imagemagick
+	  slade
+	  deutex
 	  mangohud
 	  mangojuice
 	  wlrctl
@@ -72,9 +88,9 @@
 	  libGLU
 	  android-studio
 	  scanmem
-	  android-studio-tools
+# android-studio-tools
 	  scrcpy
-	  xhost
+	  xorg.xhost
 	  jmtpfs
 	  jdk17
 	  python313Packages.tkinter
@@ -100,33 +116,33 @@
 	  pnpm
 #	  deno
 	  lazynpm
-	  iw
-	  aircrack-ng
-	  sslscan
-	  mdk4
-	  arp-scan
-	  tcpdump
-	  netdiscover
+	  #iw
+	  #aircrack-ng
+	  #sslscan
+	  #mdk4
+	  #arp-scan
+	  #tcpdump
+	  #netdiscover
 #	  airgorah
 #	  wifite2
-	  bettercap
+	  #bettercap
 #	  airgeddon
 	  pipx
       ###################
       # WEB BROWSERS    #
       ###################
-      librewolf
+      #librewolf
       chromium
 	  firefox
 
       #######################
       # TERMINAL EMULATORS  #
       #######################
-      terminator
-  	  pterm
-      foot
-	  xfce4-terminal
-      cool-retro-term
+      #terminator
+  	  #pterm
+      #foot
+	  #xfce4-terminal
+      #cool-retro-term
       ghostty
 
       ####################
@@ -257,28 +273,28 @@
 
       # Audio Production & Music Creation
       alsa-utils
-      hydrogen
-      carla
-      a2jmidid
-      yoshimi
-      zynaddsubfx
-      supercollider-with-plugins
+      #hydrogen
+      #carla
+      #a2jmidid
+      #yoshimi
+      #zynaddsubfx
+      #supercollider-with-plugins
       #fluidsynth
       #soundfont-fluid
-      pipewire.jack
-      qpwgraph
-	  easyeffects
+      #pipewire.jack
+      #qpwgraph
+	  #easyeffects
 
       # Music Trackers & Chiptune
-      schismtracker
-      goattracker-stereo
-      orca-c
-      sunvox
-      famistudio
+      #schismtracker
+      #goattracker-stereo
+      #orca-c
+      #sunvox
+      #famistudio
 
       # Audio Utilities
       breakpad
-      helm
+      #helm
       # surge  # Temporarily disabled due to CMake build error
 
       # Image & Graphics
@@ -394,50 +410,50 @@
       # SECURITY & PENTEST   #
       ########################
       # Network Security
-      wireshark
-      whatweb
-      nikto
-      nmap
+      #wireshark
+      #whatweb
+      #nikto
+      #nmap
 
       # Web Application Testing
-      sqlmap
-      commix
-      wpscan
+      #sqlmap
+      #commix
+      #wpscan
       #caido
 
       # Reverse Engineering
       #ghidra
-      radare2
-      binwalk
-      exiftool
+      #radare2
+      #binwalk
+      #exiftool
 
       # Cryptography & Hashing
-      hashcat
-      gnupg
-      openssl
+      #hashcat
+      #gnupg
+      #openssl
 
       # Steganography
-      steghide
-      stegseek
-      stegsolve
-      zsteg
+      #steghide
+      #stegseek
+      #stegsolve
+      #zsteg
       # outguess  # broken in new nixpkgs - jpeg library issues
 
       # Forensics
-      foremost
-      scalpel
-      fcrackzip
+      #foremost
+      #scalpel
+      #fcrackzip
       #pdfminer
       #pdf-parser
 
       # OSINT
-      sn0int
-      sherlock
+      #sn0int
+      #sherlock
       #maigret
 
       # Penetration Testing Frameworks
-      villain
-      exploitdb
+      #villain
+      #exploitdb
       #exegol
       #pentestgpt
 
@@ -446,7 +462,7 @@
       #############
       # Game Launchers
       #prismlauncher
-      bottles
+      #bottles
       #heroic
       goverlay
 
@@ -454,9 +470,9 @@
       # tetrio-desktop  # temporarily disabled - tetrio-plus is broken in new nixpkgs
       techmino
       vitetris
-      mgba
+      #mgba
       space-cadet-pinball
-      vvvvvv
+      #vvvvvv
       abbaye-des-morts
 	  kdePackages.kpat
 	  kdePackages.kshisen
@@ -563,8 +579,6 @@
     };
   };
 
-  };
-
   programs.bat = {
     enable = true;
     config = {
@@ -649,7 +663,7 @@
       background = "#bac4e6";
       foreground = "#1a2135";
 
-      # Color palette (ANSI colors) 
+      # Color palette (ANSI colors)
       color0 = "#1a2135";  # Black (normal) - dark navy
       color8 = "#4a5670";  # Black (bright) - medium navy-grey
       color1 = "#d65d5d";  # Red (normal) - muted earthy red
@@ -677,6 +691,37 @@
       # Additional padding for height (vertical padding)
       window_padding_height 10
     '';
+  };
+
+  # persistent ssh tunnel for vnc, secrets in ~/.config/vnc-tunnel/env
+  home.file.".config/vnc-tunnel/start.sh" = {
+    executable = true;
+    text = ''
+      #!${pkgs.bash}/bin/bash
+      source /home/lucie/.config/vnc-tunnel/env
+      exec ${pkgs.autossh}/bin/autossh -M 0 -N \
+        -o ServerAliveInterval=30 \
+        -o ServerAliveCountMax=3 \
+        -i /home/lucie/.ssh/id_ed25519_vnc \
+        -L $LOCAL_PORT:localhost:$REMOTE_PORT \
+        $VNC_USER@$VNC_HOST -p $SSH_PORT
+    '';
+  };
+
+  systemd.user.services.vnc-tunnel = {
+    Unit = {
+      Description = "Persistent SSH tunnel for VNC";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+    };
+    Service = {
+      ExecStart = "/home/lucie/.config/vnc-tunnel/start.sh";
+      Restart = "always";
+      RestartSec = "5s";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
   };
 
   # Run flatpak update after every home-manager rebuild

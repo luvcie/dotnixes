@@ -116,10 +116,6 @@
         default = ["gtk"];
         "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
       };
-      cinnamon = {
-        default = ["gtk"];
-        "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
-      };
       cosmic = {
         default = ["cosmic" "gtk"];
       };
@@ -160,7 +156,7 @@
         enable = true;
         enableScreensaver = false;
       };
-      cinnamon.enable = true;
+      gnome.enable = true;
     };
   };
 
@@ -173,7 +169,7 @@
       naturalScrolling = false;
       scrollMethod = "twofinger";
       accelSpeed = "0.7";
-      disableWhileTyping = true;
+      disableWhileTyping = false;
     };
   };
 
@@ -185,7 +181,7 @@
 
   services.displayManager = {
     ly.enable = true;
-    defaultSession = "cinnamon";
+    defaultSession = "gnome";
   };
 
   console = {
@@ -403,12 +399,12 @@
     tldr
     fastfetch
     cpufetch
-    alacritty
-    bsdgames
+    #alacritty
+    #bsdgames
     fuzzel
     wofi
     wget
-    nmap
+    #nmap
     inetutils
     magic-wormhole-rs
     networkmanagerapplet
