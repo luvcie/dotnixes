@@ -69,6 +69,7 @@
       proxmox_api_token = {};
       yggdrasil_private_key = {};
       plex_claim_token = {};
+      jackett_api_key = {};
     };
   };
 }
