@@ -5,8 +5,8 @@
   ...
 }: {
   home.packages = with pkgs; [
-    xorg.xorgserver
-    xorg.xdpyinfo
+    xorg-server
+    xdpyinfo
     openbox
     x11vnc
     dbus
@@ -33,10 +33,10 @@
         export XAUTHORITY=${config.home.homeDirectory}/.Xauthority
         
         # 1. start xvfb
-        ${pkgs.xorg.xorgserver}/bin/Xvfb :1 -screen 0 1280x800x24 &
+        ${pkgs.xorg-server}/bin/Xvfb :1 -screen 0 1280x800x24 &
         
         # wait for xvfb
-        until ${pkgs.xorg.xdpyinfo}/bin/xdpyinfo -display :1 >/dev/null 2>&1; do
+        until ${pkgs.xdpyinfo}/bin/xdpyinfo -display :1 >/dev/null 2>&1; do
           sleep 1
         done
         

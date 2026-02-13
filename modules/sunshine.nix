@@ -11,9 +11,9 @@
     EndSection
 
     Section "Files"
-        ModulePath "${pkgs.xorg.xorgserver}/lib/xorg/modules"
-        ModulePath "${pkgs.xorg.xorgserver}/lib/xorg/modules/drivers"
-        ModulePath "${pkgs.xorg.xorgserver}/lib/xorg/modules/extensions"
+        ModulePath "${pkgs.xorg-server}/lib/xorg/modules"
+        ModulePath "${pkgs.xorg-server}/lib/xorg/modules/drivers"
+        ModulePath "${pkgs.xorg-server}/lib/xorg/modules/extensions"
         ModulePath "/usr/lib/xorg/modules"
         ModulePath "/usr/lib/xorg/modules/drivers"
     EndSection
@@ -37,14 +37,14 @@
 
   # stable path for the sudoers NOPASSWD entry
   xorgWrapper = pkgs.writeShellScript "xorg-sunshine" ''
-    exec ${pkgs.xorg.xorgserver}/bin/Xorg :2 \
+    exec ${pkgs.xorg-server}/bin/Xorg :2 \
       -config ${xorgConf} \
       -noreset +extension GLX
   '';
 in {
   home.packages = with pkgs; [
     sunshine
-    xorg.xhost
+    xhost
   ];
 
   # symlink wrapper to a stable path so sudoers entry survives rebuilds
@@ -71,12 +71,12 @@ in {
         sudo ${config.home.homeDirectory}/.local/bin/xorg-sunshine &
 
         # wait for xorg
-        until ${pkgs.xorg.xdpyinfo}/bin/xdpyinfo -display :2 >/dev/null 2>&1; do
+        until ${pkgs.xdpyinfo}/bin/xdpyinfo -display :2 >/dev/null 2>&1; do
           sleep 1
         done
 
         # allow local user connections to the root-owned X server
-        ${pkgs.xorg.xhost}/bin/xhost +local:
+        ${pkgs.xhost}/bin/xhost +local:
 
         # start sunshine capturing display :2
         exec ${pkgs.sunshine}/bin/sunshine

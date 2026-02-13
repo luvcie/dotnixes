@@ -74,7 +74,7 @@
 	  scanmem
 	  android-studio-tools
 	  scrcpy
-	  xorg.xhost
+	  xhost
 	  jmtpfs
 	  jdk17
 	  python313Packages.tkinter
