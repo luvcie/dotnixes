@@ -20,7 +20,7 @@ in {
         "-${pkgs.podman}/bin/podman stop lidarr"
         "-${pkgs.podman}/bin/podman rm lidarr"
       ];
-      ExecStart = "${pkgs.podman}/bin/podman run --name lidarr -p 8686:8686 " +
+      ExecStart = "${pkgs.podman}/bin/podman run --name lidarr --userns=keep-id -p 8686:8686 " +
         "-v ${configDir}:/config:Z " +
         "-v ${downloadsDir}:/downloads:Z " +
         "-v ${musicDir}:/music:Z " +

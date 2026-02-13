@@ -20,7 +20,7 @@ in {
         "-${pkgs.podman}/bin/podman stop qbittorrent"
         "-${pkgs.podman}/bin/podman rm qbittorrent"
       ];
-      ExecStart = "${pkgs.podman}/bin/podman run --name qbittorrent -p 8085:8080 " +
+      ExecStart = "${pkgs.podman}/bin/podman run --name qbittorrent --userns=keep-id -p 8085:8080 " +
         "-v ${configDir}:/config:Z " +
         "-v ${downloadsDir}:/downloads:Z " +
         "-e PUID=1000 " +
