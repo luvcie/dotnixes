@@ -68,6 +68,11 @@
     ];
 
     initExtra = ''
+      # Fall back to xterm-256color if current TERM's terminfo is missing (e.g. SSH from ghostty)
+      if ! infocmp "$TERM" &>/dev/null; then
+        export TERM=xterm-256color
+      fi
+
       # Skip wezterm shell integration when not inside wezterm (~2.5s per prompt)
       [[ -z "$WEZTERM_PANE" ]] && export WEZTERM_SHELL_SKIP_ALL=1
 
