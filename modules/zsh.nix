@@ -65,18 +65,12 @@
           sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
         };
       }
-      {
-        name = "zsh-syntax-highlighting";
-        src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-syntax-highlighting";
-          rev = "0.7.1";
-          sha256 = "03r6hpb5fy4yaakqm3lbf4xcvd408r44jgpv4lnzl9asp4sb9qc0";
-        };
-      }
     ];
 
-    initContent = ''
+    initExtra = ''
+      # Skip wezterm shell integration when not inside wezterm (~2.5s per prompt)
+      [[ -z "$WEZTERM_PANE" ]] && export WEZTERM_SHELL_SKIP_ALL=1
+
       HISTSIZE=10000
       SAVEHIST=10000
       setopt SHARE_HISTORY
@@ -85,8 +79,7 @@
       setopt PUSHD_IGNORE_DUPS
       setopt PUSHD_SILENT
       setopt COMPLETE_ALIASES
-      eval "$(starship init zsh)"
-	  export PATH="$HOME/.npm-global/bin:$PATH"
+      export PATH="$HOME/.npm-global/bin:$PATH"
     '';
   };
 }

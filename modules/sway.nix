@@ -121,7 +121,7 @@ in {
 
     config = rec {
       modifier = "Mod4";
-      terminal = "wezterm";
+      terminal = "ghostty";
       menu = "${pkgs.wofi}/bin/wofi --show drun";
       output = {
         # External monitor (Lenovo) - positioned at top

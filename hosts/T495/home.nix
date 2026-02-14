@@ -10,7 +10,7 @@
   ######################
 
   imports = [
-    ../../modules/wezterm.nix
+    # ../../modules/wezterm.nix
     ../../modules/vscode.nix
     ../../modules/zed
     ../../modules/zsh.nix
@@ -207,7 +207,6 @@
       # Container & Kubernetes Tools
      #k9s
       kubectl
-      argocd
       lazydocker
 
       ###################
