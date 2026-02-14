@@ -53,6 +53,10 @@ in {
               icon: navidrome.png
               href: https://music.luvcie.love
               description: music streaming
+          - Funkwhale:
+              icon: funkwhale.png
+              href: https://funkwhale.luvcie.love
+              description: federated music
       - Infrastructure:
           - Proxmox:
               icon: proxmox.png

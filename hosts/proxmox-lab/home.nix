@@ -16,6 +16,7 @@
     ../../modules/shell-bridge.nix
     ../../modules/plex.nix
     ../../modules/navidrome.nix
+    ../../modules/funkwhale.nix
     ../../modules/qbittorrent.nix
     ../../modules/jackett.nix
     ../../modules/lidarr.nix

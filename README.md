@@ -396,6 +396,30 @@ secure hypervisor access via tailscale.
 - url: `https://proxmox-lab.tail5296cb.ts.net:8006`
 - certs: automated via tailscale-certs + proxmox-cert-sync
 
+### funkwhale
+federated music server (ActivityPub). shares libraries with friends.
+- url: `https://funkwhale.luvcie.love`
+- config: `modules/funkwhale.nix`
+- data: `~/funkwhale/data/`
+- music mount: `/mnt/media/music` (read-only, same as navidrome)
+
+#### admin
+```bash
+# create admin account
+podman exec -it funkwhale manage createsuperuser
+```
+
+#### importing music
+funkwhale does not auto-scan, must import manually via the container shell.
+
+1. create a library in the web ui (your profile > libraries)
+2. copy the library UUID from the url
+3. run the import:
+```bash
+podman exec funkwhale sh -c "manage import_files <library-uuid> /music --recursive --in-place --noinput" 2>/dev/null
+```
+`2>/dev/null` hides django deprecation warnings.
+
 ### copyparty
 file server with sops-managed accounts.
 - url: `https://files.luvcie.love`
