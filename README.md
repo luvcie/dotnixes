@@ -420,6 +420,70 @@ podman exec funkwhale sh -c "manage import_files <library-uuid> /music --recursi
 ```
 `2>/dev/null` hides django deprecation warnings.
 
+### caddy (TLS reverse proxy)
+caddy terminates TLS for internal services using tailscale certs. currently proxies CouchDB.
+
+- https endpoint: `https://proxmox-lab.tail5296cb.ts.net:5443`
+- config: `modules/caddy.nix`
+- data: `~/caddy/data/`
+- image: `docker.io/library/caddy:2`
+- certs: tailscale certs from `~/.tailscale-certs/` (auto-renewed daily by tailscale-certs service)
+
+#### managing the service
+```bash
+systemctl --user status caddy
+systemctl --user restart caddy
+curl -k https://proxmox-lab.tail5296cb.ts.net:5443/
+```
+
+### couchdb (obsidian livesync)
+self-hosted CouchDB for real-time obsidian vault sync via the [Self-hosted LiveSync](https://github.com/vrtmrz/obsidian-livesync) plugin. tailscale-only, behind caddy for TLS.
+
+- url: `https://proxmox-lab.tail5296cb.ts.net:5443`
+- fauxton dashboard: `https://proxmox-lab.tail5296cb.ts.net:5443/_utils`
+- local (no TLS): `http://localhost:5984`
+- config: `modules/couchdb.nix`
+- data: `~/couchdb/data/`
+- credentials: sops-managed (`couchdb_username`, `couchdb_password`)
+- image: `docker.io/library/couchdb:3`
+
+#### obsidian plugin setup (new device)
+
+**important**: set up one device at a time. the first device creates the database and encryption salt — the second device must pull from it, not create its own.
+
+1. install [Self-hosted LiveSync](https://github.com/vrtmrz/obsidian-livesync) from community plugins
+2. open the plugin settings and configure the remote:
+   - URI: `https://proxmox-lab.tail5296cb.ts.net:5443`
+   - username/password: from sops vault (`sops vault/encrypted-sops-secrets.yaml`)
+   - database name: use the same name on all devices (e.g. `obsidianlucy`)
+   - encryption passphrase: use the same passphrase on all devices
+3. set sync mode to **LiveSync** under "Sync Settings"
+4. **for the first device**: just enable — it will create the database and push
+5. **for additional devices**: after entering the same settings, use **"Fetch everything from remote"** (under Rebuild) to pull existing data. this ensures the device picks up the existing PBKDF2 salt instead of generating a new one
+
+#### troubleshooting sync
+
+- **nothing syncs**: check that the sync mode is set to LiveSync (not periodic/on-demand). the plugin doesn't auto-start syncing after initial setup
+- **`Decryption with HKDF failed`**: the encryption salt doesn't match between devices. this happens when both devices were set up independently. fix: disable plugin on all devices, nuke the remote db (`curl -sk -X DELETE https://proxmox-lab.tail5296cb.ts.net:5443/obsidianlucy -u user:pass`), then set up from scratch — first device pushes, second device fetches
+- **`Load failed` on specific notes**: stale data in the local IndexedDB cache from a previous broken setup. use "Rebuild: Fetch everything from remote" to fix
+- **404 errors in dev console**: normal. PouchDB checks for checkpoint documents that don't exist yet on a fresh setup. the plugin logs `The above 404 is totally normal` right after
+- **dev console access**: desktop `Ctrl+Shift+I` / mac `Cmd+Option+I`
+- the device must be on **tailscale** to reach the server
+
+#### managing the service
+```bash
+systemctl --user status couchdb
+systemctl --user restart couchdb
+curl -u user:pass http://localhost:5984/
+```
+
+#### known issues (if modifying `modules/couchdb.nix`)
+- **no `:ro` on ini mounts**: the couchdb entrypoint runs `chmod`/`chown` on everything under `/opt/couchdb/etc/` with `set -e` — a read-only mount causes a silent exit 1 with zero logs
+- **`[admins]` section format**: the entrypoint greps for `\[admins\]\n[^;]\w+` — the admin username **must** be on the very next line after `[admins]`, no blank lines allowed
+- **put credentials in the ini, not env vars**: `COUCHDB_USER`/`COUCHDB_PASSWORD` env vars are processed by the entrypoint, but `require_valid_user = true` in a custom ini triggers CouchDB's preflight check *before* the entrypoint injects the admin. define them under `[admins]` in the ini instead
+- **sops template permissions**: sops-nix renders templates as `0400` by default. couchdb runs as a non-root user inside the container. use `mode = "0444"` on the template
+- **debugging silent crashes**: override entrypoint with `bash -c 'bash -x /docker-entrypoint.sh /opt/couchdb/bin/couchdb'` to trace
+
 ### copyparty
 file server with sops-managed accounts.
 - url: `https://files.luvcie.love`

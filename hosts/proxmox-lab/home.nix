@@ -26,6 +26,8 @@
     ../../modules/i2pd.nix
     ../../modules/yggdrasil.nix
     ../../modules/sunshine.nix
+    ../../modules/couchdb.nix
+    ../../modules/caddy.nix
   ];
 
   programs.home-manager.enable = true;
@@ -74,6 +76,8 @@
       qbittorrent_username = {};
       qbittorrent_password = {};
       portainer_api_key = {};
+      couchdb_username = {};
+      couchdb_password = {};
     };
   };
 }

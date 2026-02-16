@@ -124,6 +124,12 @@ in {
               description: music automation
               server: podman
               container: lidarr
+          - CouchDB:
+              icon: couchdb.png
+              href: https://proxmox-lab.tail5296cb.ts.net:5443/_utils
+              description: obsidian sync
+              server: podman
+              container: couchdb
     '';
   };
 
