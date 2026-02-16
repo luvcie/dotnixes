@@ -45,18 +45,26 @@ in {
               icon: copyparty.png
               href: https://files.luvcie.love
               description: file stash
+              server: podman
+              container: copyparty
           - Plex:
               icon: plex.png
               href: https://plex.luvcie.love
               description: media server
+              server: podman
+              container: plex
           - Navidrome:
               icon: navidrome.png
               href: https://music.luvcie.love
               description: music streaming
+              server: podman
+              container: navidrome
           - Funkwhale:
               icon: funkwhale.png
               href: https://funkwhale.luvcie.love
               description: federated music
+              server: podman
+              container: funkwhale
       - Infrastructure:
           - Proxmox:
               icon: proxmox.png
@@ -66,14 +74,25 @@ in {
               icon: /images/yggdrasil.png
               href: "http://[21e:e795:8e82:a9e2:ff48:952d:55f2:f0bb]/"
               description: network map
+              server: podman
+              container: yggdrasil
           - i2pd:
               icon: i2pd.png
               href: http://proxmox-lab.tail5296cb.ts.net:7070
               description: i2p router console
+              server: podman
+              container: i2pd
           - Portainer:
               icon: portainer.png
               href: http://proxmox-lab.tail5296cb.ts.net:9000
               description: container management
+              server: podman
+              container: portainer
+              widget:
+                type: portainer
+                url: https://proxmox-lab.tail5296cb.ts.net:9443
+                env: 2
+                key: ${config.sops.placeholder.portainer_api_key}
           - Sunshine:
               icon: /images/sunshine.png
               href: https://proxmox-lab.tail5296cb.ts.net:47990
@@ -86,14 +105,25 @@ in {
               icon: qbittorrent.png
               href: http://proxmox-lab.tail5296cb.ts.net:8085
               description: torrent client
+              server: podman
+              container: qbittorrent
+              widget:
+                type: qbittorrent
+                url: http://proxmox-lab.tail5296cb.ts.net:8085
+                username: ${config.sops.placeholder.qbittorrent_username}
+                password: ${config.sops.placeholder.qbittorrent_password}
           - Jackett:
               icon: jackett.png
               href: http://proxmox-lab.tail5296cb.ts.net:9117
               description: torrent indexer
+              server: podman
+              container: jackett
           - Lidarr:
               icon: lidarr.png
               href: http://proxmox-lab.tail5296cb.ts.net:8686
               description: music automation
+              server: podman
+              container: lidarr
     '';
   };
 
@@ -237,6 +267,14 @@ in {
     '';
   };
 
+  home.file."${configDir}/docker.yaml" = {
+    force = true;
+    text = ''
+      podman:
+        socket: /var/run/podman/podman.sock
+    '';
+  };
+
   home.file."${configDir}/custom.js" = {
     force = true;
     text = "";
@@ -261,6 +299,7 @@ in {
         "-v ${config.xdg.configHome}/sops-nix/secrets/rendered/services.yaml:/app/config/services.yaml:ro " +
         "-v ${configDir}:/app/config:Z " +
         "-v ${homepageDir}/images:/app/public/images:Z " +
+        "-v /run/user/1000/podman/podman.sock:/var/run/podman/podman.sock:ro " +
         "-e HOMEPAGE_ALLOWED_HOSTS=home.luvcie.love " +
         "ghcr.io/gethomepage/homepage:latest";
       ExecStop = "${pkgs.podman}/bin/podman stop homepage";

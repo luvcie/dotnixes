@@ -71,6 +71,9 @@
       yggdrasil_private_key = {};
       plex_claim_token = {};
       jackett_api_key = {};
+      qbittorrent_username = {};
+      qbittorrent_password = {};
+      portainer_api_key = {};
     };
   };
 }
