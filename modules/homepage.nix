@@ -16,9 +16,12 @@ in {
       opacity: 100
       brightness: 100
     layout:
-      Services:
+      Public:
         style: row
         columns: 2
+      Personal:
+        style: row
+        columns: 4
       Infrastructure:
         style: row
         columns: 4
@@ -40,7 +43,7 @@ in {
   sops.templates."services.yaml" = {
     path = "${configDir}/services.yaml";
     content = ''
-      - Services:
+      - Public:
           - Copyparty:
               icon: copyparty.png
               href: https://files.luvcie.love
@@ -65,53 +68,17 @@ in {
               description: federated music
               server: podman
               container: funkwhale
-      - Infrastructure:
-          - Proxmox:
-              icon: proxmox.png
-              href: https://proxmox-lab.tail5296cb.ts.net:8006
-              description: hypervisor
-          - Yggdrasil:
-              icon: /images/yggdrasil.png
-              href: "http://[21e:e795:8e82:a9e2:ff48:952d:55f2:f0bb]/"
-              description: network map
-              server: podman
-              container: yggdrasil
-          - i2pd:
-              icon: i2pd.png
-              href: http://proxmox-lab.tail5296cb.ts.net:7070
-              description: i2p router console
-              server: podman
-              container: i2pd
-          - Portainer:
-              icon: portainer.png
-              href: http://proxmox-lab.tail5296cb.ts.net:9000
-              description: container management
-              server: podman
-              container: portainer
-              widget:
-                type: portainer
-                url: https://proxmox-lab.tail5296cb.ts.net:9443
-                env: 2
-                key: ${config.sops.placeholder.portainer_api_key}
+      - Personal:
           - Sunshine:
               icon: /images/sunshine.png
               href: https://proxmox-lab.tail5296cb.ts.net:47990
               description: game streaming
-          - Tailscale:
-              icon: tailscale.png
-              href: https://login.tailscale.com/admin/machines
-              description: mesh vpn
           - qBittorrent:
               icon: qbittorrent.png
               href: http://proxmox-lab.tail5296cb.ts.net:8085
               description: torrent client
               server: podman
               container: qbittorrent
-              widget:
-                type: qbittorrent
-                url: http://proxmox-lab.tail5296cb.ts.net:8085
-                username: ${config.sops.placeholder.qbittorrent_username}
-                password: ${config.sops.placeholder.qbittorrent_password}
           - Jackett:
               icon: jackett.png
               href: http://proxmox-lab.tail5296cb.ts.net:9117
@@ -124,12 +91,53 @@ in {
               description: music automation
               server: podman
               container: lidarr
-          - CouchDB:
+          - Shell Bridge:
+              icon: terminal.png
+              href: https://test.luvcie.love
+              description: web terminal backend
+      - Infrastructure:
+          - Couchdb:
               icon: couchdb.png
               href: https://proxmox-lab.tail5296cb.ts.net:5443/_utils
-              description: obsidian sync
+              description: obsidian livesync via couchdb
               server: podman
               container: couchdb
+          - Yggdrasil:
+              icon: /images/yggdrasil.png
+              href: "http://[21e:e795:8e82:a9e2:ff48:952d:55f2:f0bb]/"
+              description: network map
+              server: podman
+              container: yggdrasil
+          - i2pd:
+              icon: i2pd.png
+              href: http://proxmox-lab.tail5296cb.ts.net:7070
+              description: i2p router console
+              server: podman
+              container: i2pd
+          - Caddy:
+              icon: caddy.png
+              href: https://caddyserver.com
+              description: TLS reverse proxy
+              server: podman
+              container: caddy
+          - Cloudflared:
+              icon: cloudflare.png
+              href: https://dash.cloudflare.com
+              description: cloudflare tunnel
+          - Portainer:
+              icon: portainer.png
+              href: http://proxmox-lab.tail5296cb.ts.net:9000
+              description: container management
+              server: podman
+              container: portainer
+          - Tailscale:
+              icon: tailscale.png
+              href: https://login.tailscale.com/admin/machines
+              description: mesh vpn
+          - Proxmox:
+              icon: proxmox.png
+              href: https://proxmox-lab.tail5296cb.ts.net:8006
+              description: hypervisor
     '';
   };
 
