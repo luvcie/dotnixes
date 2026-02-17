@@ -449,7 +449,7 @@ self-hosted CouchDB for real-time obsidian vault sync via the [Self-hosted LiveS
 
 #### obsidian plugin setup (new device)
 
-**important**: set up one device at a time. the first device creates the database and encryption salt — the second device must pull from it, not create its own.
+**important**: set up one device at a time. the first device creates the database and encryption salt, the second device must pull from it, not create its own.
 
 1. install [Self-hosted LiveSync](https://github.com/vrtmrz/obsidian-livesync) from community plugins
 2. open the plugin settings and configure the remote:
@@ -459,7 +459,10 @@ self-hosted CouchDB for real-time obsidian vault sync via the [Self-hosted LiveS
    - encryption passphrase: use the same passphrase on all devices
 3. set sync mode to **LiveSync** under "Sync Settings"
 4. **for the first device**: just enable — it will create the database and push
-5. **for additional devices**: after entering the same settings, use **"Fetch everything from remote"** (under Rebuild) to pull existing data. this ensures the device picks up the existing PBKDF2 salt instead of generating a new one
+5. **for additional devices**: after entering the same settings, use **"Rebuild everything → Fetch from Remote"** to pull existing data. this ensures the device picks up the existing PBKDF2 salt instead of generating a new one
+6. **AFTER EVERY SETUP OR REBUILD: GO TO SYNC SETTINGS AND SET THE SYNC MODE TO "LIVESYNC".** it resets to on-demand/periodic after rebuilds and will NOT sync in real-time until you change it back, do this on every device.
+
+**do NOT run the "Self-hosted LiveSync config doctor" on a new device.** the doctor changes settings (chunk size, case sensitivity, etc.) and then prompts you to overwrite the server with the current device's data. on a new/empty device this wipes the remote database clean and breaks sync for all other devices. only use the doctor on your primary device if you know what each setting does.
 
 #### troubleshooting sync
 

@@ -91,6 +91,12 @@ in {
               description: music automation
               server: podman
               container: lidarr
+          - Obsidian:
+              icon: obsidian.png
+              href: https://proxmox-lab.tail5296cb.ts.net:5444
+              description: knowledge vault (web)
+              server: podman
+              container: obsidian
           - Shell Bridge:
               icon: terminal.png
               href: https://test.luvcie.love

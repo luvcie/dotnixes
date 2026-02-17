@@ -27,6 +27,7 @@
     ../../modules/yggdrasil.nix
     ../../modules/sunshine.nix
     ../../modules/couchdb.nix
+    ../../modules/obsidian.nix
     ../../modules/caddy.nix
   ];
 

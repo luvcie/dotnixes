@@ -15,12 +15,17 @@ in {
         tls /etc/caddy/certs/cert.pem /etc/caddy/certs/key.pem
         reverse_proxy localhost:5984
     }
+
+    :5444 {
+        tls /etc/caddy/certs/cert.pem /etc/caddy/certs/key.pem
+        reverse_proxy localhost:3050
+    }
   '';
 
   systemd.user.services.caddy = {
     Unit = {
       Description = "caddy reverse proxy for TLS termination";
-      After = ["network.target" "couchdb.service"];
+      After = ["network.target" "couchdb.service" "obsidian.service"];
     };
     Service = {
       Restart = "always";
