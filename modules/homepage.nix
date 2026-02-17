@@ -320,7 +320,7 @@ in {
         "-v ${configDir}:/app/config:Z " +
         "-v ${homepageDir}/images:/app/public/images:Z " +
         "-v /run/user/1000/podman/podman.sock:/var/run/podman/podman.sock:ro " +
-        "-e HOMEPAGE_ALLOWED_HOSTS=home.luvcie.love " +
+        "-e HOMEPAGE_ALLOWED_HOSTS=lab.luvcie.love " +
         "ghcr.io/gethomepage/homepage:latest";
       ExecStop = "${pkgs.podman}/bin/podman stop homepage";
     };
