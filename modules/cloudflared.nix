@@ -28,6 +28,8 @@
         service: http://127.0.0.1:4533
       - hostname: funkwhale.luvcie.love
         service: http://127.0.0.1:3030
+      - hostname: ssh.luvcie.love
+        service: ssh://127.0.0.1:2222
       - service: http_status:404
   '';
 

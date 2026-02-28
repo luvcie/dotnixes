@@ -29,6 +29,7 @@
     ../../modules/couchdb.nix
     ../../modules/obsidian.nix
     ../../modules/caddy.nix
+    ../../modules/sshchat.nix
   ];
 
   programs.home-manager.enable = true;

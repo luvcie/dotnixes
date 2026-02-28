@@ -491,3 +491,71 @@ curl -u user:pass http://localhost:5984/
 file server with sops-managed accounts.
 - url: `https://files.luvcie.love`
 - edit passwords: `sops vault/encrypted-sops-secrets.yaml`
+
+### sshchat
+terminal chat room — users connect by SSHing into the server. no accounts, just pick a username.
+
+- url: `ssh.luvcie.love` (via cloudflare tunnel)
+- config: `modules/sshchat.nix`
+- binary: pre-built from github releases, fetched via `fetchurl` with pinned hash (fully reproducible)
+- host key: `~/sshchat/host_key` — generated once on first activation, persists across rebuilds
+- service: `systemctl --user status sshchat`
+
+#### connecting (for users)
+requires `cloudflared` installed once on the client:
+```bash
+# install cloudflared (once)
+# arch: yay -S cloudflared  |  mac: brew install cloudflared  |  others: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/
+
+# add to ~/.ssh/config (once)
+Host ssh.luvcie.love
+    ProxyCommand cloudflared access ssh --hostname %h
+
+# connect (pick any username)
+ssh yourname@ssh.luvcie.love
+```
+
+#### managing the service
+```bash
+systemctl --user status sshchat
+systemctl --user restart sshchat
+journalctl --user -u sshchat -f
+```
+
+#### upgrading
+update the version and hash in `modules/sshchat.nix`:
+```bash
+# get new hash
+nix-prefetch-url --type sha256 https://github.com/shazow/ssh-chat/releases/download/vX.X/ssh-chat-linux_amd64.tgz
+nix hash to-sri --type sha256 <hash>
+```
+then update `version` and `hash` in the module and run `nh home switch .`.
+
+### shell-bridge
+websocket terminal bridge for the luvcie.love website terminal. runs the `luvcie-lab` podman container (nix-built) and exposes it over a websocket at `wss://term.luvcie.love`.
+
+- config: `modules/shell-bridge.nix`
+- image: nix-built via `dockerTools.buildImage`, single layer (not layered — avoids vfs disk waste)
+- service: `systemctl --user status shell-bridge`
+
+#### the image marker file
+to avoid reloading the container image on every `nh home switch` (podman load is slow and would trigger the activation timeout), the activation script uses a marker file:
+
+```
+~/.local/share/containers/luvcie-lab-loaded
+```
+
+this file contains the nix store path of the currently loaded image. on each activation, if the file exists and matches the current image derivation, `podman load` is skipped. if the paths differ (new build) or the file is missing, the image is reloaded.
+
+**if you delete the image in portainer**, the marker still exists so `nh home switch` won't reload it. fix:
+```bash
+rm ~/.local/share/containers/luvcie-lab-loaded
+nh home switch ~/dotnixes
+```
+
+#### managing the service
+```bash
+systemctl --user status shell-bridge
+systemctl --user restart shell-bridge
+journalctl --user -u shell-bridge -f
+```

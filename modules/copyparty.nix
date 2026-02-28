@@ -24,6 +24,12 @@ in {
         accs:
           A: princess
 
+      [/public]
+        ${copypartyDir}/public
+        accs:
+          r: *
+          A: princess
+
       [/guest]
         ${copypartyDir}/guest
         accs:
