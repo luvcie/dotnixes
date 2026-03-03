@@ -62,6 +62,12 @@ in {
               description: music streaming
               server: podman
               container: navidrome
+          - SearXNG:
+              icon: searxng.png
+              href: https://searxng.luvcie.love
+              description: metasearch engine
+              server: podman
+              container: searxng
           - Funkwhale:
               icon: funkwhale.png
               href: https://funkwhale.luvcie.love
@@ -213,6 +219,11 @@ in {
     sha256 = "115n80fx5q7wgvqj8rzhz4h8l81b149d2ixqnc0ir9rvnzxjcack";
   };
 
+  home.file."homepage/images/searxng.png".source = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/searxng/searxng/master/searx/static/themes/simple/img/searxng.png";
+    sha256 = "150MLMXSLb7TsFuziGUNQzhepZKZzGV2N2wee28xGEE=";
+  };
+
   # generate a solid color pixel to force the background color natively
   home.file."homepage/images/bg.png".source = pkgs.runCommand "bg.png" {
     nativeBuildInputs = [ pkgs.imagemagick ];
@@ -253,7 +264,8 @@ in {
           units: metric
           cache: 15
       - search:
-          provider: duckduckgo
+          provider: custom
+          url: https://searxng.luvcie.love/search?q=
           target: _blank
     '';
   };

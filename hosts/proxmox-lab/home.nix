@@ -30,6 +30,7 @@
     ../../modules/obsidian.nix
     ../../modules/caddy.nix
     ../../modules/sshchat.nix
+    ../../modules/searxng.nix
   ];
 
   programs.home-manager.enable = true;
@@ -48,6 +49,7 @@
       kmod
       lvm2_vdo
       btop
+      go
       yazi
       bat
       gh
@@ -58,6 +60,7 @@
       age
       tailscale
       fuse-overlayfs
+      slirp4netns
     ];
   };
 
@@ -80,6 +83,7 @@
       portainer_api_key = {};
       couchdb_username = {};
       couchdb_password = {};
+      searxng_secret_key = {};
     };
   };
 }
