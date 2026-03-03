@@ -29,6 +29,9 @@
       # searxng instance
       - hostname: searxng.luvcie.love
         service: http://127.0.0.1:8889
+      # client-side pastebin
+      - hostname: nopaste.luvcie.love
+        service: http://127.0.0.1:8081
       - hostname: funkwhale.luvcie.love
         service: http://127.0.0.1:3030
       - service: http_status:404

@@ -18,7 +18,7 @@ in {
     layout:
       Public:
         style: row
-        columns: 2
+        columns: 3
       Personal:
         style: row
         columns: 4
@@ -74,6 +74,12 @@ in {
               description: federated music
               server: podman
               container: funkwhale
+          - nopaste:
+              icon: standard-notes.png
+              href: https://nopaste.luvcie.love
+              description: client-side pastebin
+              server: podman
+              container: nopaste
       - Personal:
           - Sunshine:
               icon: /images/sunshine.png
@@ -222,6 +228,11 @@ in {
   home.file."homepage/images/searxng.png".source = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/searxng/searxng/master/searx/static/themes/simple/img/searxng.png";
     sha256 = "150MLMXSLb7TsFuziGUNQzhepZKZzGV2N2wee28xGEE=";
+  };
+
+  home.file."homepage/images/standard-notes.png".source = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/standard-notes.png";
+    sha256 = "cnvQlMoGZtqBNFvD39q1RaWIhlb1tzSZm1DnRHWMw4s=";
   };
 
   # generate a solid color pixel to force the background color natively

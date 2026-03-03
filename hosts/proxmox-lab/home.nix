@@ -31,6 +31,7 @@
     ../../modules/caddy.nix
     ../../modules/sshchat.nix
     ../../modules/searxng.nix
+    ../../modules/nopaste.nix
   ];
 
   programs.home-manager.enable = true;
