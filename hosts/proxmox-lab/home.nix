@@ -32,6 +32,10 @@
     ../../modules/sshchat.nix
     ../../modules/searxng.nix
     ../../modules/nopaste.nix
+    ../../modules/prometheus.nix
+    ../../modules/loki.nix
+    ../../modules/grafana.nix
+    ../../modules/alloy.nix
   ];
 
   programs.home-manager.enable = true;
@@ -52,6 +56,7 @@
       btop
       go
       yazi
+      speedtest-go
       bat
       gh
       ripgrep
@@ -62,6 +67,7 @@
       tailscale
       fuse-overlayfs
       slirp4netns
+      uv
     ];
   };
 
@@ -85,6 +91,7 @@
       couchdb_username = {};
       couchdb_password = {};
       searxng_secret_key = {};
+      grafana_admin_password = {};
     };
   };
 }

@@ -152,6 +152,28 @@ in {
               icon: tailscale.png
               href: https://login.tailscale.com/admin/machines
               description: mesh vpn
+          - Grafana:
+              icon: grafana.png
+              href: http://proxmox-lab.tail5296cb.ts.net:3200
+              description: observability dashboards
+              server: podman
+              container: grafana
+          - Prometheus:
+              icon: prometheus.png
+              href: http://proxmox-lab.tail5296cb.ts.net:9090
+              description: metrics collection
+              server: podman
+              container: prometheus
+          - Loki:
+              icon: loki.png
+              href: http://proxmox-lab.tail5296cb.ts.net:3100
+              description: log aggregation
+              server: podman
+              container: loki
+          - Alloy:
+              icon: grafana.png
+              href: http://proxmox-lab.tail5296cb.ts.net:12345
+              description: telemetry collector
           - Proxmox:
               icon: proxmox.png
               href: https://proxmox-lab.tail5296cb.ts.net:8006
