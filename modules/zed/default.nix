@@ -9,7 +9,15 @@ in {
   programs.zed-editor = {
     enable = true;
     package = config.lib.nixGL.wrap pkgs.zed-editor;
-    userSettings = customLib.fromJsonFile ./settings.json;
+    userSettings =
+      (customLib.fromJsonFile ./settings.json)
+      // {
+        # c/c++ use the built-in clangd integration, but the auto-downloaded
+        # binary cannot run on nixos, so point zed at the nixpkgs clangd.
+        lsp.clangd.binary.path = "${pkgs.clang-tools}/bin/clangd";
+        # same story for clojure-lsp: use the nixpkgs binary.
+        lsp.clojure-lsp.binary.path = "${pkgs.clojure-lsp}/bin/clojure-lsp";
+      };
     userKeymaps = customLib.fromJsonFile ./keymap.json;
 
     mutableUserSettings = true;
@@ -21,6 +29,7 @@ in {
       "tokyo-night"
 
       # languages
+      "clojure"
       "haskell"
       "haxe"
       "html"
@@ -34,5 +43,18 @@ in {
 
   home.packages = with pkgs; [
     nerd-fonts.fira-code
+
+    # c/c++ toolchain + lsp (clangd)
+    clang-tools # clangd, clang-format
+    gcc # cc/g++ compilers
+
+    clojure-lsp # clojure lsp
+    # clojure cli + jdk17 already live in home.nix, so they cover the repl.
+    # for zed's live eval (jupyter-backed repl), install the clojupyter kernel
+    # once (it isn't in nixpkgs):
+    #   clojure -Sdeps '{:deps {clojupyter/clojupyter {:mvn/version "0.3.3"}}}' \
+    #     -M -m clojupyter.cmdline install
+    # writes a kernel to ~/.local/share/jupyter/kernels that zed auto-discovers.
+    # then: cursor on form -> ctrl-shift-enter.
   ];
 }
