@@ -22,6 +22,7 @@
    # ../../modules/caelestia.nix
     ../../modules/retroism.nix
     ../../modules/wayvnc.nix
+    ../../modules/emacs.nix
   ];
 
   programs.home-manager.enable = true;
