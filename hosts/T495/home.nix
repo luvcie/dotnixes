@@ -21,12 +21,18 @@
     ../../modules/theme.nix
    # ../../modules/caelestia.nix
     ../../modules/retroism.nix
+    ../../modules/wayvnc.nix
   ];
 
   programs.home-manager.enable = true;
 
   home.sessionVariables = {
     _JAVA_AWT_WM_NONREPARENTING = "1";
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
+    XMODIFIERS = "@im=fcitx";
+    SDL_IM_MODULE = "fcitx";
+    GLFW_IM_MODULE = "ibus"; # Fcitx5 supports the ibus protocol for GLFW
   };
 
   home = {
@@ -57,11 +63,37 @@
   home.packages = with pkgs;
     [
 	  # latest additions
+	  racket
+	  babashka
+	  clojure
+	  clojure-lsp
+	  love
+	  guix
+	  powershell
+	  uv
+	  clang-tools
+	  pokemmo-installer
+	  sshfs
+	  gnupg
+	  sunsetr
+	  easyeffects
+	  wlsunset
+	  brave
+	  kaidan
+	  slack
+	  sonixd
 	  stoat-desktop
+	  bun
+	  calibre
+	  wl-gammactl
+	  movim
+	  wlopm
+	  ffmpeg
+	  obsidian
+	  dino
 	  tor
 	  rsync
 	  palemoon-bin
-	  hyprpicker
 	  wireguard-tools
 	  remmina
 	  jadx
@@ -71,6 +103,7 @@
 	  go
 	  heroic
 	  vesktop
+	  sqlite
 	  imagemagick
 	  slade
 	  deutex
@@ -466,7 +499,7 @@
       goverlay
 
       # Games
-      # tetrio-desktop  # temporarily disabled - tetrio-plus is broken in new nixpkgs
+      tetrio-desktop  # temporarily disabled - tetrio-plus is broken in new nixpkgs
       techmino
       vitetris
       #mgba

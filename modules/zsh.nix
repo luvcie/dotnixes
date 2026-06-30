@@ -42,6 +42,7 @@
       temp = "sensors";
       bunnyfetch = "bunnyfetch 2>/dev/null";
       mini = "~/mini-moulinette/mini-moul.sh";
+      adw = "~/Development/Agentic_Deterministic_Workflow/scripts/init.sh";
     };
 
     plugins = [
@@ -67,7 +68,7 @@
       }
     ];
 
-    initExtra = ''
+    initContent = ''
       # Fall back to xterm-256color if current TERM's terminfo is missing (e.g. SSH from ghostty)
       if ! infocmp "$TERM" &>/dev/null; then
         export TERM=xterm-256color

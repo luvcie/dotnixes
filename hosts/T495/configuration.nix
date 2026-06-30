@@ -272,9 +272,13 @@
       wifi.powersave = false;
     };
 
+    extraHosts = ''
+      172.16.38.128 lucpardo.42.fr
+    '';
+
     firewall = {
       enable = true;
-      allowedTCPPorts = [27036 27037];
+      allowedTCPPorts = [27036 27037 5900 3389];
       allowedUDPPorts = [27031 27036];
     };
   };
@@ -337,6 +341,7 @@
     };
     podman.enable = true;
     waydroid.enable = false;
+    vmware.host.enable = true;
   };
 
   #######################
@@ -367,6 +372,27 @@
     thermald.enable = true;
   };
 
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      waylandFrontend = true;
+      addons = with pkgs; [
+        fcitx5-mozc
+        fcitx5-gtk
+      ];
+    };
+  };
+
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    noto-fonts-color-emoji
+    ipafont
+    kochi-substitute
+  ];
+
   #######################
   #   SYSTEM PACKAGES   #
   #######################
@@ -394,6 +420,7 @@
     swayfx
     dmenu
     xwayland
+    wayvnc
     cachix
     age
     tldr
