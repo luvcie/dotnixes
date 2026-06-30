@@ -245,6 +245,8 @@
       ###################
       # WAYLAND/SWAY UI #
       ###################
+      noctalia-shell # quickshell desktop shell (bar/launcher/notifications/lockscreen)
+
       # Core Sway Components
       sov
       swayfx

@@ -18,6 +18,7 @@ in {
 
       touchpad {
         tap
+        natural-scroll
         accel-speed 1
         accel-profile "adaptive"
         tap-button-map "left-right-middle"
@@ -30,6 +31,11 @@ in {
       }
     }
 
+    environment {
+      // quickshell/Qt apps default to xcb without this and die "cannot open display"
+      QT_QPA_PLATFORM "wayland"
+    }
+
     output "*" {
       background-color "#000000"
     }
@@ -40,12 +46,12 @@ in {
     }
 
     window-rule {
-      match app-id="^vesktop$"
-      open-on-workspace "chat"
+      match app-id="^firefox$"
+      default-column-width { proportion 0.75; }
     }
 
     window-rule {
-      match app-id="^firefox$"
+      match app-id="^app\.zen_browser\.zen$"
       default-column-width { proportion 0.75; }
     }
 
@@ -59,7 +65,6 @@ in {
     workspace "8"
     workspace "9"
     workspace "10"
-    workspace "chat"
 
     layout {
       gaps 16
@@ -109,20 +114,36 @@ in {
     }
 
     binds {
-      Mod+Return { spawn "wezterm"; }
+      Mod+Return { spawn "ghostty"; }
       Mod+d { spawn "wofi" "--show" "drun"; }
       Mod+Shift+Return { spawn "chromium"; }
       Mod+Shift+q { close-window; }
       Mod+f { fullscreen-window; }
+      Mod+m { maximize-column; }
+      Mod+Shift+f { toggle-window-floating; }
       Mod+Shift+space { center-column; }
+      Mod+Tab { switch-focus-between-floating-and-tiling; }
+
+      // resize: width on b/v below; height here. Or mouse: Mod+right-drag.
+      Mod+minus { set-window-height "-10%"; }
+      Mod+equal { set-window-height "+10%"; }
 
       Mod+Left { focus-column-left; }
       Mod+Right { focus-column-right; }
+      Mod+h { focus-column-left; }
+      Mod+l { focus-column-right; }
       Mod+Up { focus-window-up; }
       Mod+Down { focus-window-down; }
 
       Mod+Shift+Left { move-column-left; }
       Mod+Shift+Right { move-column-right; }
+      Mod+Shift+h { move-column-left; }
+      Mod+Shift+l { move-column-right; }
+
+      Mod+j { focus-workspace-down; }
+      Mod+k { focus-workspace-up; }
+      Mod+Shift+j { move-column-to-workspace-down; }
+      Mod+Shift+k { move-column-to-workspace-up; }
       Mod+Shift+Up { move-window-up; }
       Mod+Shift+Down { move-window-down; }
 
@@ -167,7 +188,7 @@ in {
       XF86AudioRaiseVolume { spawn "pamixer" "--increase" "2"; }
       XF86AudioLowerVolume { spawn "pamixer" "--decrease" "2"; }
 
-      Mod+l { spawn "swaylock"; }
+      Mod+Escape { spawn "swaylock"; } // moved off Mod+l (now focus-column-right)
       Mod+Shift+e { quit; }
 
       Mod+WheelScrollDown { focus-workspace-down; }
@@ -177,7 +198,10 @@ in {
     }
 
     spawn-at-startup "nm-applet" "--indicator"
-    spawn-at-startup "nwg-panel"
+    // QT_QPA_PLATFORMTHEME=gtk2 (from qt.platformTheme) is X11-only and crashes
+    // quickshell on wayland; strip it just for noctalia.
+    spawn-at-startup "env" "-u" "QT_QPA_PLATFORMTHEME" "noctalia-shell"
+    // spawn-at-startup "nwg-panel"  // disabled: noctalia provides the bar
 
     prefer-no-csd
   '';
