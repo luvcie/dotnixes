@@ -68,6 +68,7 @@
 	  babashka
 	  clojure
 	  clojure-lsp
+	  clj-kondo # clojure linter (emacs lint-as-you-type via flycheck-clj-kondo)
 	  love
 	  guix
 	  powershell
@@ -205,6 +206,7 @@
 	  readline
       # Build Tools & Compilers
       gnumake
+      libtool # needed to compile emacs vterm module
       # Temporarily commenting out clang 12 as it has been removed
       # (pkgs.buildEnv {
       #   name = "clang-only";
@@ -223,6 +225,7 @@
 	  cmake
       hugo
       alejandra
+      nil # nix language server (emacs/zed lsp)
       any-nix-shell
 	  omnix
       nix-prefetch-scripts
