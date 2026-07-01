@@ -34,6 +34,9 @@ in {
     environment {
       // quickshell/Qt apps default to xcb without this and die "cannot open display"
       QT_QPA_PLATFORM "wayland"
+      GDK_BACKEND "wayland"
+      // qt.platformTheme = "gtk" sets QT_QPA_PLATFORMTHEME=gtk2 which needs $DISPLAY
+      QT_QPA_PLATFORMTHEME ""
     }
 
     output "*" {
@@ -115,7 +118,7 @@ in {
 
     binds {
       Mod+Return { spawn "ghostty"; }
-      Mod+d { spawn "wofi" "--show" "drun"; }
+      Mod+d { spawn "sh" "-c" "qs ipc -i $(basename $(readlink /run/user/$(id -u)/quickshell/by-pid/$(pgrep quickshell | tail -1))) call launcher toggle"; }
       Mod+Shift+Return { spawn "chromium"; }
       Mod+Shift+q { close-window; }
       Mod+f { fullscreen-window; }
@@ -197,10 +200,8 @@ in {
       Mod+Shift+WheelScrollUp { move-column-to-workspace-up; }
     }
 
-    spawn-at-startup "nm-applet" "--indicator"
-    // QT_QPA_PLATFORMTHEME=gtk2 (from qt.platformTheme) is X11-only and crashes
-    // quickshell on wayland; strip it just for noctalia.
-    spawn-at-startup "env" "-u" "QT_QPA_PLATFORMTHEME" "noctalia-shell"
+    spawn-at-startup "sh" "-c" "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE DISPLAY && dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE DISPLAY"
+    spawn-at-startup "noctalia-shell"
     // spawn-at-startup "nwg-panel"  // disabled: noctalia provides the bar
 
     prefer-no-csd
