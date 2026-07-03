@@ -11,7 +11,7 @@
     wl-clipboard
     brightnessctl
     pamixer
-    wofi
+    xwayland-satellite
   ];
 
   home.sessionVariables = lib.mkDefault {
