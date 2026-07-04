@@ -11,7 +11,7 @@
 
   imports = [
     # ../../modules/wezterm.nix
-    ../../modules/vscode.nix
+    # ../../modules/vscode.nix
     ../../modules/zed
     ../../modules/zsh.nix
     ../../modules/nixvim.nix
@@ -64,6 +64,9 @@
   home.packages = with pkgs;
     [
 	  # latest additions
+	  # jetbrains.rider  # re-add after disk cleanup; needs ~4G to unpack
+    godot-mono
+	  sbcl
 	  racket
 	  babashka
 	  clojure
@@ -121,11 +124,11 @@
 	  gdb
 	  libGL
 	  libGLU
-	  android-studio
+	  # android-studio
 	  scanmem
 # android-studio-tools
 	  scrcpy
-	  xorg.xhost
+	  xhost
 	  jmtpfs
 	  jdk17
 	  python313Packages.tkinter
@@ -378,7 +381,7 @@
 
       # Hardware & System
       seahorse
-      blueberry
+      blueman
       pinentry-gnome3
       bleachbit
       ledger-live-desktop
@@ -537,8 +540,8 @@
       # Document Viewing & Editing
       #masterpdfeditor4
 
-      # Password Management
-      bitwarden-desktop
+      # Password Management (desktop app dropped: bundled EOL electron;
+      # using the browser extension instead)
 
       ##################
       # FILE TRANSFER  #
@@ -551,7 +554,7 @@
       ###################
       browsers
       mouseless
-      dwarfs
+      # dwarfs  # dropped: not cached on 26.11, compiles ~1h from source
       eaglemode
       libcaca
       hdf5

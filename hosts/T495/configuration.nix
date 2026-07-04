@@ -72,6 +72,15 @@
       "vm.swappiness" = 10;
       "vm.vfs_cache_pressure" = 50;
     };
+
+    # 26.11 defaults to systemd stage-1, which hangs at initrd.target on this
+    # machine (likely plymouth wanting amdgpu in initrd). Keep the classic
+    # script stage-1 that 26.05 used.
+    initrd.systemd.enable = false;
+
+    # root is locked, so without this a failed systemd initrd drops to a dead
+    # emergency prompt with no shell (harmless while systemd stage-1 is off)
+    initrd.systemd.emergencyAccess = true;
   };
 
   nixpkgs.config = {
@@ -156,9 +165,10 @@
         enable = true;
         enableScreensaver = false;
       };
-      gnome.enable = true;
     };
   };
+
+  services.desktopManager.gnome.enable = true;
 
   services.desktopManager.cosmic.enable = true;
 
@@ -341,7 +351,6 @@
     };
     podman.enable = true;
     waydroid.enable = false;
-    vmware.host.enable = true;
   };
 
   #######################
