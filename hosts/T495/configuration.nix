@@ -67,13 +67,10 @@
       "vm.vfs_cache_pressure" = 50;
     };
 
-    # 26.11 defaults to systemd stage-1, which hangs at initrd.target on this
-    # machine (likely plymouth wanting amdgpu in initrd). Keep the classic
-    # script stage-1 that 26.05 used.
-    initrd.systemd.enable = false;
-
-    # root is locked, so without this a failed systemd initrd drops to a dead
-    # emergency prompt with no shell (harmless while systemd stage-1 is off)
+    # root is locked, so without this a failed initrd drops to a dead
+    # emergency prompt with no shell. Kept after the 26.11 upgrade saga: root
+    # fs corruption made systemd stage-1's fsck fail, and this shell was the
+    # only way to run the repair (fsck.ext4 -f -y from the initrd).
     initrd.systemd.emergencyAccess = true;
   };
 
