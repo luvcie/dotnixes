@@ -118,8 +118,8 @@ in {
 
     binds {
       Mod+Return { spawn "ghostty"; }
-      Mod+d { spawn "sh" "-c" "qs ipc -i $(basename $(readlink /run/user/$(id -u)/quickshell/by-pid/$(pgrep quickshell | tail -1))) call launcher toggle"; }
-      Mod+Shift+Return { spawn "chromium"; }
+      Mod+d { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+      Mod+Shift+Return { spawn "app.zen_browser.zen"; }
       Mod+Shift+q { close-window; }
       Mod+f { fullscreen-window; }
       Mod+m { maximize-column; }
