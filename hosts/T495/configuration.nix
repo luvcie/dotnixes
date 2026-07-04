@@ -51,16 +51,10 @@
       timeout = 3;
     };
 
-    plymouth = {
-      enable = true;
-      theme = "script";
-    };
-
-    # Hide boot messages for clean plymouth experience
+    # Hide boot messages for a quiet boot
     consoleLogLevel = 3;
     kernelParams = [
       "quiet"
-      "splash"
       "boot.shell_on_fail"
       "loglevel=3"
       "rd.systemd.show_status=false"
