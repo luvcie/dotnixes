@@ -17,13 +17,14 @@
     iconTheme = {
       name = "RetroismIcons";
     };
+    gtk4.theme = config.gtk.theme;
   };
 
   xdg.configFile."gtk-4.0/settings.ini".force = true;
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk";
+    platformTheme.name = "gtk2";
     style = {
       name = "Dracula";
       package = pkgs.dracula-qt5-theme;
