@@ -64,7 +64,7 @@
   home.packages = with pkgs;
     [
 	  # latest additions
-	  # jetbrains.rider  # re-add after disk cleanup; needs ~4G to unpack
+	  jetbrains.rider
     godot-mono
 	  sbcl
 	  racket
