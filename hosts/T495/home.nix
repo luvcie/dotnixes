@@ -29,8 +29,8 @@
 
   home.sessionVariables = {
     _JAVA_AWT_WM_NONREPARENTING = "1";
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
+    # GTK_IM_MODULE/QT_IM_MODULE unset on purpose: wayland apps use the
+    # native input method protocol, XMODIFIERS covers X11/XWayland
     XMODIFIERS = "@im=fcitx";
     SDL_IM_MODULE = "fcitx";
     GLFW_IM_MODULE = "ibus"; # Fcitx5 supports the ibus protocol for GLFW
