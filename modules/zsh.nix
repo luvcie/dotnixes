@@ -4,6 +4,7 @@
   #######
   programs.starship.enable = true;
   programs.fzf.enable = true;
+  programs.fzf.historyWidget.command = ""; # atuin owns Ctrl-R
   programs.pay-respects.enable = true;
   programs.zoxide.enable = true;
 
