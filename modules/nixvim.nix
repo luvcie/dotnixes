@@ -7,8 +7,8 @@
   fortyTwoHeaderRepo = pkgs.fetchFromGitHub {
     owner = "42paris";
     repo = "42header";
-    rev = "master";
-    sha256 = "sha256-WflranTZgaAoRTBqHsRuQEdvL15fv21ZRX77BzDMg0I=";
+    rev = "0b5698ad1c7cc6d43783419d97c8e6cf97088e64";
+    sha256 = "sha256-xdH/SeGv1bfKMmJ9cHYd5V+ynFohzprnUC8eVer1VcI=";
   };
 
   fortyTwoHeaderPlugin = pkgs.vimUtils.buildVimPlugin {
@@ -19,6 +19,10 @@ in {
   home.packages = with pkgs; [
     wl-clipboard
   ];
+
+  # nixpkgs follows the flake input; point nixvim at it explicitly to
+  # silence the follows-mismatch warning.
+  programs.nixvim.nixpkgs.source = pkgs.path;
 
   programs.nixvim = {
     enable = true;
