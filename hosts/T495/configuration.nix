@@ -279,7 +279,7 @@
 
     firewall = {
       enable = true;
-      allowedTCPPorts = [27036 27037 5900 3389];
+      allowedTCPPorts = [27036 27037 5900 3389 1701 9001];
       allowedUDPPorts = [27031 27036];
     };
   };
@@ -333,6 +333,8 @@
   };
 
   virtualisation = {
+    libvirtd.enable = true;
+
     docker = {
       enable = true;
       autoPrune = {
@@ -398,6 +400,7 @@
   #######################
 
   environment.systemPackages = with pkgs; [
+    qemu
 	clang
     gamescope
     ly
@@ -475,4 +478,5 @@
       RestartSec = "10s";
     };
   };
+
 }

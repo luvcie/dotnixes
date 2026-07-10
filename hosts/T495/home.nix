@@ -63,7 +63,14 @@
 
   home.packages = with pkgs;
     [
+      (callPackage ../../pkgs/claude-desktop.nix {})
 	  # latest additions
+	  irssi
+	  hexchat
+	  lazygit
+	  weylus
+	  krita
+	  antigravity
 	  jetbrains.rider
     godot-mono
 	  sbcl
@@ -766,10 +773,8 @@
   };
 
   # Run flatpak update after every home-manager rebuild
-  home.activation.flatpakUpdate = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if command -v flatpak &> /dev/null; then
-      echo "Running flatpak update..."
-      ${pkgs.flatpak}/bin/flatpak update -y || true
-    fi
+    home.activation.updateClaudeDesktop = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    export PATH="${lib.makeBinPath [ pkgs.curl pkgs.python3 pkgs.gnused pkgs.gawk ]}:$PATH"
+    bash /home/lucie/dotnixes/update-claude-desktop.sh || true
   '';
 }

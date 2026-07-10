@@ -201,6 +201,7 @@ in {
     }
 
     spawn-at-startup "sh" "-c" "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE DISPLAY && dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE DISPLAY"
+    spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
     spawn-at-startup "noctalia-shell"
     // spawn-at-startup "nwg-panel"  // disabled: noctalia provides the bar
 

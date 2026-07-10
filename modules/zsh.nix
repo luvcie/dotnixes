@@ -32,6 +32,7 @@
       ls = "ls --color=auto";
       ll = "ls -la";
       update = "sudo nixos-rebuild switch --flake .";
+      hhs = "nh home switch . && flatpak update -y --noninteractive";
       clean = "sudo nix-collect-garbage -d";
       gs = "git status";
       gp = "git push";
