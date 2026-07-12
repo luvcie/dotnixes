@@ -40,17 +40,32 @@
     }));
   };
 
-  boot = {
-    loader = {
-      systemd-boot = {
-        enable = true;
-        consoleMode = "max";
-        editor = false;
-      };
-      efi.canTouchEfiVariables = true;
-      timeout = 3;
-    };
+  modules.kernel.enable = true;
 
+  # nh clean deletes gcroots/auto, which is all that protects home-manager's
+  # current generation. Point at current-home, not the profile: nix follows only
+  # one symlink, and the profile is a step too far.
+  systemd.tmpfiles.rules = [
+    "L+ /nix/var/nix/gcroots/home-manager-lucie - - - - /home/lucie/.local/state/home-manager/gcroots/current-home"
+  ];
+
+  # Same for the nix profile, but profiles/profile keeps changing to a numbered
+  # link, so a service follows it and pins the real path before each clean.
+  systemd.services.pin-lucie-gcroots = {
+    description = "Pin lucie's nix profile as a gcroot so nh clean cannot collect it";
+    wantedBy = ["multi-user.target"];
+    requiredBy = ["nh-clean.service"];
+    before = ["nh-clean.service"];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      profile=$(readlink -f /home/lucie/.local/state/nix/profiles/profile) || exit 0
+      case "$profile" in
+        /nix/store/*) ln -sfn "$profile" /nix/var/nix/gcroots/nix-profile-lucie ;;
+      esac
+    '';
+  };
+
+  boot = {
     # Hide boot messages for a quiet boot
     consoleLogLevel = 3;
     kernelParams = [
@@ -61,11 +76,6 @@
       "rd.udev.log_level=3"
       "udev.log_priority=3"
     ];
-
-    kernel.sysctl = {
-      "vm.swappiness" = 10;
-      "vm.vfs_cache_pressure" = 50;
-    };
 
     # root is locked, so without this a failed initrd drops to a dead
     # emergency prompt with no shell. Kept after the 26.11 upgrade saga: root

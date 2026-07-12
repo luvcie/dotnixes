@@ -23,6 +23,17 @@
     #    };
 
     # Applications
+    # nixpkgs' claude-code lags upstream badly
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    starmie-cli = {
+      url = "github:luvcie/starmie-cli";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     lobster = {
       url = "github:justchokingaround/lobster";
     };

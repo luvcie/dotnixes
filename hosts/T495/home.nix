@@ -64,6 +64,8 @@
   home.packages = with pkgs;
     [
       (callPackage ../../pkgs/claude-desktop.nix {})
+      inputs.claude-code.packages.${pkgs.system}.default
+      inputs.starmie-cli.packages.${pkgs.system}.default
 	  # latest additions
 	  irssi
 	  hexchat

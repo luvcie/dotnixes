@@ -19,6 +19,7 @@ in {
           enable = true;
           consoleMode = "max";
           editor = false;
+          memtest86.enable = true;
         };
         efi.canTouchEfiVariables = true;
         timeout = 3;
@@ -29,13 +30,15 @@ in {
         "transparent_hugepage=never"
       ];
 
+      # tcp_bbr isn't built in; the bbr sysctl below falls back to cubic without it
+      kernelModules = ["tcp_bbr"];
+
       kernel.sysctl = {
         "vm.swappiness" = 10;
         "vm.vfs_cache_pressure" = 50;
         "vm.max_map_count" = 262144;
 
         "kernel.sched_autogroup_enabled" = 0;
-        "kernel.sched_child_runs_first" = 1;
 
         "fs.file-max" = 2097152;
         "fs.inotify.max_user_watches" = 524288;
@@ -48,11 +51,7 @@ in {
         "net.ipv4.tcp_congestion_control" = "bbr";
 
         "kernel.pid_max" = 4194304;
-
-        "kernel.unprivileged_userns_clone" = 1;
       };
-
-      kernelModules = ["binder_linux" "ashmem_linux"];
     };
   };
 }
