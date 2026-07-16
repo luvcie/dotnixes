@@ -5,6 +5,56 @@
   ...
 }: let
   wallpaper = ../assets/wallpapers/wallpaper.png;
+
+  # glpaper shader viewer/live-editor. Toggle key: press once to pick a .glsl
+  # (fuzzel) and start it detached (no terminal); press again to stop it.
+  # live = entr reloads on save; load = show once. Errors -> ~/.cache/shader-live.log.
+  # Needs on PATH (all installed): fuzzel, entr, glpaper, setsid.
+  shaderLive = pkgs.writeShellScript "shader-live" ''
+    set -eu
+    dir="$HOME/.config/shaders"
+    mode="''${1:-live}"                       # live | load
+    pidfile="$HOME/.cache/shader-live.pid"
+    log="$HOME/.cache/shader-live.log"
+    mkdir -p "$HOME/.cache"
+
+    running() { [ -f "$pidfile" ] && kill -0 "$(cat "$pidfile")" 2>/dev/null; }
+    stop() {
+      if [ -f "$pidfile" ]; then
+        kill -- -"$(cat "$pidfile")" 2>/dev/null || true   # kill the whole process group
+        rm -f "$pidfile"
+      fi
+    }
+
+    # toggle: a session is up -> stop it and quit
+    if running; then stop; exit 0; fi
+    stop                                      # clear any stale pidfile
+
+    spath="''${dir/#$HOME/~}"                  # ~/.config/shaders — shown as the picker prompt
+    sel=$(cd "$dir" && ls *.glsl 2>/dev/null | fuzzel --dmenu --prompt "$spath/ ") || exit 0
+    [ -n "$sel" ] || exit 0
+    f="$dir/$sel"
+
+    # second menu: render resolution (screen is 1366x768). Empty = native.
+    rsel=$(printf '%s\n' "half 683x384" "third 456x256" "quarter 342x192" "full native" \
+             | fuzzel --dmenu --prompt "res> ") || exit 0
+    [ -n "$rsel" ] || exit 0
+    case "$rsel" in
+      half*)    res="-W 683 -H 384" ;;
+      third*)   res="-W 456 -H 256" ;;
+      quarter*) res="-W 342 -H 192" ;;
+      full*)    res="" ;;
+      *)        res="-W 683 -H 384" ;;
+    esac
+
+    # detached via setsid: new session, leader pid == pgid, survives this script.
+    if [ "$mode" = live ]; then
+      setsid sh -c "ls '$f' | entr -nr glpaper --fps 30 $res eDP-1 '$f'" >"$log" 2>&1 &
+    else
+      setsid sh -c "glpaper --fps 30 $res eDP-1 '$f'" >"$log" 2>&1 &
+    fi
+    echo $! >"$pidfile"
+  '';
 in {
   home.file.".config/niri/config.kdl".text = ''
     input {
@@ -119,6 +169,8 @@ in {
     binds {
       Mod+Return { spawn "ghostty"; }
       Mod+d { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+      Mod+s { spawn "${shaderLive}" "live"; }        // pick a shader, live-edit it (entr reload on save)
+      Mod+Shift+s { spawn "${shaderLive}" "load"; }  // pick a shader, load it once (no watch)
       Mod+Shift+Return { spawn "app.zen_browser.zen"; }
       Mod+Shift+q { close-window; }
       Mod+f { fullscreen-window; }
