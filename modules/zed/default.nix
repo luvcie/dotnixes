@@ -17,6 +17,9 @@ in {
         lsp.clangd.binary.path = "${pkgs.clang-tools}/bin/clangd";
         # same story for clojure-lsp: use the nixpkgs binary.
         lsp.clojure-lsp.binary.path = "${pkgs.clojure-lsp}/bin/clojure-lsp";
+        # glsl: the "glsl" extension provides the language + glsl_analyzer LSP,
+        # but its auto-downloaded binary won't run on nixos, so pin the nixpkgs one.
+        lsp.glsl_analyzer.binary.path = "${pkgs.glsl_analyzer}/bin/glsl_analyzer";
       };
     userKeymaps = customLib.fromJsonFile ./keymap.json;
 
@@ -30,6 +33,7 @@ in {
 
       # languages
       "clojure"
+      "glsl"
       "haskell"
       "haxe"
       "html"

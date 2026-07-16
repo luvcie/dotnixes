@@ -23,6 +23,7 @@
     ../../modules/retroism.nix
     ../../modules/wayvnc.nix
     ../../modules/emacs.nix
+    ../../modules/helix.nix
   ];
 
   programs.home-manager.enable = true;
@@ -68,6 +69,7 @@
       inputs.starmie-cli.packages.${pkgs.system}.default
 	  # latest additions
 	  irssi
+	  glsl_analyzer # glsl LSP; completion/hover for bare .glsl (glslls needs a stage ext + assumes vulkan). Doom calls it bare, so keep on PATH. efm (helix diagnostics) is pinned by path in helix.nix.
 	  hexchat
 	  lazygit
 	  weylus
