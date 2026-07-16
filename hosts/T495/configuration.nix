@@ -113,9 +113,15 @@
         "org.freedesktop.impl.portal.Screencast" = ["wlr"];
       };
       niri = {
-        default = lib.mkForce ["wlr"];
-        "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
-        "org.freedesktop.impl.portal.Screencast" = ["wlr"];
+        # niri does NOT implement wlr-screencopy; it screencasts via
+        # xdg-desktop-portal-gnome. Routing these to wlr breaks Discord/OBS
+        # screenshare (works on sway because sway does implement wlr-screencopy).
+        default = lib.mkForce ["gnome" "gtk"];
+        "org.freedesktop.impl.portal.Screenshot" = ["gnome"];
+        # D-Bus interface is "ScreenCast" (capital C). Keep the lowercase alias
+        # too, matching how the sway conf lists both, so routing is explicit.
+        "org.freedesktop.impl.portal.ScreenCast" = ["gnome"];
+        "org.freedesktop.impl.portal.Screencast" = ["gnome"];
       };
       hyprland = {
         default = ["wlr"];

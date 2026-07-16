@@ -84,7 +84,9 @@ in {
     environment {
       // quickshell/Qt apps default to xcb without this and die "cannot open display"
       QT_QPA_PLATFORM "wayland"
-      GDK_BACKEND "wayland"
+      // GDK_BACKEND intentionally NOT set: niri docs warn a global GDK_BACKEND
+      // breaks the gnome screencast portal (Discord/OBS share). Qt is covered by
+      // QT_QPA_PLATFORM above; GDK_BACKEND only affects GTK apps anyway.
       // qt.platformTheme = "gtk" sets QT_QPA_PLATFORMTHEME=gtk2 which needs $DISPLAY
       QT_QPA_PLATFORMTHEME ""
     }
