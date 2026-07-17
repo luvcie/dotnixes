@@ -689,8 +689,6 @@
       size = 11;
     };
 
-    # themeFile = "Belafonte_Day";
-
     settings = {
       # Use GTK theme
       linux_display_server = "wayland";
@@ -708,38 +706,19 @@
       # Scrollback
       scrollback_lines = 3000;
 
-      # Background opacity
+      # Background opacity. dynamic_ + remote control let a keybind toggle it at
+      # runtime (see keybindings). Default stays 0.985 (near-opaque).
       background_opacity = "0.985";
-
-      # Custom color scheme - Indigo Twilight
-      cursor = "#3e7c99";
-      selection_background = "#7e8bad";
-      selection_foreground = "#d0def9";
-      background = "#bac4e6";
-      foreground = "#1a2135";
-
-      # Color palette (ANSI colors)
-      color0 = "#1a2135";  # Black (normal) - dark navy
-      color8 = "#4a5670";  # Black (bright) - medium navy-grey
-      color1 = "#d65d5d";  # Red (normal) - muted earthy red
-      color9 = "#e83939";  # Red (bright) - vibrant red
-      color2 = "#5a9f7f";  # Green (normal) - sage green
-      color10 = "#7dc9a0"; # Green (bright) - mint green
-      color3 = "#d4a574";  # Yellow (normal) - warm amber
-      color11 = "#f5c98a"; # Yellow (bright) - light gold
-      color4 = "#3e7c99";  # Blue (normal) - deep teal blue
-      color12 = "#6b9fd9"; # Blue (bright) - bright azure
-      color5 = "#9d7fc9";  # Magenta (normal) - muted purple
-      color13 = "#c19ee0"; # Magenta (bright) - light lavender
-      color6 = "#5aa5a5";  # Cyan (normal) - deep teal
-      color14 = "#7dcfd9"; # Cyan (bright) - bright aqua
-      color7 = "#d0def9";  # White (normal) - soft blue-tinted white
-      color15 = "#e8ecf8"; # White (bright) - almost pure white
+      dynamic_background_opacity = "yes";
+      allow_remote_control = "yes";
     };
 
     keybindings = {
       "ctrl+shift+plus" = "change_font_size all +1.0";
       "ctrl+shift+minus" = "change_font_size all -1.0";
+      # toggle transparent <-> opaque in place (default opaque). tune 0.4.
+      # remote_control (not `kitten @`) is the keybind form; needs allow_remote_control.
+      "ctrl+alt+o" = "remote_control set-background-opacity --toggle 0.4";
     };
 
     extraConfig = ''

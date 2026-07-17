@@ -20,6 +20,17 @@
     language-servers = ["glsl_analyzer", "efm"]
   '';
 
+  # Transparent editor background so kitty's transparency shows through.
+  xdg.configFile."helix/config.toml".text = ''
+    theme = "transparent"
+  '';
+  # Inherit the default theme (keeps all its colors) and blank ui.background so
+  # the editing area has no bg. Swap "inherits" to any theme you prefer.
+  xdg.configFile."helix/themes/transparent.toml".text = ''
+    inherits = "default"
+    "ui.background" = {}
+  '';
+
   # efm-langserver reads this by default. ''${INPUT} is a literal ${INPUT} that
   # efm substitutes with the file path.
   xdg.configFile."efm-langserver/config.yaml".text = ''
