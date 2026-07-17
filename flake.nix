@@ -34,6 +34,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    glpaper-es3 = {
+      url = "github:luvcie/glpaper-es3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     lobster = {
       url = "github:justchokingaround/lobster";
     };

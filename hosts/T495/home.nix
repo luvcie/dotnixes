@@ -69,7 +69,10 @@
       inputs.starmie-cli.packages.${pkgs.system}.default
 	  # latest additions
 	  irssi
-	  glsl_analyzer # glsl LSP; completion/hover for bare .glsl (glslls needs a stage ext + assumes vulkan). Doom calls it bare, so keep on PATH. efm (helix diagnostics) is pinned by path in helix.nix.
+	  entr
+	  glsl_analyzer # glsl LSP; completion/hover for bare .glsl (glslls needs a stage ext + assumes vulkan). 
+	  rustup
+	  inputs.glpaper-es3.packages.${pkgs.system}.default # ES3 fork, replaces stock glpaper; binary still `glpaper`
 	  hexchat
 	  lazygit
 	  weylus

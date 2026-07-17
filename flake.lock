@@ -178,6 +178,26 @@
         "type": "github"
       }
     },
+    "glpaper-es3": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784287239,
+        "narHash": "sha256-Pb+HYY12aZLx3aqlfNQg0v/KKOjrhxnVxdjTDgeRu44=",
+        "owner": "luvcie",
+        "repo": "glpaper-es3",
+        "rev": "40e58688370caeaeb27a9cb63db9762ce2f8aed5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "luvcie",
+        "repo": "glpaper-es3",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -362,6 +382,7 @@
       "inputs": {
         "caelestia-shell": "caelestia-shell",
         "claude-code": "claude-code",
+        "glpaper-es3": "glpaper-es3",
         "home-manager": "home-manager",
         "linux-retroism": "linux-retroism",
         "lobster": "lobster",
