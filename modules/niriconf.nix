@@ -7,15 +7,29 @@
   wallpaper = ../assets/wallpapers/wallpaper.png;
 
   # glpaper shader viewer/live-editor. Toggle key: press once to pick a .glsl
-  # (fuzzel) and start it detached (no terminal); press again to stop it.
+  # (fuzzel), a resolution, and — when an external display is connected — which
+  # output(s); starts it detached (no terminal). Press again to stop it.
   # live = entr reloads on save; load = show once. Errors -> ~/.cache/shader-live.log.
-  # Needs on PATH (all installed): fuzzel, entr, glpaper, setsid.
+  # Needs on PATH (all installed): fuzzel, entr, glpaper, setsid, niri.
   shaderLive = pkgs.writeShellScript "shader-live" ''
     set -eu
+
+    # __paint worker: render $file on each given output. glpaper does one output
+    # per process, so we spawn one per output and wait. The TERM trap kills them
+    # cleanly so entr -r (live reload) and the group-kill toggle both work.
+    if [ "''${1:-}" = __paint ]; then
+      shift; pres="$1"; pfile="$2"; shift 2
+      trap 'kill $(jobs -p) 2>/dev/null || true; exit 0' TERM INT
+      for o in "$@"; do glpaper --fps 30 $pres "$o" "$pfile" & done
+      wait || true
+      exit 0
+    fi
+
     dir="$HOME/.config/shaders"
     mode="''${1:-live}"                       # live | load
     pidfile="$HOME/.cache/shader-live.pid"
     log="$HOME/.cache/shader-live.log"
+    internal=eDP-1                            # laptop panel
     mkdir -p "$HOME/.cache"
 
     running() { [ -f "$pidfile" ] && kill -0 "$(cat "$pidfile")" 2>/dev/null; }
@@ -35,7 +49,7 @@
     [ -n "$sel" ] || exit 0
     f="$dir/$sel"
 
-    # second menu: render resolution (screen is 1366x768). Empty = native.
+    # resolution menu (screen is 1366x768). Empty = native.
     rsel=$(printf '%s\n' "half 683x384" "third 456x256" "quarter 342x192" "full native" \
              | fuzzel --dmenu --prompt "res> ") || exit 0
     [ -n "$rsel" ] || exit 0
@@ -47,11 +61,28 @@
       *)        res="-W 683 -H 384" ;;
     esac
 
+    # output menu — only asked when an external display is connected.
+    mapfile -t outs < <(niri msg outputs 2>/dev/null | sed -n 's/^Output .*(\(.*\))$/\1/p')
+    externals=()
+    for o in "''${outs[@]}"; do [ "$o" = "$internal" ] || externals+=("$o"); done
+    targets=("$internal")
+    if [ ''${#externals[@]} -gt 0 ]; then
+      osel=$(printf '%s\n' "laptop only" "external only" "both" \
+               | fuzzel --dmenu --prompt "output> ") || exit 0
+      [ -n "$osel" ] || exit 0
+      case "$osel" in
+        laptop*)   targets=("$internal") ;;
+        external*) targets=("''${externals[@]}") ;;
+        both*)     targets=("$internal" "''${externals[@]}") ;;
+      esac
+    fi
+
     # detached via setsid: new session, leader pid == pgid, survives this script.
+    # live watches the file and relaunches the worker on save; load runs it once.
     if [ "$mode" = live ]; then
-      setsid sh -c "ls '$f' | entr -nr glpaper --fps 30 $res eDP-1 '$f'" >"$log" 2>&1 &
+      setsid sh -c "printf '%s\n' \"$f\" | entr -nr \"$0\" __paint \"$res\" \"$f\" ''${targets[*]}" >"$log" 2>&1 &
     else
-      setsid sh -c "glpaper --fps 30 $res eDP-1 '$f'" >"$log" 2>&1 &
+      setsid "$0" __paint "$res" "$f" "''${targets[@]}" >"$log" 2>&1 &
     fi
     echo $! >"$pidfile"
   '';
