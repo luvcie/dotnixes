@@ -275,6 +275,7 @@ in {
       XF86AudioMute { spawn "pamixer" "-t"; }
       XF86AudioRaiseVolume { spawn "pamixer" "--increase" "2"; }
       XF86AudioLowerVolume { spawn "pamixer" "--decrease" "2"; }
+      XF86AudioMicMute { spawn "pamixer" "--default-source" "-t"; }
 
       Mod+Escape { spawn "swaylock"; } // moved off Mod+l (now focus-column-right)
       Mod+Shift+e { quit; }
