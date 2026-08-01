@@ -324,6 +324,9 @@
     extraCompatPackages = with pkgs; [
       proton-ge-bin
     ];
+    # lsfg-vk Vulkan layer must live inside the Steam pressure-vessel
+    # container; the home-manager copy only reaches native (non-Steam) games.
+    extraPackages = with pkgs; [ lsfg-vk ];
   };
 
   programs = {

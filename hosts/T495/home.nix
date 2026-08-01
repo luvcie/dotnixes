@@ -67,25 +67,36 @@
       (callPackage ../../pkgs/claude-desktop.nix {})
       inputs.claude-code.packages.${pkgs.system}.default
       inputs.starmie-cli.packages.${pkgs.system}.default
+      (inputs.gitlogue.packages.${pkgs.system}.default.overrideAttrs (old: {
+        cargoDeps = old.cargoDeps.overrideAttrs (oldc: {
+          vendorStaging = oldc.vendorStaging.overrideAttrs (_: {
+            outputHash = "sha256-PfITSo8iTQ1Y3wn/9PD4fsMGF0oRw1f1Xnhki4voqpM=";
+          });
+        });
+      }))
 	  # latest additions
 	  irssi
+	  prismlauncher
+	  lsfg-vk
+	  lsfg-vk-ui # GTK editor for ~/.config/lsfg-vk/conf.toml (host app, not a layer)
 	  entr
 	  glsl_analyzer # glsl LSP; completion/hover for bare .glsl (glslls needs a stage ext + assumes vulkan). 
+	  mission-center
 	  rustup
 	  inputs.glpaper-es3.packages.${pkgs.system}.default # ES3 fork, replaces stock glpaper; binary still `glpaper`
-	  hexchat
+	  devenv
 	  lazygit
+	  opencode
 	  weylus
 	  krita
 	  antigravity
-	  jetbrains.rider
-    godot-mono
+	      godot-mono
 	  sbcl
 	  racket
 	  babashka
 	  clojure
 	  clojure-lsp
-	  clj-kondo # clojure linter (emacs lint-as-you-type via flycheck-clj-kondo)
+	  clj-kondo
 	  love
 	  guix
 	  powershell
@@ -143,7 +154,7 @@
 # android-studio-tools
 	  scrcpy
 	  xhost
-	  jmtpfs
+	  go-mtpfs # was jmtpfs (removed upstream, unmaintained); FUSE Android MTP mount
 	  jdk17
 	  python313Packages.tkinter
 	  corefonts
@@ -179,7 +190,6 @@
 #	  wifite2
 	  #bettercap
 #	  airgeddon
-	  pipx
       ###################
       # WEB BROWSERS    #
       ###################
@@ -207,8 +217,7 @@
 	    gh
 
       # IDEs & Editors
-      vscode
-      evil-helix
+      helix
       micro
       cosmic-edit
 	    csview
@@ -275,7 +284,7 @@
       swaylock
       swayidle
       wofi
-      scenefx
+     # scenefx
       autotiling-rs
 
       # Wayland Utilities

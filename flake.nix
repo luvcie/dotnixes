@@ -39,6 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    gitlogue = {
+      url = "github:unhappychoice/gitlogue";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     lobster = {
       url = "github:justchokingaround/lobster";
     };
