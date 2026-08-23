@@ -24,11 +24,11 @@
 let
   unwrapped = stdenv.mkDerivation rec {
     pname = "claude-desktop-unwrapped";
-    version = "1.24012.9";
+    version = "1.34493.1";
 
     src = fetchurl {
       url = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop/claude-desktop_${version}_amd64.deb";
-      hash = "sha256-MC5tII3YyOnlIGfaoo7zsRcaFhNYb9DhC+3GQiJbbuE=";
+      hash = "sha256-GYKXeWM6J3/NcqZYNCbGik7P96pDomcY1mRcLpVHR8o=";
     };
 
     nativeBuildInputs = [ autoPatchelfHook dpkg ];
