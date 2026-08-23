@@ -79,7 +79,23 @@
 	  # latest additions
 	  irssi
 	  prismlauncher
+	  concord-tui
+	  tmux
+	  neomutt
+	  msmtp
+	  isync
+	  cloudflared
+	  nmap
+	  tenki
+	  discordchatexporter-cli
+	  discordchatexporter-desktop
+	  clock-rs
+	  uv
+	  tty-clock
+	  genact
+	  lavat
 	  lsfg-vk
+	  terminaltexteffects
 	  lsfg-vk-ui # GTK editor for ~/.config/lsfg-vk/conf.toml (host app, not a layer)
 	  entr
 	  glsl_analyzer # glsl LSP; completion/hover for bare .glsl (glslls needs a stage ext + assumes vulkan). 
