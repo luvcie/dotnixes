@@ -65,10 +65,15 @@
 
   home.packages = with pkgs;
     [
+      ###################
+      # LOCAL & FLAKE   #
+      ###################
       (callPackage ../../pkgs/claude-desktop.nix {})
       (callPackage ../../pkgs/endcord.nix {})
       inputs.claude-code.packages.${pkgs.system}.default
       inputs.starmie-cli.packages.${pkgs.system}.default
+      inputs.lobster.packages."x86_64-linux".lobster
+      inputs.glpaper-es3.packages.${pkgs.system}.default # ES3 fork, replaces stock glpaper; binary still `glpaper`
       (inputs.gitlogue.packages.${pkgs.system}.default.overrideAttrs (old: {
         cargoDeps = old.cargoDeps.overrideAttrs (oldc: {
           vendorStaging = oldc.vendorStaging.overrideAttrs (_: {
@@ -76,152 +81,23 @@
           });
         });
       }))
-	  # latest additions
-	  irssi
-	  prismlauncher
-	  concord-tui
-	  tmux
-	  neomutt
-	  msmtp
-	  isync
-	  cloudflared
-	  nmap
-	  tenki
-	  discordchatexporter-cli
-	  discordchatexporter-desktop
-	  clock-rs
-	  uv
-	  tty-clock
-	  genact
-	  lavat
-	  lsfg-vk
-	  terminaltexteffects
-	  lsfg-vk-ui # GTK editor for ~/.config/lsfg-vk/conf.toml (host app, not a layer)
-	  entr
-	  glsl_analyzer # glsl LSP; completion/hover for bare .glsl (glslls needs a stage ext + assumes vulkan). 
-	  mission-center
-	  rustup
-	  inputs.glpaper-es3.packages.${pkgs.system}.default # ES3 fork, replaces stock glpaper; binary still `glpaper`
-	  devenv
-	  lazygit
-	  opencode
-	  weylus
-	  krita
-	  antigravity
-	      godot-mono
-	  sbcl
-	  racket
-	  babashka
-	  clojure
-	  clojure-lsp
-	  clj-kondo
-	  love
-	  guix
-	  powershell
-	  uv
-	  clang-tools
-	  pokemmo-installer
-	  sshfs
-	  gnupg
-	  sunsetr
-	  easyeffects
-	  wlsunset
-	  brave
-	  kaidan
-	  slack
-	  sonixd
-	  stoat-desktop
-	  bun
-	  calibre
-	  wl-gammactl
-	  movim
-	  wlopm
-	  ffmpeg
-	  obsidian
-	  dino
-	  tor
-	  rsync
-	  palemoon-bin
-	  wireguard-tools
-	  remmina
-	  jadx
-	  autossh
-	  proton-vpn-cli
-	  wl-color-picker
-	  go
-	  heroic
-	  vesktop
-	  sqlite
-	  imagemagick
-	  slade
-	  deutex
-	  mangohud
-	  mangojuice
-	  wlrctl
-	  hydrus
-	  python314
-	  python313Packages.pip
-	  rofi
-	  wmctrl
-	  ydotool
-	  gdb
-	  libGL
-	  libGLU
-	  # android-studio
-	  scanmem
-# android-studio-tools
-	  scrcpy
-	  xhost
-	  go-mtpfs # was jmtpfs (removed upstream, unmaintained); FUSE Android MTP mount
-	  jdk17
-	  python313Packages.tkinter
-	  corefonts
-	  poppler-utils
-	  xxd
-	  mktorrent
-	  audacity
-	  qdl
-	  android-tools
-	  # edl  # broken in new nixpkgs
-	  payload-dumper-go
-	  gnome-mahjongg
-	  spotube
-	  nomacs
-	  cozette
-	  handlr
-	  # dsniff  # broken in new nixpkgs - libnids build fails
-	  zip
-	  jujutsu
-	  lazyjj
-	  nodejs_24
-	  pnpm
-#	  deno
-	  lazynpm
-	  #iw
-	  #aircrack-ng
-	  #sslscan
-	  #mdk4
-	  #arp-scan
-	  #tcpdump
-	  #netdiscover
-#	  airgorah
-#	  wifite2
-	  #bettercap
-#	  airgeddon
+
       ###################
       # WEB BROWSERS    #
       ###################
       #librewolf
       chromium
-	  firefox
+      firefox
+      brave
+      palemoon-bin
 
       #######################
       # TERMINAL EMULATORS  #
       #######################
       #terminator
-  	  #pterm
+      #pterm
       #foot
-	  #xfce4-terminal
+      #xfce4-terminal
       #cool-retro-term
       ghostty
 
@@ -232,25 +108,53 @@
       git
       git-credential-manager
       libsecret
-	    gh
+      gh
+      lazygit
+      jujutsu
+      lazyjj
 
       # IDEs & Editors
       helix
       micro
       cosmic-edit
-	    csview
+      csview
+      antigravity
+      opencode
 
       # Programming Languages & Runtimes
       lua
       ocaml
       perl
       python314
+      python313Packages.pip
+      python313Packages.tkinter
+      uv
+      go
+      rustup
+      jdk17
+      sbcl
+      racket
+      babashka
+      clojure
+      love
+      guix
+      powershell
+      ruby
+      nodejs_24
+      bun
+      pnpm
+      lazynpm
+      #deno
 #     clang
-	  gcc
-	  readline
+      gcc
+      readline
+
       # Build Tools & Compilers
       gnumake
       libtool # needed to compile emacs vterm module
+      cmake
+      pkgsCross.avr.buildPackages.gcc
+      arduino-cli
       # Temporarily commenting out clang 12 as it has been removed
       # (pkgs.buildEnv {
       #   name = "clang-only";
@@ -258,32 +162,44 @@
       #   ignoreCollisions = true;
       # })
 
-      # Development Utilities
-	  #kicad
-	  #fritzing
-	  #arduino-ide
-	  #probe-rs-tools
-	  #espup
-	  pkgsCross.avr.buildPackages.gcc
-	  arduino-cli
-	  cmake
-      hugo
-      alejandra
+      # Language Servers & Linters
       nil # nix language server (emacs/zed lsp)
+      glsl_analyzer # glsl LSP; completion/hover for bare .glsl (glslls needs a stage ext + assumes vulkan).
+      clojure-lsp
+      clj-kondo
+      clang-tools
+      alejandra
+      norminette
+
+      # Debugging & Profiling
+      gdb
+      valgrind
+      scanmem
+
+      # Development Utilities
+      #kicad
+      #fritzing
+      #arduino-ide
+      #probe-rs-tools
+      #espup
+      devenv
+      hugo
       any-nix-shell
-	  omnix
+      omnix
       nix-prefetch-scripts
       nix-search-cli
-      norminette
       distrobox
-	  distroshelf
+      distroshelf
       bubblewrap
       fuse-overlayfs
       undollar
       file
-      valgrind
-	  ceedling
-	  ruby
+      entr
+      ceedling
+      sqlite
+      libGL
+      libGLU
+      godot-mono
 
       # Container & Kubernetes Tools
      #k9s
@@ -312,6 +228,18 @@
       satty
       wev
       evtest
+      wlrctl
+      wlopm
+      wl-color-picker
+      rofi
+      wmctrl
+      ydotool
+      xhost
+
+      # Display & Colour
+      sunsetr
+      wlsunset
+      wl-gammactl
 
       # System Control
       brightnessctl
@@ -339,9 +267,24 @@
         withOpenASAR = true;
         withVencord = true;
       })
+      vesktop
+      discordchatexporter-cli
+      discordchatexporter-desktop
       signal-desktop
       telegram-desktop
       element-desktop
+      slack
+      stoat-desktop
+      concord-tui
+      irssi
+      dino
+      kaidan
+      movim
+
+      # Mail
+      neomutt
+      msmtp
+      isync
 
       ######################
       # MULTIMEDIA & MEDIA #
@@ -351,10 +294,15 @@
       # obs-studio
       waylyrics
       kooha
-	  qmmp
+      qmmp
+      sonixd
+      spotube
+      ffmpeg
+      audacity
 
       # Audio Production & Music Creation
       alsa-utils
+      easyeffects
       #hydrogen
       #carla
       #a2jmidid
@@ -365,7 +313,6 @@
       #soundfont-fluid
       #pipewire.jack
       #qpwgraph
-	  #easyeffects
 
       # Music Trackers & Chiptune
       #schismtracker
@@ -381,12 +328,15 @@
 
       # Image & Graphics
       gimp-with-plugins
-	  imv
+      krita
+      imv
+      nomacs
       upscayl
+      imagemagick
       #flameshot
       webcamoid
-	  kdePackages.kcolorchooser
-	  kdePackages.kquickimageedit
+      kdePackages.kcolorchooser
+      kdePackages.kquickimageedit
 
       # Media Download
       yt-dlp
@@ -395,16 +345,20 @@
       nicotine-plus
       ani-cli
       mov-cli
+      mktorrent
 
       ###################
       # FILE MANAGEMENT #
       ###################
       yazi
       p7zip
+      zip
       qdirstat
       ncdu
       fh
       appimage-run
+      hydrus
+      handlr
 
       ####################
       # SYSTEM UTILITIES #
@@ -413,7 +367,8 @@
       btop
       macchina
       bunnyfetch
-	  onefetch
+      onefetch
+      mission-center
       usbtop
       usbview
       memtester
@@ -437,17 +392,32 @@
       zathura
       typora
       marktext
+      poppler-utils
+      calibre
+
+      ###################
+      # ANDROID & MOBILE #
+      ###################
+      scrcpy
+      android-tools
+      go-mtpfs # was jmtpfs (removed upstream, unmaintained); FUSE Android MTP mount
+      qdl
+      payload-dumper-go
+      jadx
+      # android-studio
+      # android-studio-tools
+      # edl  # broken in new nixpkgs
 
       ###############
       # CLI TOOLS   #
       ###############
       # Shells & Session Management
       nushell
-      #tmux
+      tmux
       zellij
       atuin
       screen
-	  #wrangler
+      #wrangler
 
       # Terminal Communication
       picocom
@@ -457,11 +427,12 @@
       jq
       gawk
       bat
+      xxd
       clipboard-jh
       xclip
       textsnatcher
-	    lsd
-	    powertop
+      lsd
+      powertop
 
       # Fun CLI Tools
       asciiquarium-transparent
@@ -477,6 +448,12 @@
       fortune
       astroterm
       zalgo
+      genact
+      lavat
+      terminaltexteffects
+      tenki
+      clock-rs
+      tty-clock
 
       ################
       # NETWORK TOOLS #
@@ -486,16 +463,36 @@
       iperf
       mtr-gui
       openvpn
+      proton-vpn-cli
+      wireguard-tools
+      tor
+      cloudflared
+      nmap
       drill
+      autossh
+      sshfs
+      remmina
 
       ########################
       # SECURITY & PENTEST   #
       ########################
+      gnupg
+
       # Network Security
       #wireshark
       #whatweb
       #nikto
-      #nmap
+      #iw
+      #aircrack-ng
+      #sslscan
+      #mdk4
+      #arp-scan
+      #tcpdump
+      #netdiscover
+      #airgorah
+      #wifite2
+      #bettercap
+      #airgeddon
 
       # Web Application Testing
       #sqlmap
@@ -511,7 +508,6 @@
 
       # Cryptography & Hashing
       #hashcat
-      #gnupg
       #openssl
 
       # Steganography
@@ -538,15 +534,16 @@
       #exploitdb
       #exegol
       #pentestgpt
+      # dsniff  # broken in new nixpkgs - libnids build fails
 
       #############
       # GAMING    #
       #############
       # Game Launchers
-      #prismlauncher
+      prismlauncher
+      heroic
+      pokemmo-installer
       #bottles
-      #heroic
-      goverlay
 
       # Games
       tetrio-desktop  # temporarily disabled - tetrio-plus is broken in new nixpkgs
@@ -556,12 +553,22 @@
       space-cadet-pinball
       #vvvvvv
       abbaye-des-morts
-	  kdePackages.kpat
-	  kdePackages.kshisen
+      gnome-mahjongg
+      kdePackages.kpat
+      kdePackages.kshisen
 
       # Gaming Support
       wine
       winetricks
+      mangohud
+      mangojuice
+      goverlay
+      lsfg-vk
+      lsfg-vk-ui # GTK editor for ~/.config/lsfg-vk/conf.toml (host app, not a layer)
+
+      # Level Editing
+      slade
+      deutex
 
       ####################
       # PRODUCTIVITY     #
@@ -570,7 +577,7 @@
       cherrytree
       newsboat
       anki
-      #obsidian
+      obsidian
 
       # Finance & Time Management
       gnucash
@@ -589,6 +596,8 @@
       ##################
       filezilla
       input-leap
+      rsync
+      weylus
 
       ###################
       # MISC UTILITIES  #
@@ -607,15 +616,11 @@
       artem
 
       #####################
-      # THEMES & CURSORS  #
+      # THEMES & FONTS    #
       #####################
       rose-pine-cursor
       cozette
-
-      ###################
-      # CUSTOM PACKAGES #
-      ###################
-      inputs.lobster.packages."x86_64-linux".lobster
+      corefonts
 
       ###################
       # DRIVER SUPPORT  #
