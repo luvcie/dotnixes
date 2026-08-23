@@ -65,6 +65,7 @@
   home.packages = with pkgs;
     [
       (callPackage ../../pkgs/claude-desktop.nix {})
+      (callPackage ../../pkgs/endcord.nix {})
       inputs.claude-code.packages.${pkgs.system}.default
       inputs.starmie-cli.packages.${pkgs.system}.default
       (inputs.gitlogue.packages.${pkgs.system}.default.overrideAttrs (old: {
@@ -735,6 +736,17 @@
       window_padding_height 10
     '';
   };
+
+  # endcord extension: inline images over the kitty graphics protocol. The
+  # loader scans ~/.config/endcord/Extensions/<name>/<name>.py, matching the
+  # directory name against the .py exactly.
+  home.file.".config/endcord/Extensions/endcord-image-inline".source =
+    pkgs.fetchFromGitHub {
+      owner = "sparklost";
+      repo = "endcord-image-inline";
+      tag = "0.1.10";
+      hash = "sha256-pmkXTut/UwMfdBWgpt43n5SjZIwpEwLGVt5mADGoijU=";
+    };
 
   # persistent ssh tunnel for vnc, secrets in ~/.config/vnc-tunnel/env
   home.file.".config/vnc-tunnel/start.sh" = {
