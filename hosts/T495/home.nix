@@ -24,6 +24,7 @@
     ../../modules/wayvnc.nix
     ../../modules/emacs.nix
     ../../modules/helix.nix
+    ../../modules/tts.nix
   ];
 
   programs.home-manager.enable = true;
