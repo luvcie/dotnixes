@@ -69,6 +69,7 @@
       # LOCAL & FLAKE   #
       ###################
       (callPackage ../../pkgs/claude-desktop.nix {})
+      inputs.llm-agents.packages.${pkgs.system}.dsh
       (callPackage ../../pkgs/endcord.nix {})
       inputs.claude-code.packages.${pkgs.system}.default
       inputs.starmie-cli.packages.${pkgs.system}.default
