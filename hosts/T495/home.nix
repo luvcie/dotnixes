@@ -200,7 +200,16 @@
       sqlite
       libGL
       libGLU
-      godot-mono
+      # Godot's bundled dotnet sdk 8 can't compile C# 13, which upstream card
+      # code needs now; combine a 9 sdk in for builds while keeping the 8
+      # runtime so the net8.0 game still runs
+      (godot-mono.overrideAttrs (_: {
+        dotnet-sdk = pkgs.dotnetCorePackages.combinePackages [
+          pkgs.dotnetCorePackages.sdk_9_0
+          pkgs.dotnetCorePackages.sdk_8_0
+        ];
+      }))
+      dotnet-sdk_9
 
       # Container & Kubernetes Tools
      #k9s
