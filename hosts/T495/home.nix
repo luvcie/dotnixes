@@ -795,6 +795,13 @@
     '';
   };
 
+  # dsh wrapper (babashka): adds `dsh list` (lists $DSH_HOME/profiles),
+  # delegates everything else to the real dsh from llm-agents.
+  home.file.".local/bin/dsh" = {
+    source = ../../bin/dsh.clj;
+    executable = true;
+  };
+
   systemd.user.services.vnc-tunnel = {
     Unit = {
       Description = "Persistent SSH tunnel for VNC";
