@@ -65,11 +65,20 @@
 
   home.packages = with pkgs;
     [
+      # latest additions
+
+      antigravity-cli
+      easyocr
+      python3Packages.rapidocr
+      ollama
+      ffuf
+      
       ###################
       # LOCAL & FLAKE   #
       ###################
       (callPackage ../../pkgs/claude-desktop.nix {})
       inputs.llm-agents.packages.${pkgs.system}.dsh
+      inputs.llm-agents.packages.${pkgs.system}.pi
       (callPackage ../../pkgs/endcord.nix {})
       inputs.claude-code.packages.${pkgs.system}.default
       inputs.starmie-cli.packages.${pkgs.system}.default
@@ -347,6 +356,7 @@
       webcamoid
       kdePackages.kcolorchooser
       kdePackages.kquickimageedit
+      bc
 
       # Media Download
       yt-dlp
