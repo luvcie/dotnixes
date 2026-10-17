@@ -51,7 +51,7 @@
     # AI agents (Codex, dsh), bumped daily by their CI
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # Keep upstream's nixpkgs pin so Numtide's binary cache matches.
     };
 
     nixvim = {
