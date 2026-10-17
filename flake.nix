@@ -48,7 +48,7 @@
       url = "github:justchokingaround/lobster";
     };
 
-    # dsh (DeepSeek Harness), bumped daily by their CI
+    # AI agents (Codex, dsh), bumped daily by their CI
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,6 +71,11 @@
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

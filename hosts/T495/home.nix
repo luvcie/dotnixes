@@ -70,15 +70,24 @@
       antigravity-cli
       easyocr
       python3Packages.rapidocr
+      flyctl
       ollama
+      dosbox-staging
+      
       ffuf
+      simplex-chat-desktop
       
       ###################
       # LOCAL & FLAKE   #
       ###################
-      (callPackage ../../pkgs/claude-desktop.nix {})
-      inputs.llm-agents.packages.${pkgs.system}.dsh
-      inputs.llm-agents.packages.${pkgs.system}.pi
+      inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codex
+      # (callPackage ../../pkgs/claude-desktop.nix {})  # removed: no Claude subscription
+      # TEMP 2026-10-14: llm-agents dsh-0.2.0-rc.2 npm-deps fails to fetch
+      # @img/sharp-libvips-linuxmusl-arm64 from registry.npmjs.org
+      # (HTTP/2 framing-layer stream error, retry fails identically).
+      # Re-enable once registry recovers or llm-agents bumps past rc.2.
+      # inputs.llm-agents.packages.${pkgs.system}.dsh
+      # inputs.llm-agents.packages.${pkgs.system}.pi
       (callPackage ../../pkgs/endcord.nix {})
       inputs.claude-code.packages.${pkgs.system}.default
       inputs.starmie-cli.packages.${pkgs.system}.default
@@ -87,7 +96,7 @@
       (inputs.gitlogue.packages.${pkgs.system}.default.overrideAttrs (old: {
         cargoDeps = old.cargoDeps.overrideAttrs (oldc: {
           vendorStaging = oldc.vendorStaging.overrideAttrs (_: {
-            outputHash = "sha256-PfITSo8iTQ1Y3wn/9PD4fsMGF0oRw1f1Xnhki4voqpM=";
+            outputHash = "sha256-upeILLWszjVa2HhMP05b5C1HrLE5EknV2OXXxizVz/c=";
           });
         });
       }))
@@ -99,7 +108,10 @@
       chromium
       firefox
       brave
-      palemoon-bin
+      # palemoon-bin removed upstream (relies on to-be-removed GTK2 for NPAPI)
+      # palemoon-bin
+      # Native Zen (replaces Flatpak app.zen_browser.zen once DnD is verified)
+      inputs.zen-browser.packages.${pkgs.system}.default
 
       #######################
       # TERMINAL EMULATORS  #
@@ -827,10 +839,4 @@
       WantedBy = [ "default.target" ];
     };
   };
-
-  # Run flatpak update after every home-manager rebuild
-    home.activation.updateClaudeDesktop = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    export PATH="${lib.makeBinPath [ pkgs.curl pkgs.python3 pkgs.gnused pkgs.gawk ]}:$PATH"
-    bash /home/lucie/dotnixes/update-claude-desktop.sh || true
-  '';
 }

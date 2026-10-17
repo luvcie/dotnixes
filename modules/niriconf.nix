@@ -216,15 +216,9 @@ in {
       Mod+minus { set-window-height "-10%"; }
       Mod+equal { set-window-height "+10%"; }
 
-      Mod+Left { focus-column-left; }
-      Mod+Right { focus-column-right; }
       Mod+h { focus-column-left; }
       Mod+l { focus-column-right; }
-      Mod+Up { focus-window-up; }
-      Mod+Down { focus-window-down; }
 
-      Mod+Shift+Left { move-column-left; }
-      Mod+Shift+Right { move-column-right; }
       Mod+Shift+h { move-column-left; }
       Mod+Shift+l { move-column-right; }
 
@@ -232,8 +226,6 @@ in {
       Mod+k { focus-workspace-up; }
       Mod+Shift+j { move-column-to-workspace-down; }
       Mod+Shift+k { move-column-to-workspace-up; }
-      Mod+Shift+Up { move-window-up; }
-      Mod+Shift+Down { move-window-down; }
 
       Mod+1 { focus-workspace "1"; }
       Mod+2 { focus-workspace "2"; }

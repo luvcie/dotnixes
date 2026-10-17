@@ -295,7 +295,11 @@
 
     firewall = {
       enable = true;
-      allowedTCPPorts = [27036 27037 5900 3389 1701 9001];
+      # SimpleX desktop "Link a mobile" listens on a random TCP port by default.
+      # Set a fixed port in the desktop app (port field under the QR code,
+      # e.g. 38400) and keep it open here, otherwise the phone times out.
+      # See https://github.com/simplex-chat/simplex-chat/issues/3425
+      allowedTCPPorts = [27036 27037 5900 3389 1701 9001 38400];
       allowedUDPPorts = [27031 27036];
     };
   };
@@ -305,7 +309,7 @@
 
   services.dbus = {
     enable = true;
-    packages = [pkgs.gcr];
+    packages = [pkgs.gcr_4];
   };
 
   security.pam.services.login.enableGnomeKeyring = true;

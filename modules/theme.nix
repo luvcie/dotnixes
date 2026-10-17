@@ -24,7 +24,8 @@
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk2";
+    # gtk2 platform pulls qt6Packages.qt6gtk2, removed upstream (relies on gtk2)
+    platformTheme.name = "gtk3";
     style = {
       name = "Dracula";
       package = pkgs.dracula-qt5-theme;

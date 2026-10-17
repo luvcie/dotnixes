@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rain Canvas</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(#060a15, #0d1526 55%, #182741);
+  }
+  #rain {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    cursor: crosshair;
+    touch-action: none;
+  }
+  #hint {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 10vh;
+    text-align: center;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(170, 205, 240, .6);
+    pointer-events: none;
+    transition: opacity 1.2s ease;
+    user-select: none;
+  }
+  #hint.gone { opacity: 0; }
+  noscript p {
+    position: fixed; inset: 0; display: grid; place-items: center;
+    color: #dfe9ff; font-family: sans-serif; font-size: 18px;
+  }
+</style>
+</head>
+<body>
+<canvas id="rain"></canvas>
+<div id="hint">click anywhere to ripple</div>
+<noscript><p>JavaScript is disabled — enable it to see the rain.</p></noscript>
+
+<script>
+(function () {
+  "use strict";
+
+  var canvas = document.getElementById("rain");
+  var hint = document.getElementById("hint");
+  var ctx = canvas.getContext("2d");
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var rand = function (a, b) { return a + Math.random() * (b - a); };
+
+  var W = 0, H = 0, sky = null;
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, "#060a15");
+    sky.addColorStop(0.55, "#0d1526");
+    sky.addColorStop(1, "#182741");
+  }
+
+  /* ---------- raindrops ---------- */
+  var drops = [];
+  var COUNT = Math.max(60, Math.min(260, Math.round(window.innerWidth / 9)));
+
+  function makeDrop(anywhere) {
+    return {
+      x: rand(0, W),
+      y: anywhere ? rand(-H, H) : rand(-90, -10),
+      speed: rand(5, 13),
+      len: rand(10, 30),
+      drift: rand(-0.6, 0.6),
+      thick: Math.random() < 0.12,
+      alpha: rand(0.18, 0.55)
+    };
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+  for (var i = 0; i < COUNT; i++) drops.push(makeDrop(true));
+
+  /* ---------- ripples ---------- */
+  var ripples = [];
+
+  function spawnRipple(x, y, scale) {
+    ripples.push({
+      x: x, y: y,
+      r: 0,
+      maxR: rand(24, 52) * scale,
+      speed: rand(2.2, 4.6),
+      alpha: rand(0.25, 0.6),
+      rings: Math.random() < 0.5 ? 2 : 1
+    });
+    if (ripples.length > 80) ripples.shift();
+  }
+
+  canvas.addEventListener("pointerdown", function (e) {
+    var x = e.clientX, y = e.clientY;
+    spawnRipple(x, y, 1.3);
+    spawnRipple(x + rand(-14, 14), y + rand(-14, 14), 0.6);
+    spawnRipple(x + rand(-30, 30), y + rand(-30, 30), 0.35);
+    hint.classList.add("gone");
+  });
+
+  /* ---------- animation loop ---------- */
+  var last = performance.now();
+
+  function frame(now) {
+    var dt = Math.min((now - last) / 16.667, 2.5);
+    last = now;
+
+    // sky
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, W, H);
+
+    // falling streaks
+    ctx.lineCap = "round";
+    for (var i = 0; i < drops.length; i++) {
+      var d = drops[i];
+      d.y += d.speed * dt;
+      d.x += d.drift * dt;
+      if (d.y - d.len > H) {
+        var n = makeDrop(false);
+        d.x = n.x; d.y = n.y; d.speed = n.speed; d.len = n.len;
+        d.drift = n.drift; d.thick = n.thick; d.alpha = n.alpha;
+      }
+      ctx.strokeStyle = "rgba(168, 205, 255, " + d.alpha.toFixed(3) + ")";
+      ctx.lineWidth = d.thick ? 2 : 1;
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y - d.len);
+      ctx.lineTo(d.x + d.drift * 2, d.y);
+      ctx.stroke();
+    }
+
+    // expanding ripples
+    for (var j = ripples.length - 1; j >= 0; j--) {
+      var rp = ripples[j];
+      rp.r += rp.speed * dt;
+      var t = rp.r / rp.maxR;
+      if (t >= 1) { ripples.splice(j, 1); continue; }
+
+      var a = rp.alpha * (1 - t);
+      ctx.strokeStyle = "rgba(190, 220, 255, " + a.toFixed(3) + ")";
+      ctx.lineWidth = 1.5 * (1 - t) + 0.5;
+      for (var k = 0; k < rp.rings; k++) {
+        var rr = Math.max(rp.r - k * 6, 0);
+        ctx.beginPath();
+        ctx.arc(rp.x, rp.y, rr, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
